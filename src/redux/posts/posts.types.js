@@ -1,0 +1,2 @@
+export const WRITE_COMMENT = "WRITE_COMMENT"
+export const GET_COMMENTS = "GET_COMMENTS"

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "985903233562",
+    "project_id": "stockbuzz-1586b",
+    "storage_bucket": "stockbuzz-1586b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985903233562:android:4ce9a2a7012d3e79c22fa3",
+        "android_client_info": {
+          "package_name": "com.wielabs.stockbuzz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985903233562-haq9ik49se31fq02t6eb4nqaio0a6ke7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wielabs.stockbuzz",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "985903233562-jdh16qj2dnpv6kddht4quapuaos5fpe7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGLqV5aY3IvxcrLo1v0tdL47ieUTqwVN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985903233562-jdh16qj2dnpv6kddht4quapuaos5fpe7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "985903233562-2rerkcb9majok2l2eqgoglomggsnbcr2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wielabs.stockbuzz"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

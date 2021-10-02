@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>985903233562-2rerkcb9majok2l2eqgoglomggsnbcr2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.985903233562-2rerkcb9majok2l2eqgoglomggsnbcr2</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB4WYmiTlM0rBzkJQJOwp4ruJC66n6YOUU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>985903233562</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.wielabs.stockbuzz</string>
+	<key>PROJECT_ID</key>
+	<string>stockbuzz-1586b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>stockbuzz-1586b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:985903233562:ios:7aee620c770e07c1c22fa3</string>
+</dict>
+</plist>
