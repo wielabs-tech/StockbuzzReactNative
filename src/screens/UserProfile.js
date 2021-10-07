@@ -108,42 +108,113 @@ export default UserProfile = ({ navigation, route }) => {
       data.push(d);
     });
 
-    console.log(data.length);
-    if (data.length == 0) {
-      firestore()
-        .collection('MESSAGE_THREADS')
-        .add({
-          name: roomName,
-          latestMessage: {
-            text: ``,
-            createdAt: new Date().getTime(),
-          },
-          createdBy: profileInfo?.username,
-          otherUser: profile?.username,
-          createdByUID: profileInfo?._id?.$oid,
-          otherUserUID: profile?._id?.$oid
-        })
-        .then(async (m) => {
-          console.log("CRETED MSG", m)
-          const r = await firestore()
-            .collection('MESSAGE_THREADS')
-            .where('createdBy', '==', profileInfo?.username)
-            .where('otherUser', '==', profile?.username)
-
-          let data = []
-          const snapshot = await r.get();
-
-          snapshot.forEach(doc => {
-            let d = doc.data();
-            d._id = doc.id
-            console.log(d)
-            navigation.navigate('MessageRoom', { thread: d })
-          });
-        })
-    } else {
+    console.log("DATALENGTH", JSON.stringify(data));
+    if (data.length != 0) {
       console.log(data[0]);
       navigation.navigate('MessageRoom', { thread: data[0] })
+    } else {
+
+      const r2 = await firestore()
+        .collection('MESSAGE_THREADS')
+        .where('createdBy', '==', profile?.username)
+        .where('otherUser', '==', profileInfo?.username)
+      let data2 = []
+      const snapshot2 = await r2.get();
+      snapshot2.forEach(doc => {
+        let d = doc.data();
+        d._id = doc.id
+        data2.push(d);
+      });
+
+      console.log("DATALENGTH2", JSON.stringify(data2));
+      if (data2.length == 0) {
+        firestore()
+          .collection('MESSAGE_THREADS')
+          .add({
+            name: roomName,
+            latestMessage: {
+              text: ``,
+              createdAt: new Date().getTime(),
+            },
+            createdBy: profileInfo?.username,
+            otherUser: profile?.username,
+            createdByUID: profileInfo?._id?.$oid,
+            otherUserUID: profile?._id?.$oid
+          })
+          .then(async (m) => {
+            console.log("CRETED MSG", m)
+            const r = await firestore()
+              .collection('MESSAGE_THREADS')
+              .where('createdBy', '==', profileInfo?.username)
+              .where('otherUser', '==', profile?.username)
+
+            let data = []
+            const snapshot = await r.get();
+
+            snapshot.forEach(doc => {
+              let d = doc.data();
+              d._id = doc.id
+              console.log(d)
+              navigation.navigate('MessageRoom', { thread: d })
+            });
+          })
+      } else {
+        console.log(data2[0]);
+        navigation.navigate('MessageRoom', { thread: data2[0] })
+      }
     }
+
+    // const r2 = await firestore()
+    //   .collection('MESSAGE_THREADS')
+    //   .where('createdBy', '==', profile?.username)
+    //   .where('otherUser', '==', profileInfo?.username)
+
+    // let data2 = []
+    // const snapshot2 = await r2.get();
+    // snapshot2.forEach(doc => {
+    //   let d = doc.data();
+    //   d._id = doc.id
+    //   data2.push(d);
+    // });
+
+    // console.log("DATALENGTH2", JSON.stringify(data2));
+    // if (data2.length == 0) {
+    //   firestore()
+    //     .collection('MESSAGE_THREADS')
+    //     .add({
+    //       name: roomName,
+    //       latestMessage: {
+    //         text: ``,
+    //         createdAt: new Date().getTime(),
+    //       },
+    //       createdBy: profileInfo?.username,
+    //       otherUser: profile?.username,
+    //       createdByUID: profileInfo?._id?.$oid,
+    //       otherUserUID: profile?._id?.$oid
+    //     })
+    //     .then(async (m) => {
+    //       console.log("CRETED MSG", m)
+    //       const r = await firestore()
+    //         .collection('MESSAGE_THREADS')
+    //         .where('createdBy', '==', profileInfo?.username)
+    //         .where('otherUser', '==', profile?.username)
+
+    //       let data = []
+    //       const snapshot = await r.get();
+
+    //       snapshot.forEach(doc => {
+    //         let d = doc.data();
+    //         d._id = doc.id
+    //         console.log(d)
+    //         navigation.navigate('MessageRoom', { thread: d })
+    //       });
+    //     })
+    // } else {
+    //   console.log(data2[0]);
+    //   navigation.navigate('MessageRoom', { thread: data2[0] })
+    // }
+
+
 
 
     // if (roomName.length > 0) {

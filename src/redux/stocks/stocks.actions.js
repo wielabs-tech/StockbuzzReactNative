@@ -1,5 +1,5 @@
 import { stocksAPI } from "../../api/ajax";
-import { GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
+import { CRYPTO_SEARCH, GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
 
 export const getTrendingStocksThunk = () => async dispatch => {
     const response = await stocksAPI.trendingStocks();
@@ -46,6 +46,24 @@ export const getStockFeedThunk = (symbol) => async dispatch => {
     })
 }
 
+export const getCryptoSearchThunk = startText => async dispatch => {
+    let res = await fetch(
+        'https://api.polygon.io/v3/reference/tickers?search=bitcoin&active=true&sort=ticker&order=asc&limit=10&apiKey=mvQ9_ynKhaNM_9eEVbjPrpwxDH9AIhpm',
+        {
+            method: 'get',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    );
+    let responseJson = await res.json();
+    console.log("RESPONSE", responseJson)
+    // dispatch({
+    //     type: CRYPTO_SEARCH,
+    //     payload: response.data
+    // })
+}
+
 export const getSuggestionsThunk = (startText) => async dispatch => {
     const response = await stocksAPI.getSuggestions(startText);
     dispatch({
@@ -64,6 +82,7 @@ export const setSuggestionEmptyThunk = (startText) => async dispatch => {
 
 export const getCryptoThunk = () => async dispatch => {
     const response = await stocksAPI.getCryptos();
+    console.log("RESPONSECRYPTO", response)
     dispatch({
         type: GET_CRYPTO,
         payload: response.data.data

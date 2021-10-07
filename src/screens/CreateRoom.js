@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Image } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Avatar from '../components/Avatar';
 import ImagePicker from 'react-native-image-crop-picker';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import Toast from 'react-native-simple-toast';
 
 import {
     TextInput,
@@ -24,7 +26,7 @@ import { createRoom } from '../api/ajax';
 import { useDispatch, useSelector } from 'react-redux';
 import { createRoomsThunk } from '../redux/rooms/rooms.actions';
 
-export const CreateRoom = ({navigation}) => {
+export const CreateRoom = ({ navigation }) => {
     const dispatch = useDispatch();
     const [wordCount, SetwordCount] = useState(200)
     const [message, setMessage] = useState("")
@@ -38,6 +40,12 @@ export const CreateRoom = ({navigation}) => {
         SetwordCount(200 - message.length)
     }, [message])
 
+    navigation.setOptions({
+        headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
+            navigation.goBack();
+        }} />,
+    })
+
 
     const imgPic = () => {
         ImagePicker.openPicker({
@@ -47,16 +55,26 @@ export const CreateRoom = ({navigation}) => {
             compressImageMaxWidth: 300,
             compressImageMaxHeight: 300,
         }).then(ima => {
+            console.log("IMAGE", ima)
             setImage(ima)
         }).catch((err) => { console.log("openCamera catch" + err.toString()) });
     }
+    console.log("IMAGE", image)
+
     return (
         <ScrollView>
             <View style={{ backgroundColor: "#fff" }}>
                 <View style={styles.container}>
                     <View style={styles.avatar}>
                         <TouchableOpacity onPress={imgPic}>
-                            {image ? <Avatar height={100} width={100} url={image.path || image.uri} /> : <MaterialIcons name="add-photo-alternate" size={86} color={"#f1f1f1"} />
+                            {image ?
+                                <Image
+                                    style={{ height: 100, width: 100, borderRadius: 50 }}
+                                    source={{
+                                        uri: image.path
+                                    }}
+                                /> 
+                                : <MaterialIcons name="add-photo-alternate" size={86} color={"#f1f1f1"} />
                             }
                         </TouchableOpacity>
                         <Text style={{ marginTop: 10, color: "#00000080" }}>
@@ -71,7 +89,7 @@ export const CreateRoom = ({navigation}) => {
                         <Text style={styles.title}>
                             Title
                         </Text>
-                        <TextInput 
+                        <TextInput
                             value={title}
                             onChangeText={setTitle}
                             style={styles.inp_title}
@@ -114,8 +132,12 @@ export const CreateRoom = ({navigation}) => {
                         <TouchableOpacity style={styles.button}
                             onPress={async () => {
                                 console.log("PROFILE", profileInfo?._id?.$oid)
-                                await dispatch(createRoomsThunk(profileInfo?._id?.$oid, title, message, image))
-                                navigation.goBack();
+                                const res = await dispatch(createRoomsThunk(profileInfo?._id?.$oid, title, message, image))
+                                if (res?.response?.data?.status === "False") {
+                                    Toast.show("Already a room exists with the same name, Try another.", Toast.LONG);
+                                } else {
+                                    navigation.goBack();
+                                }
                             }}
                         >
                             <Text style={{ color: "#fff", fontSize: 14 }}>Create</Text>

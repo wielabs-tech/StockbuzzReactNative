@@ -1,7 +1,7 @@
 import { profileAPI } from "../../api/ajax";
 import { getMyWatchlistDataThunk } from "../stocks/stocks.actions";
 import { GET_USER } from "../user/user.types";
-import { GET_FOLLOWERS, GET_FOLLOWERS_MINE, GET_FOLLOWING, GET_FOLLOWING_MINE, GET_PROFILE_INFO, MY_POSTS, WATCHLIST_LOADING } from "./profile.types";
+import { GET_FOLLOWERS, GET_FOLLOWERS_MINE, GET_FOLLOWING, GET_FOLLOWING_MINE, GET_PROFILE_INFO, MY_POSTS, NOTIFICATION_DATA, WATCHLIST_LOADING } from "./profile.types";
 
 export const updateWatchlistThunk = (id, symbol) => async dispatch => {
     dispatch({type: WATCHLIST_LOADING, payload: true})
@@ -111,6 +111,13 @@ export const updateProfileInfoThunk = (id, full_name, bio, photo) => async dispa
         dispatch(getMyPostsThunk(id)); 
     }
     return response;
+}
+
+export const getNotificationsThunk = (id) => async dispatch => {
+    const response = await profileAPI.getNotifications(id)
+    if(response?.status){
+        dispatch({type: NOTIFICATION_DATA, payload: response.data})
+    }
 }
 
 export const connectToTwitterThunk = (id, is_twitter_linked, token, secret) => async dispatch => {

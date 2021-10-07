@@ -25,6 +25,8 @@ export const setAsyncStorageToken = async (access_token, refresh_token) => {
   api_token = access_token;
 };
 
+
+
 export const setEmptyAsyncStorageToken = async () => {
   await AsyncStorage.removeItem('@token');
   api_token = null;

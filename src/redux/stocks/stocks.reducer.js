@@ -1,4 +1,4 @@
-import { GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
+import { CRYPTO_SEARCH, GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
 
 const INITIAL_STATE = {
    topTrendingStocks: null,
@@ -6,6 +6,8 @@ const INITIAL_STATE = {
    watchlistData: null,
    suggestions: null,
    stockFeed: null,
+   stockSearch: null,
+   cryptos: null
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -38,6 +40,12 @@ const reducer = (state = INITIAL_STATE, action) => {
          return{
             ...state,
             stockFeed: action.payload
+         }
+
+      case CRYPTO_SEARCH:
+         return{
+            ...state,
+            stockSearch: action.payload
          }
          
       case GET_CRYPTO:

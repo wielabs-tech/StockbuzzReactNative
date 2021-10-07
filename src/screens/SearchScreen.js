@@ -4,8 +4,12 @@ import { Input } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Dimensions } from 'react-native';
 import colors from '../styles/colors';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSuggestionsThunk, setSuggestionEmptyThunk } from '../redux/stocks/stocks.actions';
+import { getCryptoSearchThunk, getSuggestionsThunk, setSuggestionEmptyThunk } from '../redux/stocks/stocks.actions';
+import SearchStocks from './SearchStocks';
+import SearchUsers from './SearchUsers';
+import SearchCrypto from './SearchCrypto';
 const { width, height } = Dimensions.get("window");
 
 export default SearchScreen = ({ navigation }) => {
@@ -17,6 +21,7 @@ export default SearchScreen = ({ navigation }) => {
     const cryptos = useSelector(state => state.stocks.cryptos);
     const [filterDataSource, setFilteredDataSource] = useState('');
     const [search, setSearch] = useState('');
+    const cryptoSearch = useSelector(state => state.stocks.stockSearch)
     const [data, setData] = useState();
 
     const searchFilterFunction = (text) => {
@@ -55,6 +60,48 @@ export default SearchScreen = ({ navigation }) => {
     const goBack = () => {
         navigation.goBack();
     }
+
+    const renderTabBar = props => (
+        <TabBar
+            tabStyle={{
+                width: 100
+            }}
+            pressColor={'transparent'}
+            {...props}
+            style={{
+                elevation: 0,
+                backgroundColor: 'white',
+                paddingTop: 4
+            }}
+            labelStyle={{
+                fontSize: 14,
+                fontWeight: '500',
+                textTransform: 'capitalize',
+                fontFamily: "inter"
+            }}
+            indicatorStyle={{
+                height: 4,
+                borderRadius: 4,
+                backgroundColor: '#4955BB',
+            }}
+            activeColor={'#4955BB'}
+            inactiveColor={'#00000080'}
+        />
+    );
+
+    const [index, setIndex] = React.useState(0);
+    const [routes] = React.useState([
+        { key: 'stocks', title: 'Stocks ' },
+        { key: 'crypto', title: 'Crypto' },
+        { key: 'users', title: 'Users' },
+    ]);
+
+
+    const renderScene = SceneMap({
+        stocks: SearchStocks,
+        crypto: SearchCrypto,
+        users: SearchUsers,
+    });
 
     const renderItem = ({ item }) => {
         return (
@@ -121,19 +168,16 @@ export default SearchScreen = ({ navigation }) => {
                         inputContainerStyle={styles.inputContainerStyleBlur}
                     />
                 </View>
-                <View style={{  }}>
-                    <FlatList
-                        keyboardShouldPersistTaps={'always'}
-                        data={suggestions?.symbols}
-                        renderItem={renderItem}
-                        keyExtractor={item => item.symbol}
+                <View style={{height: '100%'}}>
+                    <TabView
+                        renderTabBar={renderTabBar}
+                        navigationState={{ index, routes }}
+                        renderScene={renderScene}
+                        onIndexChange={setIndex}
+                        initialLayout={{ width: layout.width }}
+                        indicatorStyle={{ backgroundColor: "#fff" }}
                     />
-                    <FlatList
-                        keyboardShouldPersistTaps={'always'}
-                        data={suggestions?.users}
-                        renderItem={renderItemUsers}
-                        keyExtractor={item => item.symbol}
-                    />
+
                 </View>
             </View>
         </SafeAreaView>

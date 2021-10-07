@@ -36,15 +36,15 @@
       .getInitialNotification()
       .then(remoteMessage => {
         console.log("HELLO")
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification,
-            remoteMessage.data
-          );
-          setInitialRoute("MessageRoom"); // e.g. "Settings"
-          setData(remoteMessage.data);
-        }
+        // if (remoteMessage) {
+        //   console.log(
+        //     'Notification caused app to open from quit state:',
+        //     remoteMessage.notification,
+        //     remoteMessage.data
+        //   );
+        //   setInitialRoute("MessageRoom"); // e.g. "Settings"
+        //   setData(remoteMessage.data);
+        // }
         // setLoading(false);
       });
 

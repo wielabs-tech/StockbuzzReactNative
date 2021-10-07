@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,65 +7,100 @@ import {
   Image,
   FlatList
 } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { useDispatch, useSelector } from 'react-redux';
+import { getNotificationsThunk } from '../redux/profile/profile.actions';
+import { API_URL } from '../utils/config';
 
-export default class Notifications extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data:[
-        {id:3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name:"March SoulLaComa", text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:"https://via.placeholder.com/100x100/FFB6C1/000000"},
-        {id:2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name:"John DoeLink",     text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:"https://via.placeholder.com/100x100/20B2AA/000000"},
-        {id:4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name:"Finn DoRemiFaso",  text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:""},
-        {id:5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name:"Maria More More",  text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:""},
-        {id:1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name:"Frank Odalthh",    text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:"https://via.placeholder.com/100x100/7B68EE/000000"},
-        {id:6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name:"Clark June Boom!", text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:""},
-        {id:7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name:"The googler",      text:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", attachment:""},
-      ]
+export default Notifications = ({ navigation }) => {
+
+  navigation.setOptions({
+    headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
+      navigation.goBack();
+    }} />,
+  })
+
+  const dispatch = useDispatch();
+  const profile = useSelector(state => state.profile.profileInfo);
+  const notificationsData = useSelector(state => state.profile.notificationData);
+
+  useEffect(async () => {
+    await dispatch(getNotificationsThunk(profile?._id?.$oid))
+  }, []);
+
+  const x = new Date();
+  var UTCseconds = x.getTime() + 330 * 60 * 1000;
+
+  function msToTime(duration) {
+    var milliseconds = parseInt((duration % 1000) / 100),
+      seconds = Math.floor((duration / 1000) % 60),
+      minutes = Math.floor((duration / (1000 * 60)) % 60),
+      hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    var days = Math.floor(duration / (1000 * 60 * 60) / 24);
+
+    if (days > 0) {
+      if (days === 1) return '1 day ago';
+      else return days + ' days ago';
+    } else if (hours > 0) {
+      if (hours === 1) return '1 hour ago';
+      else return hours + ' hours ago';
+    } else if (minutes > 0) {
+      if (minutes === 1) return '1 minute ago';
+      else return minutes + ' minutes ago';
+    } else {
+      if (seconds === 1) return '1 second ago';
+      else return seconds + ' seconds ago';
     }
   }
 
-  render() {
-    return (
-      <FlatList
-        style={styles.root}
-        data={this.state.data}
-        extraData={this.state}
-        ItemSeparatorComponent={() => {
-          return (
-            <View style={styles.separator}/>
-          )
-        }}
-        keyExtractor={(item)=>{
-          return item.id;
-        }}
-        renderItem={(item) => {
-          const Notification = item.item;
-          let attachment = <View/>;
+  return (
+    <FlatList
+      style={styles.root}
+      data={notificationsData}
+      ItemSeparatorComponent={() => {
+        return (
+          <View style={styles.separator}/>
+        )
+      }}
+      keyExtractor={(item)=>{
+        return item.id;
+      }}
+      renderItem={(item) => {
+        const Notification = item.item;
+        let attachment = <View/>;
+        console.log("ITEM", API_URL + Notification.user.photo)
 
-          let mainContentStyle;
-          if(Notification.attachment) {
-            mainContentStyle = styles.mainContent;
-            attachment = <Image style={styles.attachment} source={{uri:Notification.attachment}}/>
-          }
-          return(
-            <View style={styles.container}>
-              <View style={styles.content}>
-                <View style={mainContentStyle}>
-                  <View style={styles.text}>
-                    <Text style={styles.name}>{Notification.name}</Text>
-                    <Text style={{fontSize: 12}}>{Notification.text}</Text>
-                  </View>
-                  <Text style={styles.timeAgo}>
-                    2 hours ago
-                  </Text>
+        let mainContentStyle;
+        if(Notification.attachment) {
+          mainContentStyle = styles.mainContent;
+          attachment = <Image style={styles.attachment} source={{uri:Notification.attachment}}/>
+        }
+        return(
+          <View style={styles.container}>
+            {
+              !!Notification?.user?.photo ? (
+                <Image source={{uri: API_URL + "/" + Notification.user.photo}} style={styles.avatar}/>
+              ) : (
+                <MaterialIcons name={"account-circle"} size={54} color={'#aaa'} style={styles.avatar}/>
+              )
+            }
+            <View style={styles.content}>
+              <View style={mainContentStyle}>
+                <View style={styles.text}>
+                  <Text style={styles.name}>{Notification.title}</Text>
+                  <Text>{Notification.body}</Text>
                 </View>
+                <Text style={styles.timeAgo}>
+                  2 hours ago
+                </Text>
               </View>
+              {attachment}
             </View>
-          );
-        }}/>
-    );
-  }
+          </View>
+        );
+      }}/>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -80,15 +115,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   avatar: {
-    width:50,
-    height:50,
-    borderRadius:25,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   text: {
     marginBottom: 5,
-    flexDirection: 'row',
+    flexDirection: 'column',
     fontSize: 12,
-    flexWrap:'wrap'
+    flexWrap: 'wrap'
   },
   content: {
     flex: 1,
@@ -113,13 +148,12 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#CCCCCC"
   },
-  timeAgo:{
-    fontSize:10,
-    color:"#696969"
+  timeAgo: {
+    fontSize: 10,
+    color: "#696969"
   },
-  name:{
-    fontSize:14,
-    color:"#1E90FF"
+  name: {
+    fontSize: 14,
+    color: "#1E90FF"
   }
-}); 
-               
+});

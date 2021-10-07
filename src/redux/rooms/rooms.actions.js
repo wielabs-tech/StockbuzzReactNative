@@ -18,9 +18,14 @@ export const getDiscoverRoomsThunk = (userid) => async dispatch => {
 }
 
 export const createRoomsThunk = (userid, title, description, image) => async dispatch => {
-    const response = await roomsAPI.createRoom(userid, title, description, image);
-    console.log("RESPONSE", response);
-    dispatch(getMyRoomsThunk(userid));
+    try {
+        const response = await roomsAPI.createRoom(userid, title, description, image);
+        console.log("RESPONSE", response);
+        dispatch(getMyRoomsThunk(userid));
+        return response;
+    } catch (e) {
+        return e
+    }
     // dispatch({
     //     type: GET_DISCOVER_ROOMS,
     //     payload: response.data

@@ -86,6 +86,10 @@ export const stocksAPI = {
     return res
   },
 
+  getCryptoSearch(search){
+    
+  },
+
   getStockPosts(symbol) {
     return API.get(`stocks/` + symbol + `/posts`);
   },
@@ -155,6 +159,10 @@ export const profileAPI = {
 
   getMyPosts(id) {
     return API.get(`user/` + id + `/posts`)
+  },
+
+  getNotifications(id) {
+    return API.get(`user/` + id + `/notifications`)
   },
 
   getMyFollowers(id) {
