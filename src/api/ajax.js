@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { API_URL } from '../utils/config';
 import API from './api';
+import APIStock from './apiStocks'
 
 export const loginAPI = {
 
@@ -100,7 +101,7 @@ export const stocksAPI = {
   },
 
   getCryptoInfo(symbol) {
-    const res = API.get(`https://data.messari.io/api/v1/assets/` + symbol.toLowerCase() + `/metrics`);
+    const res = APIStock.get(`/v1/cryptocurrency/quotes/latest?symbol=`+symbol);
     return res;
   },
 
@@ -114,7 +115,7 @@ export const stocksAPI = {
   },
 
   getCryptos() {
-    return API.get(`https://data.messari.io/api/v2/assets?limit=500&fields=name,symbol`);
+    return APIStock.get(`v1/cryptocurrency/map`);
   }
 
 }

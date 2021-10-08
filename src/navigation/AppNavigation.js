@@ -34,6 +34,7 @@ import Messages from '../screens/Messages';
 import MessageRoom from '../screens/MessageRoom';
 import EditWatchList from '../screens/EditWatchList';
 import Notifications from '../screens/NotificationsScreen';
+import CryptoScreen from '../screens/CryptoScreen';
 
 
 const Stack = createStackNavigator();
@@ -226,6 +227,11 @@ export default AppNavigation = ({initialRouteName}) => {
               }}
             />
             <Stack.Screen name="searchScreen" component={SearchScreen} />
+            <Stack.Screen name="cryptoScreen" component={CryptoScreen}
+              options={{
+                headerShown: true,
+              }}
+            />
             <Stack.Screen name="stockScreen" component={StockScreen}
               options={{
                 headerShown: true,

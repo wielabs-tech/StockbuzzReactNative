@@ -193,7 +193,7 @@ const PostRoute = props => {
             }
             childrenProps={{ allowFontScaling: false }}
           >
-            {item.body}
+            {item?.body}
           </ParsedText>
         </View>
 

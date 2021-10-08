@@ -25,7 +25,7 @@ const SearchUsers = () => {
                         <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>{item?._source?.fullName || item?.full_name}</Text>
                         <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>@{item?.username}</Text>
                     </View>
-                    {/* <Text>{item.}</Text> */}
+                    {/* <Text>{item?.}</Text> */}
                 </View>
             </TouchableOpacity>
         )
@@ -36,7 +36,7 @@ const SearchUsers = () => {
         <FlatList
             data={suggestions?.users}
             renderItem={renderItemUsers}
-            keyExtractor={item => item._id.$oid}
+            keyExtractor={item => item?._id.$oid}
         /></ScrollView>
     )
 }

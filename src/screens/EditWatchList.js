@@ -53,7 +53,7 @@ export default EditWatchList = ({ navigation }) => {
 
     function isInWatchlist(item) {
         for (var i = 0; i < data.length; i++) {
-            if (item.symbol === data[i].symbol) {
+            if (item?.symbol === data[i].symbol) {
                 return true;
             }
         }
@@ -92,7 +92,7 @@ export default EditWatchList = ({ navigation }) => {
                     keyboardShouldPersistTaps={"always"}
                     data={suggestions?.symbols.length != 0 ? suggestions?.symbols : data}
                     renderItem={renderItem}
-                    keyExtractor={item => item.identifier}
+                    keyExtractor={item => item?.identifier}
                 />
             </View>
         </View>

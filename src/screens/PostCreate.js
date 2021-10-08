@@ -19,6 +19,7 @@ import { profileAPI, roomsAPI, uploadPost } from '../api/ajax';
 import { FlatList } from 'react-native-gesture-handler';
 import ParsedText from 'react-native-parsed-text';
 import {
+    getCryptoSuggestionsThunk,
     getStockFeedThunk,
     getSuggestionsThunk,
     setSuggestionEmptyThunk,
@@ -29,6 +30,7 @@ import { Icon } from 'react-native-elements';
 import { getRoomPostsThunk } from '../redux/rooms/rooms.actions';
 import AsyncStorage from '@react-native-community/async-storage';
 import TwitterButton from './TwitterButtonConnection';
+import { CRYPTO_SUGGESTIONS } from '../redux/stocks/stocks.types';
 
 export default PostCreate = ({ navigation, route }) => {
     const scrollRef = useRef();
@@ -44,25 +46,33 @@ export default PostCreate = ({ navigation, route }) => {
     const profileInfo = useSelector(state => state.profile.profileInfo);
     const [image, setImage] = useState('');
     const [isGifVisible, setIsGifVisible] = useState(false);
+    const cryptoSearch = useSelector(state => state.stocks.stockSearch)
 
     const suggestions = useSelector(state => state.stocks.suggestions);
+    const cryptoSuggestions = useSelector(state => state.stocks.cryptoSuggestions);
     const [val, setVal] = useState('');
     const dispatch = useDispatch();
 
     navigation.setOptions({
-        headerLeft: () => <MaterialIcons name='arrow-back' style={{marginLeft: 10}} size={24} onPress={() => {
+        headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
             navigation.goBack();
-        }}/>,
+        }} />,
     })
 
-    useEffect(() => {
+    useEffect(async () => {
         var n = message.split(' ');
         let ms = n[n.length - 1];
         if (ms.length > 1 && ms[0] === '$') {
-            dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
+            await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
+            await dispatch(getCryptoSuggestionsThunk(ms.substring(1, ms.length).toLowerCase(), cryptoSearch))
+            let result = cryptoSuggestions.concat(suggestions?.symbols);
+            console.log("CRYPTO", result)
             onPressTouch();
         }
-        else dispatch(setSuggestionEmptyThunk());
+        else {
+            dispatch(setSuggestionEmptyThunk());
+            dispatch({ type: CRYPTO_SUGGESTIONS, payload: [] })
+        }
     }, [message]);
 
     useEffect(() => {
@@ -82,7 +92,7 @@ export default PostCreate = ({ navigation, route }) => {
         const token = await AsyncStorage.getItem('@authTokenTwitter')
         const secret = await AsyncStorage.getItem('@authTokenSecretTwitter')
         console.log("TOKEN", token, secret)
-        if(!!token && !!secret){
+        if (!!token && !!secret) {
             setTwitter(!twitter);
         } else {
             <TwitterButton />
@@ -127,19 +137,19 @@ export default PostCreate = ({ navigation, route }) => {
                         var str = message;
                         var lastIndex = str.lastIndexOf(" ");
                         str = str.substring(0, lastIndex);
-                        setMessage(str + " $" + item.symbol)
+                        setMessage(str + " $" + item?.symbol)
                     }}
                     style={{ marginLeft: 10, marginRight: 10, width: '100%' }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View>
                             <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>
-                                {item.symbol}
+                                {item?.symbol}
                             </Text>
                             <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>
-                                {item.symbol_info}
+                                {item?.symbol_info || item?.slug}
                             </Text>
                         </View>
-                        {/* <Text>{item.}</Text> */}
+                        {/* <Text>{item?.}</Text> */}
                     </View>
                 </TouchableOpacity>
             </View>
@@ -148,10 +158,10 @@ export default PostCreate = ({ navigation, route }) => {
 
     return (
         <>
-        <ProgressDialog
-        loaderColor={"#4955BB"}
-        label={"Posting"}
-        visible={isPosting}/>
+            <ProgressDialog
+                loaderColor={"#4955BB"}
+                label={"Posting"}
+                visible={isPosting} />
             <ScrollView
                 ref={scrollRef}
                 contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}
@@ -220,8 +230,8 @@ export default PostCreate = ({ navigation, route }) => {
                     <FlatList
                         keyboardShouldPersistTaps="always"
                         style={{}}
-                        data={suggestions?.symbols}
-                        keyExtractor={item => item.symbol}
+                        data={cryptoSuggestions.concat(suggestions?.symbols)}
+                        keyExtractor={item => item?.id}
                         renderItem={renderItem}
                     />
                     <View style={styles.bottom_container}>
@@ -285,11 +295,13 @@ export default PostCreate = ({ navigation, route }) => {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={async () => {
-                                if(!route?.params?.groupPost){
+                                if (!route?.params?.groupPost) {
                                     const userid = profileInfo?._id?.$oid;
                                     setIsPosting(true);
                                     await uploadPost(userid, message, image, bulish, bearish, twitter);
-                                    await dispatch(getStockFeedThunk(route.params?.prefill))
+                                    if (route?.params?.prefill) {
+                                        await dispatch(getStockFeedThunk(route.params?.prefill))
+                                    }
                                     setIsPosting(false);
                                     navigation.goBack();
                                 } else {
@@ -298,7 +310,7 @@ export default PostCreate = ({ navigation, route }) => {
                                     await dispatch(getRoomPostsThunk(route?.params?.groupId))
                                     navigation.goBack();
                                 }
-                                
+
                             }}>
                             <View style={styles.button}>
                                 <Ionicons
@@ -321,7 +333,7 @@ export default PostCreate = ({ navigation, route }) => {
                                         setIsGifVisible(false);
                                     }}
                                 >
-                                    <MaterialIcons name='close' color="#fff" style={{marginTop: 10, marginLeft: 10}} size={36} />
+                                    <MaterialIcons name='close' color="#fff" style={{ marginTop: 10, marginLeft: 10 }} size={36} />
                                 </TouchableOpacity>
                             </View>
                             <GifSearch

@@ -28,7 +28,7 @@ const RankingItem = () => {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.identifier}
+        keyExtractor={item => item?.identifier}
       />
     </SafeAreaView>
   );

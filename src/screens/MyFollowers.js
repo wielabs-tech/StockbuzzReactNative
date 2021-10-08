@@ -75,7 +75,7 @@ const FollowersRoute = ({route}) => {
     return (
         <FlatList
             data={followers}
-            keyExtractor={item => item.$oid}
+            keyExtractor={item => item?.$oid}
             renderItem={renderItem}
         />
     );

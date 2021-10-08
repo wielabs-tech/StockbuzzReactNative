@@ -13,7 +13,7 @@ import { Dimensions } from 'react-native';
 import WatchlistHome from '../components/WatchlistHome';
 import { useNavigation } from '@react-navigation/native';
 import { getDiscoverRoomsThunk, getMyRoomsThunk } from '../redux/rooms/rooms.actions';
-import { getCryptoThunk } from '../redux/stocks/stocks.actions';
+import { getCryptoSearchThunk, getCryptoThunk } from '../redux/stocks/stocks.actions';
 const { width, height } = Dimensions.get("window");
 
 const DATA = [
@@ -39,16 +39,17 @@ export default HomeScreen = ({ params }) => {
   const profile = useSelector(state => state.auth.profileInfo);
   const myRooms = useSelector(state => state.rooms.myRooms)
   const discoverRooms = useSelector(state => state.rooms.discoverRooms)
-  const cryptos = useSelector(state => state.stocks.cryptos);
+  const cryptos = useSelector(state => state.stocks.stockSearch);
 
   useEffect(async () => {
     await dispatch(getDiscoverRoomsThunk(profile?._id?.$oid))
+    await dispatch(getCryptoSearchThunk());
     // dispatch(getMyRoomsThunk(profile?._id?.$oid))
     await dispatch(getCryptoThunk());
   }, [])
 
   const renderItem = ({ item }) => {
-    const isParticipant = myRooms?.find(element => element?._id?.$oid == item._id?.$oid)
+    const isParticipant = myRooms?.find(element => element?._id?.$oid == item?._id?.$oid)
     if (!isParticipant) {
       return (
         <GroupItem
@@ -60,12 +61,12 @@ export default HomeScreen = ({ params }) => {
   };
 
   const renderItemMyRooms = ({ item }) => {
-      return (
-        <GroupItem
-          item={item}
-          isParticipant={true}
-        />
-      );
+    return (
+      <GroupItem
+        item={item}
+        isParticipant={true}
+      />
+    );
   };
 
   const [index, setIndex] = React.useState(0);
@@ -155,7 +156,7 @@ export default HomeScreen = ({ params }) => {
             horizontal={true}
             data={discoverRooms}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item?.id}
             extraData={selectedId}
           />
         </View>
@@ -167,7 +168,7 @@ export default HomeScreen = ({ params }) => {
             horizontal={true}
             data={myRooms}
             renderItem={renderItemMyRooms}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item?.id}
             extraData={selectedId}
           />
         </View>

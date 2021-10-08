@@ -1,5 +1,6 @@
+import { useSelector } from "react-redux";
 import { stocksAPI } from "../../api/ajax";
-import { CRYPTO_SEARCH, GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
+import { CRYPTO_SEARCH, CRYPTO_SUGGESTIONS, GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
 
 export const getTrendingStocksThunk = () => async dispatch => {
     const response = await stocksAPI.trendingStocks();
@@ -33,7 +34,7 @@ export const getCryptoInfoThunk = (symbol) => async dispatch => {
     const response = await stocksAPI.getCryptoInfo(symbol);
     dispatch({
         type: GET_STOCK_INFO,
-        payload: response.data.data,
+        payload: response.data,
         symbol: symbol
     })
 }
@@ -46,22 +47,12 @@ export const getStockFeedThunk = (symbol) => async dispatch => {
     })
 }
 
-export const getCryptoSearchThunk = startText => async dispatch => {
-    let res = await fetch(
-        'https://api.polygon.io/v3/reference/tickers?search=bitcoin&active=true&sort=ticker&order=asc&limit=10&apiKey=mvQ9_ynKhaNM_9eEVbjPrpwxDH9AIhpm',
-        {
-            method: 'get',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        }
-    );
-    let responseJson = await res.json();
-    console.log("RESPONSE", responseJson)
-    // dispatch({
-    //     type: CRYPTO_SEARCH,
-    //     payload: response.data
-    // })
+export const getCryptoSearchThunk  = () => async dispatch => {
+    let responseJson = await stocksAPI.getCryptos();
+    dispatch({
+        type: CRYPTO_SEARCH,
+        payload: responseJson.data?.data
+    })
 }
 
 export const getSuggestionsThunk = (startText) => async dispatch => {
@@ -69,6 +60,17 @@ export const getSuggestionsThunk = (startText) => async dispatch => {
     dispatch({
         type: GET_SUGGESTIONS,
         payload: response.data
+    })
+}
+
+export const getCryptoSuggestionsThunk = (startText, cryptos) => async dispatch => {
+
+    dispatch({
+        type: CRYPTO_SUGGESTIONS,
+        payload: cryptos.filter((country) => country.slug.startsWith(startText)).map(e => {
+            const {symbol, slug, name} = e;
+            return {symbol, slug, name};
+          })
     })
 }
 
@@ -81,10 +83,5 @@ export const setSuggestionEmptyThunk = (startText) => async dispatch => {
 }
 
 export const getCryptoThunk = () => async dispatch => {
-    const response = await stocksAPI.getCryptos();
-    console.log("RESPONSECRYPTO", response)
-    dispatch({
-        type: GET_CRYPTO,
-        payload: response.data.data
-    })
+
 }

@@ -17,13 +17,14 @@ export const Watchers = ({navigation, route}) => {
     const dispatch = useDispatch();
     useEffect(() => {
         if(route.id){
-            dispatch(getWatchlistDataThunk(route.id))
+            dispatch(getWatchlistDataThunk(route.id)) 
         } else {
             dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid))
         }
     }, []);
 
     const renderItem = ({ item }) => (
+        !!item &&  
         <Item item={item} />
     );
 
@@ -32,7 +33,7 @@ export const Watchers = ({navigation, route}) => {
             <FlatList
                 data={route.id ? userWatchlist : data}
                 renderItem={renderItem}
-                keyExtractor={item => item.identifier}
+                keyExtractor={item => item?.identifier}
             />
         </SafeAreaView>
     );

@@ -64,10 +64,10 @@ export default Notifications = ({ navigation }) => {
         )
       }}
       keyExtractor={(item)=>{
-        return item.id;
+        return item?.id;
       }}
       renderItem={(item) => {
-        const Notification = item.item;
+        const Notification = item?.item;
         let attachment = <View/>;
         console.log("ITEM", API_URL + Notification.user.photo)
 

@@ -25,11 +25,11 @@ export const BuzzingItem = ({ item }) => {
             <View style={styles.box}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                        <Text>{item.symbol}</Text>
+                        <Text>{item?.symbol}</Text>
                         <Text style={{ fontSize: 8 }}></Text>
                     </View>
                     {
-                        item.change > 0 ? (
+                        item?.change > 0 ? (
                             <MaterialIcons name='north' color="green" size={20} />
                         ) : (
                             <MaterialIcons name='south' color="red" size={20} />
@@ -39,16 +39,16 @@ export const BuzzingItem = ({ item }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ fontSize: 12, alignSelf: 'flex-end' }}>₹</Text>
-                        <Text style={{ fontSize: 12, alignSelf: 'flex-end' }}>{roundOff(item.lastPrice, 2)}</Text>
+                        <Text style={{ fontSize: 12, alignSelf: 'flex-end' }}>{roundOff(item?.lastPrice, 2)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        {item.change > 0 ?
+                        {item?.change > 0 ?
                             <Text style={{ fontSize: 10, alignSelf: 'flex-end', color: 'green' }}>+</Text> : <></>
                         }
                         <Text style={{
-                            color: item.change > 0 ? "green" : "red",
+                            color: item?.change > 0 ? "green" : "red",
                             fontSize: 10, alignSelf: 'flex-end'
-                        }}>{roundOff(item.change, 2)}({roundOff(item.pChange, 2)}%)</Text>
+                        }}>{roundOff(item?.change, 2)}({roundOff(item?.pChange, 2)}%)</Text>
                     </View>
                 </View>
             </View>

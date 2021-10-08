@@ -39,17 +39,17 @@ export default StockScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   useEffect(async () => {
     if (isCrypto) {
-      dispatch(getCryptoInfoThunk(item.symbol));
+      dispatch(getCryptoInfoThunk(item?.symbol));
       console.log("STOCKINFO1", stockInfo?.market_data?.price_usd)
     } else {
       await dispatch(getProfileInfoThunk(profileInfo?._id.$oid));
-      const response = await stocksAPI.getStockInfo(item.symbol);
+      const response = await stocksAPI.getStockInfo(item?.symbol);
       setStockInfo(response.data);
       console.log("THIS IS STOCK INFO", JSON.stringify(stockInfo))
-      // await dispatch(getStockInfoThunk(item.symbol));
-      const response1 = await stocksAPI.getStockPosts(item.symbol);
+      // await dispatch(getStockInfoThunk(item?.symbol));
+      const response1 = await stocksAPI.getStockPosts(item?.symbol);
       setStockFeed(response1.data);
-      // await dispatch(getStockFeedThunk(item.symbol));
+      // await dispatch(getStockFeedThunk(item?.symbol));
       setIsLoadingProgress(false)
     }
     // loadStock();
@@ -59,7 +59,7 @@ export default StockScreen = ({ route, navigation }) => {
 
   useEffect(async () => {
     // setIsLoadingProgress(true);
-    const response1 = await stocksAPI.getStockPosts(item.symbol);
+    const response1 = await stocksAPI.getStockPosts(item?.symbol);
     setStockFeed(response1.data);
     // setIsLoadingProgress(false);
   }, [isFocused]);
@@ -70,7 +70,7 @@ export default StockScreen = ({ route, navigation }) => {
   // }, [stockInfostate, stockFeedstate])
 
   // const loadStock = async () => {
-  //   const r = await stocksAPI.getStockPosts(item.symbol);
+  //   const r = await stocksAPI.getStockPosts(item?.symbol);
   //   setResponse(r.data);
   // }
 
@@ -81,15 +81,15 @@ export default StockScreen = ({ route, navigation }) => {
 
   async function updateWatchLIst() {
     setWatchlistLoading(true);
-    await dispatch(updateWatchlistThunk(profileInfo?._id.$oid, item.symbol));
-    const response = await stocksAPI.getStockInfo(item.symbol);
+    await dispatch(updateWatchlistThunk(profileInfo?._id.$oid, item?.symbol));
+    const response = await stocksAPI.getStockInfo(item?.symbol);
     setStockInfo(response.data)
-    // await dispatch(getStockInfoThunk(item.symbol))
+    // await dispatch(getStockInfoThunk(item?.symbol))
     setWatchlistLoading(false);
   }
 
   navigation.setOptions({
-    headerTitle: () => <Text style={styles.title}>{item.symbol}</Text>,
+    headerTitle: () => <Text style={styles.title}>{item?.symbol}</Text>,
     headerLeft: () =>
       <Icon
         onPress={() => {
@@ -131,12 +131,12 @@ export default StockScreen = ({ route, navigation }) => {
     setRefreshing(true);
     console.log("WATTCCHH", watchlistLoading)
     dispatch(getProfileInfoThunk(profileInfo?._id.$oid));
-    // dispatch(getStockInfoThunk(item.symbol))
-    // dispatch(getStockFeedThunk(item.symbol));
-    const response = await stocksAPI.getStockInfo(item.symbol);
+    // dispatch(getStockInfoThunk(item?.symbol))
+    // dispatch(getStockFeedThunk(item?.symbol));
+    const response = await stocksAPI.getStockInfo(item?.symbol);
     setStockInfo(response.data);
-    // await dispatch(getStockInfoThunk(item.symbol));
-    const response1 = await stocksAPI.getStockPosts(item.symbol);
+    // await dispatch(getStockInfoThunk(item?.symbol));
+    const response1 = await stocksAPI.getStockPosts(item?.symbol);
     setStockFeed(response1.data);
     setRefreshing(false);
   }
@@ -160,7 +160,7 @@ export default StockScreen = ({ route, navigation }) => {
             >
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 10 }}>
                 <View>
-                  <Text style={{ fontSize: 16, fontFamily: 'Inter-Regular', fontWeight: '400' }}>{item.symbol}</Text>
+                  <Text style={{ fontSize: 16, fontFamily: 'Inter-Regular', fontWeight: '400' }}>{item?.symbol}</Text>
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                     {stockInfo?.market_data?.price_usd &&
                       <Text style={{ color: "#4955BB", fontWeight: '400', fontFamily: 'SecularOne-Regular', fontSize: 20 }}>${roundOff(stockInfo?.market_data?.price_usd, 2)}</Text>
@@ -177,7 +177,7 @@ export default StockScreen = ({ route, navigation }) => {
                 {
                   !watchlistLoading ? (
                     <View style={{}}>
-                      {profileInfo?.watchlist.find(element => element == item.symbol) ? (
+                      {profileInfo?.watchlist.find(element => element == item?.symbol) ? (
                         <TouchableOpacity
                           style={styles.watchButtonStyle}
                           onPress={() => updateWatchLIst()}
@@ -275,7 +275,7 @@ export default StockScreen = ({ route, navigation }) => {
         <TouchableOpacity style={{ elevation: 10, position: 'absolute', bottom: 50, right: 20, height: 65, width: 65, backgroundColor: "#fff", borderRadius: 100, justifyContent: 'center' }}
           onPress={() => {
             console.log("PRESSED", stockInfo?.symbol)
-            navigation.push('createPost', { groupPost: false, prefill: item.symbol })
+            navigation.push('createPost', { groupPost: false, prefill: item?.symbol })
           }}
         >
           <LinearGradient
@@ -315,7 +315,7 @@ export default StockScreen = ({ route, navigation }) => {
               >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 10 }}>
                   <View>
-                    <Text style={{ fontSize: 16, fontFamily: 'Inter-Regular', fontWeight: '400' }}>{item.symbol}</Text>
+                    <Text style={{ fontSize: 16, fontFamily: 'Inter-Regular', fontWeight: '400' }}>{item?.symbol}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                       {stockInfo?.priceInfo?.lastPrice ? (
                         <Text style={{ color: "#4955BB", fontWeight: '400', fontFamily: 'SecularOne-Regular', fontSize: 20 }}>₹{stockInfo?.priceInfo?.lastPrice}</Text>
@@ -333,7 +333,7 @@ export default StockScreen = ({ route, navigation }) => {
                   {
                     !watchlistLoading ? (
                       <View style={{}}>
-                        {profileInfo?.watchlist.find(element => element == item.symbol) ? (
+                        {profileInfo?.watchlist.find(element => element == item?.symbol) ? (
                           <TouchableOpacity
                             style={styles.watchButtonStyle}
                             onPress={() => updateWatchLIst()}
@@ -454,7 +454,7 @@ export default StockScreen = ({ route, navigation }) => {
           }}
             onPress={() => {
               console.log("PRESSED", stockInfo?.symbol)
-              navigation.push('createPost', { groupPost: false, prefill: item.symbol })
+              navigation.push('createPost', { groupPost: false, prefill: item?.symbol })
             }}
           >
             <LinearGradient

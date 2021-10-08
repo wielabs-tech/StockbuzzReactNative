@@ -19,10 +19,10 @@ const SearchStocks = () => {
             }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                        <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>{item.symbol}</Text>
-                        <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>{item.symbol_info || item.name}</Text>
+                        <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>{item?.symbol}</Text>
+                        <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>{item?.symbol_info || item?.name}</Text>
                     </View>
-                    {/* <Text>{item.}</Text> */}
+                    {/* <Text>{item?.}</Text> */}
                 </View>
             </TouchableOpacity>
         )
@@ -30,9 +30,11 @@ const SearchStocks = () => {
 
     return (
         <FlatList
+            style={{height: '100%'}}
+            scrollEnabled={true}
             data={suggestions?.symbols}
             renderItem={renderItem}
-            keyExtractor={item => item.symbol}
+            keyExtractor={item => item?.symbol}
         />
     )
 }

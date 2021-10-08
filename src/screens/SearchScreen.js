@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet, View, FlatList, TouchableOpacity, Image, StatusBar, useWindowDimensions, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, View, FlatList, TouchableOpacity, Image, StatusBar, useWindowDimensions, SafeAreaView, ScrollView } from 'react-native';
 import { Input } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Dimensions } from 'react-native';
 import colors from '../styles/colors';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCryptoSearchThunk, getSuggestionsThunk, setSuggestionEmptyThunk } from '../redux/stocks/stocks.actions';
+import { getCryptoSearchThunk, getCryptoSuggestionsThunk, getSuggestionsThunk, setSuggestionEmptyThunk } from '../redux/stocks/stocks.actions';
 import SearchStocks from './SearchStocks';
 import SearchUsers from './SearchUsers';
 import SearchCrypto from './SearchCrypto';
+import { CRYPTO_SUGGESTIONS } from '../redux/stocks/stocks.types';
 const { width, height } = Dimensions.get("window");
 
 export default SearchScreen = ({ navigation }) => {
@@ -32,15 +33,14 @@ export default SearchScreen = ({ navigation }) => {
             const newData = cryptos.filter(
                 function (item) {
                     // Applying filter for the inserted text in search bar
-                    const itemData = item.name
-                        ? item.name.toUpperCase()
+                    const itemData = item?.name
+                        ? item?.name.toUpperCase()
                         : ''.toUpperCase();
                     const textData = text.toUpperCase();
                     return itemData.indexOf(textData) > -1;
                 }
             );
             setFilteredDataSource(newData);
-            //   setData([...filterDataSource, ...suggestions.symbol])
             setSearch(text);
         } else {
             // Inserted text is blank
@@ -51,10 +51,14 @@ export default SearchScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        if (val.length > 0)
+        if (val.length > 0){
             dispatch(getSuggestionsThunk(val.toLowerCase()));
-        else
+            dispatch(getCryptoSuggestionsThunk(val.toLowerCase(), cryptoSearch))
+        }
+        else{
+            dispatch({type: CRYPTO_SUGGESTIONS, payload: []})
             dispatch(setSuggestionEmptyThunk());
+        }
     }, [val]);
 
     const goBack = () => {
@@ -113,10 +117,10 @@ export default SearchScreen = ({ navigation }) => {
             }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                        <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>{item.symbol}</Text>
-                        <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>{item.symbol_info || item.name}</Text>
+                        <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>{item?.symbol}</Text>
+                        <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>{item?.symbol_info || item?.name}</Text>
                     </View>
-                    {/* <Text>{item.}</Text> */}
+                    {/* <Text>{item?.}</Text> */}
                 </View>
             </TouchableOpacity>
         )
@@ -133,7 +137,7 @@ export default SearchScreen = ({ navigation }) => {
                         <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>{item?._source?.fullName || item?._source?.full_name}</Text>
                         <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>@{item?._source?.username}</Text>
                     </View>
-                    {/* <Text>{item.}</Text> */}
+                    {/* <Text>{item?.}</Text> */}
                 </View>
             </TouchableOpacity>
         )
@@ -177,7 +181,6 @@ export default SearchScreen = ({ navigation }) => {
                         initialLayout={{ width: layout.width }}
                         indicatorStyle={{ backgroundColor: "#fff" }}
                     />
-
                 </View>
             </View>
         </SafeAreaView>

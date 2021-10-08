@@ -41,7 +41,7 @@ function WatchlistHome({}) {
             onRefresh={() => { refresh() }}
             numColumns={2}
             data={watchlistData?.data}
-            keyExtractor={(item) => item.identifier}
+            keyExtractor={(item) => item?.identifier}
             renderItem={({item}) => {
                 return (
                   <BuzzingItem

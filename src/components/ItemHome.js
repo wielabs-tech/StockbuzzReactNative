@@ -44,7 +44,7 @@ function ItemHome({}) {
             onRefresh={() => { refresh() }}
             numColumns={2}
             data={s}
-            keyExtractor={(item) => item.identifier}
+            keyExtractor={(item) => item?.identifier}
             renderItem={({item}) => {
                 return (
                   <BuzzingItem

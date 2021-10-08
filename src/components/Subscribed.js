@@ -35,9 +35,9 @@ const Item = ({ item }) => {
             <View style={styles.item}>
                 <View style={styles.header}>
                     {
-                        item.image ? (
+                        item?.image ? (
                             <View>
-                                <Avatar url={API_URL + `/` + item.image} height={30} width={30} />
+                                <Avatar url={API_URL + `/` + item?.image} height={30} width={30} />
                             </View>
                         ) : (
                             <View style={{ width: 30, height: 30, borderRadius: 64, backgroundColor: '#aaa', justifyContent: 'center' }}>
@@ -99,7 +99,7 @@ function Subscribed() {
                 data={myRooms}
                 numColumns={2}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item?.id}
             />
         </View>
     )

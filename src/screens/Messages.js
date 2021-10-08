@@ -121,7 +121,7 @@ export default function ChatRoom({ navigation }) {
                         <View style={styles.header}>
                             {
                                 item?.createdBy === profile?.username ? (
-                                    <Text style={styles.nameText}>@{item.otherUser}</Text>
+                                    <Text style={styles.nameText}>@{item?.otherUser}</Text>
                                 ) : (
                                     <Text style={styles.nameText}>@{item?.createdBy}</Text>
                                 )
