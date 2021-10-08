@@ -51,6 +51,7 @@ const PostRoute = props => {
     setLocalLiked(item?.likes?.length)
   }, [])
   var UTCseconds = x.getTime() + 330 * 60 * 1000;
+  const cryptos = useSelector(state => state.stocks.cryptos);
 
   function msToTime(duration) {
     var milliseconds = parseInt((duration % 1000) / 100),
@@ -74,13 +75,22 @@ const PostRoute = props => {
     }
   }
 
-  const handleNamePress = (stockSymbol, matchIndex) => {
-    console.log("HELLO");
-    navigation.push('stockScreen', {
-      item: {
-        symbol: stockSymbol.substring(1)
-      },
-    });
+  const handleNamePress = async (stockSymbol, matchIndex) => {
+    console.log("STOCKSYMBOL", stockSymbol)
+    const result = await cryptos.filter(e => e.symbol === stockSymbol.substring(1));
+    if (result?.length > 0) {
+      navigation.push('cryptoScreen', {
+        item: {
+          symbol: stockSymbol.substring(1)
+        },
+      });
+    } else {
+      navigation.push('stockScreen', {
+        item: {
+          symbol: stockSymbol.substring(1)
+        },
+      });
+    }
   }
 
   const renderText = (matchingString, matches) => {
