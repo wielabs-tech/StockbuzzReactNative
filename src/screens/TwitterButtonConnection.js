@@ -40,7 +40,6 @@ async function onTwitterButtonPress(id, display_name, bio) {
             AsyncStorage.setItem('@authTokenTwitter', authToken);
             AsyncStorage.setItem('@authTokenSecretTwitter', authTokenSecret);
             const res = await profileAPI.connectToTwitter(id, display_name, bio, true, authToken, authTokenSecret)
-            console.log("RESS", res.data)
             store.dispatch(getProfileInfoThunk(id));
             // Sign-in the user with the credential
             // const res = await auth().signInWithCredential(twitterCredential);

@@ -61,7 +61,7 @@ export default EditWatchList = ({ navigation }) => {
     }
 
     const renderItem = ({ item }) => {
-        console.log(isInWatchlist(item))
+        if(item?.symbol)
         return (
             <Item item={item} isInWatchlist={isInWatchlist(item)} />
         )

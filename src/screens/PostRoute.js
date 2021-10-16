@@ -51,7 +51,7 @@ const PostRoute = props => {
     setLocalLiked(item?.likes?.length)
   }, [])
   var UTCseconds = x.getTime() + 330 * 60 * 1000;
-  const cryptos = useSelector(state => state.stocks.cryptos);
+  const cryptos = useSelector(state => state.stocks.stockSearch);
 
   function msToTime(duration) {
     var milliseconds = parseInt((duration % 1000) / 100),
@@ -92,6 +92,7 @@ const PostRoute = props => {
       });
     }
   }
+  
 
   const renderText = (matchingString, matches) => {
     // matches => ["[@michel:5455345]", "@michel", "5455345"]

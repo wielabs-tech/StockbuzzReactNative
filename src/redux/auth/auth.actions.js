@@ -37,7 +37,6 @@ export const postLoginThunk = (
             password,
             token
         );
-        console.log("RESS", response)
         setAsyncStorageToken(response?.data?.access_token, response?.data?.refresh_token)
         if (response?.status == 200) {
             await dispatch(getProfileInfoThunk(response?.data?._id.$oid));

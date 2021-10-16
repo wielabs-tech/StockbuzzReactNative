@@ -1,4 +1,4 @@
-import { CRYPTO_SEARCH, CRYPTO_SUGGESTIONS, GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
+import { CRYPTO_SEARCH, CRYPTO_SUGGESTIONS, GET_CRYPTO, GET_CRYPTO_WATCHLIST, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
 
 const INITIAL_STATE = {
    topTrendingStocks: null,
@@ -8,7 +8,8 @@ const INITIAL_STATE = {
    stockFeed: null,
    stockSearch: null,
    cryptos: null,
-   cryptoSuggestions: []
+   cryptoSuggestions: [],
+   cryptoWatchlist: []
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -59,6 +60,12 @@ const reducer = (state = INITIAL_STATE, action) => {
          return{
             ...state,
             cryptoSuggestions: action.payload
+         }
+
+      case GET_CRYPTO_WATCHLIST:
+         return{
+            ...state,
+            cryptoWatchlist: action.payload
          }
 
       default:

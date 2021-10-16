@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { stocksAPI } from "../../api/ajax";
-import { CRYPTO_SEARCH, CRYPTO_SUGGESTIONS, GET_CRYPTO, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
+import { CRYPTO_SEARCH, CRYPTO_SUGGESTIONS, GET_CRYPTO, GET_CRYPTO_WATCHLIST, GET_STOCK_FEED, GET_STOCK_INFO, GET_SUGGESTIONS, GET_TOP_TRENDING_STOCKS, GET_WATCHLIST_DATA } from "./stocks.types";
 
 export const getTrendingStocksThunk = () => async dispatch => {
     const response = await stocksAPI.trendingStocks();
@@ -13,7 +13,6 @@ export const getTrendingStocksThunk = () => async dispatch => {
 export const getMyWatchlistDataThunk = (id) => async dispatch => {
     if (!!id) {
         const response = await stocksAPI.getWatchlistData(id);
-        console.log("RESS", response)
         dispatch({
             type: GET_WATCHLIST_DATA,
             payload: response
@@ -35,6 +34,16 @@ export const getCryptoInfoThunk = (symbol) => async dispatch => {
     dispatch({
         type: GET_STOCK_INFO,
         payload: response.data,
+        symbol: symbol
+    })
+}
+
+export const getCryptoWatchlisthunk = (symbol) => async dispatch => {
+    const response = await stocksAPI.getCryptoInfo(symbol);
+    console.log("CRYPTOWATCHLIST", response.data.data)
+    dispatch({
+        type: GET_CRYPTO_WATCHLIST,
+        payload: response.data.data,
         symbol: symbol
     })
 }

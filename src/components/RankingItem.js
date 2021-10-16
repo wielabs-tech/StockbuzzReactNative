@@ -19,9 +19,12 @@ const RankingItem = () => {
     dispatch(getTrendingStocksThunk())
   }, []);
 
-  const renderItem = ({ item }) => (
-    <Item item={item} />
-  );
+  const renderItem = ({ item }) => {
+    console.log("ITEMSS", item.symbol)
+    if(item.symbol){
+      return (<Item item={item} />)
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>

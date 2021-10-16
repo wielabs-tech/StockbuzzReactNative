@@ -130,13 +130,13 @@ export default StockScreen = ({ route, navigation }) => {
                                 <Text style={{ fontSize: 16, fontFamily: 'Inter-Regular', fontWeight: '400' }}>{item?.symbol}</Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                                     {stockInfo?.quote?.USD?.price &&
-                                        <Text style={{ color: "#4955BB", fontWeight: '400', fontFamily: 'SecularOne-Regular', fontSize: 20 }}>${roundOff(stockInfo?.quote?.USD?.price, 2)}</Text>
+                                        <Text style={{ color: "#4955BB", fontWeight: '400', fontFamily: 'SecularOne-Regular', fontSize: 20 }}>${roundOff(stockInfo?.quote?.USD?.price, 4)}</Text>
                                     }
                                     {stockInfo?.quote?.USD?.percent_change_1h && stockInfo?.quote?.USD?.percent_change_1h > 0 ?
                                         <Text style={{ marginLeft: 8, fontSize: 10, alignSelf: 'flex-end', color: 'green', alignSelf: 'center' }}>+</Text> : <><Text style={{ marginLeft: 8 }}></Text></>
                                     }
                                     {stockInfo?.quote?.USD?.percent_change_1h &&
-                                        <Text style={{ fontSize: 12, color: stockInfo?.quote?.USD?.percent_change_1h > 0 ? "green" : "red", }}>{roundOff(stockInfo?.quote?.USD?.percent_change_1h * stockInfo?.quote?.USD?.price / 100, 2)}({roundOff(stockInfo?.quote?.USD?.percent_change_1h, 2)}%)</Text>
+                                        <Text style={{ fontSize: 12, color: stockInfo?.quote?.USD?.percent_change_1h > 0 ? "green" : "red", }}>{roundOff(stockInfo?.quote?.USD?.percent_change_1h * stockInfo?.quote?.USD?.price / 100, 4)}({roundOff(stockInfo?.quote?.USD?.percent_change_1h, 2)}%)</Text>
                                     }
                                 </View>
                                 <Text style={{ color: '#aaa', fontSize: 12 }}>Last Updated - {moment(stockInfo?.metadata?.lastUpdateTime).format('DD MMM, YYYY h:mm a')}</Text>
