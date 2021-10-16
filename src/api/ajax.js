@@ -152,6 +152,10 @@ export const profileAPI = {
     return API.get(`user/id/` + id);
   },
 
+  getProfileInfoByUsername(username) {
+    return API.get(`user/username/` + username)
+  },
+
   clearWatchlist(id) {
     const formdata = new FormData();
     formdata.append("user_id", id);

@@ -66,6 +66,7 @@ export const getCryptoSearchThunk  = () => async dispatch => {
 
 export const getSuggestionsThunk = (startText) => async dispatch => {
     const response = await stocksAPI.getSuggestions(startText);
+    console.log("RESS", response)
     dispatch({
         type: GET_SUGGESTIONS,
         payload: response.data

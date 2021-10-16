@@ -68,6 +68,9 @@ export default PostCreate = ({ navigation, route }) => {
             let result = cryptoSuggestions.concat(suggestions?.symbols);
             console.log("CRYPTO", result)
             onPressTouch();
+        } else if (ms.length > 1 && ms[0] === '@') {
+            await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
+            onPressTouch();
         }
         else {
             dispatch(setSuggestionEmptyThunk());
@@ -130,30 +133,58 @@ export default PostCreate = ({ navigation, route }) => {
     }
 
     const renderItem = ({ item }) => {
-        return (
-            <View style={{ width: '100%', backgroundColor: '#fff' }}>
-                <TouchableOpacity
-                    onPress={() => {
-                        var str = message;
-                        var lastIndex = str.lastIndexOf(" ");
-                        str = str.substring(0, lastIndex);
-                        setMessage(str + " $" + item?.symbol)
-                    }}
-                    style={{ marginLeft: 10, marginRight: 10, width: '100%' }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View>
-                            <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>
-                                {item?.symbol}
-                            </Text>
-                            <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>
-                                {item?.symbol_info || item?.slug}
-                            </Text>
+        console.log("ITEM1", item)
+        if (item?.full_name) {
+            return (
+                <View style={{ width: '100%', backgroundColor: '#fff' }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            var str = message;
+                            var lastIndex = str.lastIndexOf(" ");
+                            str = str.substring(0, lastIndex);
+                            setMessage(str + " @" + item?.username)
+                        }}
+                        style={{ marginLeft: 10, marginRight: 10, width: '100%' }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View>
+                                <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>
+                                    @{item?.username}
+                                </Text>
+                                <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>
+                                    {item?.full_name}
+                                </Text>
+                            </View>
+                            {/* <Text>{item?.}</Text> */}
                         </View>
-                        {/* <Text>{item?.}</Text> */}
-                    </View>
-                </TouchableOpacity>
-            </View>
-        );
+                    </TouchableOpacity>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{ width: '100%', backgroundColor: '#fff' }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            var str = message;
+                            var lastIndex = str.lastIndexOf(" ");
+                            str = str.substring(0, lastIndex);
+                            setMessage(str + " $" + item?.symbol)
+                        }}
+                        style={{ marginLeft: 10, marginRight: 10, width: '100%' }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View>
+                                <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 10 }}>
+                                    {item?.symbol}
+                                </Text>
+                                <Text style={{ marginBottom: 10, marginLeft: 10, fontSize: 10 }}>
+                                    {item?.symbol_info || item?.slug}
+                                </Text>
+                            </View>
+                            {/* <Text>{item?.}</Text> */}
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
     };
 
     return (
@@ -218,6 +249,7 @@ export default PostCreate = ({ navigation, route }) => {
                                 parse={
                                     [
                                         { pattern: /\$(\w+)/, style: styles.hashTag },
+                                        { pattern: /\@(\w+)/, style: styles.hashTag }
                                     ]
                                 }
                                 childrenProps={{ allowFontScaling: false }}
@@ -230,7 +262,7 @@ export default PostCreate = ({ navigation, route }) => {
                     <FlatList
                         keyboardShouldPersistTaps="always"
                         style={{}}
-                        data={cryptoSuggestions.concat(suggestions?.symbols)}
+                        data={cryptoSuggestions.concat(suggestions?.symbols).concat(suggestions?.users)}
                         keyExtractor={item => item?.id}
                         renderItem={renderItem}
                     />

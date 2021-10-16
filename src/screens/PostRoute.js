@@ -51,7 +51,7 @@ const PostRoute = props => {
     setLocalLiked(item?.likes?.length)
   }, [])
   var UTCseconds = x.getTime() + 330 * 60 * 1000;
-  const cryptos = useSelector(state => state.stocks.stockSearch);
+  const cryptos = useSelector(state => state.stocks.cryptos);
 
   function msToTime(duration) {
     var milliseconds = parseInt((duration % 1000) / 100),
@@ -92,7 +92,13 @@ const PostRoute = props => {
       });
     }
   }
-  
+
+  const handleUsernamePress = async (username) => {
+    console.log("USERNAME", username.substring(1))
+    const res = await profileAPI.getProfileInfoByUsername(username.substring(1));
+    console.log("USER1", res?.data?._id?.$oid)
+    navigation.navigate('UserProfile', { userId: res?.data?._id?.$oid })
+  }
 
   const renderText = (matchingString, matches) => {
     // matches => ["[@michel:5455345]", "@michel", "5455345"]
@@ -200,6 +206,7 @@ const PostRoute = props => {
             parse={
               [
                 { pattern: /\$(\w+)/, style: styles.hashTag, onPress: handleNamePress },
+                { pattern: /\@(\w+)/, style: styles.hashTag, onPress: handleUsernamePress },
               ]
             }
             childrenProps={{ allowFontScaling: false }}
