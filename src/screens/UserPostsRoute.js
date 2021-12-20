@@ -35,7 +35,6 @@ export const UserPostsRoute = ({route}) => {
             style={{ flex: 1 }}
             refreshing={isRefreshing}
             onRefresh={() => {
-                console.log("REFRESHING")
                 refresh();
             }}
             nestedScrollEnabled

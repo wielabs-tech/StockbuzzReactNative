@@ -61,7 +61,6 @@ export const signUpThunk = (
     token
 ) => async dispatch => {
     try {
-        console.log("IMAGE", !!image)
         const response = await loginAPI.signup(
             email.toLowerCase(),
             password,
@@ -72,7 +71,6 @@ export const signUpThunk = (
             login_type,
             token
         );
-        console.log("RESPONSE", response);
         if (response?.data?.access_token) {
             setAsyncStorageToken(response?.data?.access_token, response?.data?.refresh_token)
             if (response?.status == 200 || response?.status == 201) {
@@ -99,7 +97,6 @@ export const signUpThunkSocial = (
     uid
 ) => async dispatch => {
     try {
-        console.log("IMAGE", image)
         const response = await loginAPI.signupsocial(
             email?.toLowerCase(),
             password,
@@ -110,7 +107,6 @@ export const signUpThunkSocial = (
             login_type,
             uid
         );
-        console.log("UUIIDD", uid);
         if (response?.data?.access_token) {
             setAsyncStorageToken(response?.data?.access_token, response?.data?.refresh_token)
             if (response?.status == 200 || response?.status == 201) {

@@ -25,6 +25,7 @@ import {
 import { createRoom } from '../api/ajax';
 import { useDispatch, useSelector } from 'react-redux';
 import { createRoomsThunk } from '../redux/rooms/rooms.actions';
+import FastImage from 'react-native-fast-image';
 
 export const CreateRoom = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -68,7 +69,7 @@ export const CreateRoom = ({ navigation }) => {
                     <View style={styles.avatar}>
                         <TouchableOpacity onPress={imgPic}>
                             {image ?
-                                <Image
+                                <FastImage
                                     style={{ height: 100, width: 100, borderRadius: 50 }}
                                     source={{
                                         uri: image.path

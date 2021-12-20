@@ -3,9 +3,9 @@ import { getMyWatchlistDataThunk } from "../stocks/stocks.actions";
 import { GET_USER } from "../user/user.types";
 import { GET_FOLLOWERS, GET_FOLLOWERS_MINE, GET_FOLLOWING, GET_FOLLOWING_MINE, GET_PROFILE_INFO, MY_POSTS, NOTIFICATION_DATA, WATCHLIST_LOADING } from "./profile.types";
 
-export const updateWatchlistThunk = (id, symbol) => async dispatch => {
+export const updateWatchlistThunk = (id, symbol, is_add) => async dispatch => {
     dispatch({type: WATCHLIST_LOADING, payload: true})
-    const response = await profileAPI.updateWatchlist(id, symbol);
+    const response = await profileAPI.updateWatchlist(id, symbol, is_add);
     console.log("ID", id, symbol)
     if(response?.status == 200){
         await dispatch(getProfileInfoThunk(id))
@@ -16,7 +16,6 @@ export const updateWatchlistThunk = (id, symbol) => async dispatch => {
 
 export const getProfileInfoThunk = (id) => async dispatch => {
     const response = await profileAPI.getProfileInfo(id);
-    console.log("RESPONSEPROFILE", response)
     dispatch({
         type: GET_PROFILE_INFO,
         payload: response.data
@@ -41,7 +40,6 @@ export const likePostThunk = (postid, userid) => async dispatch => {
 
 export const likeRoomPostThunk = (postid, userid) => async dispatch => {
     const response = await profileAPI.likePostRoom(postid, userid)
-    console.log("RESPONSE", response.data)
     // dispatch({
     //     type: GET_PROFILE_INFO,
     //     payload: response.data
@@ -98,7 +96,6 @@ export const getUserPostsThunk = (id) => async dispatch => {
 
 export const followUserThunk = (id, otherId) => async dispatch => {
     const response = await profileAPI.followUser(id, otherId);
-    console.log("RESPONSE", response.data)
     dispatch(getProfileInfoThunk(id)); 
     return response;
 }
@@ -107,7 +104,6 @@ export const updateProfileInfoThunk = (id, full_name, bio, photo) => async dispa
     const response = await profileAPI.updateUser(id, full_name, bio, photo);
     if(response?.status){
         console.log("SUCCESS", response.data)
-        dispatch(getProfileInfoThunk(id)); 
         dispatch(getMyPostsThunk(id)); 
     }
     return response;

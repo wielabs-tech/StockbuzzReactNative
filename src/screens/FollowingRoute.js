@@ -9,6 +9,7 @@ import { TouchableOpacity } from "react-native";
 import { followUserThunk, getMyFollowingThunk } from "../redux/profile/profile.actions";
 import { API_URL } from "../utils/config";
 import { useNavigation } from "@react-navigation/core";
+import FastImage from "react-native-fast-image";
 
 const FollowingRoute = ({ route }) => {
     console.log("ID", route)
@@ -33,7 +34,7 @@ const FollowingRoute = ({ route }) => {
                                     //     navigation.navigate('UserProfile', { userId: item?._id?.$oid })
                                 }}
                             >
-                                <Image
+                                <FastImage
                                     style={{ height: 56, width: 56, backgroundColor: '#000', borderRadius: 50 }}
                                     source={{
                                         uri: API_URL + `/` + item?.photo

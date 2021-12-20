@@ -9,7 +9,6 @@ import { getCryptoInfoThunk, getCryptoWatchlisthunk, getMyWatchlistDataThunk } f
 import { getWatchlistDataThunk } from '../redux/user/user.actions';
 
 export const Watchers = ({navigation, route}) => {
-    console.log("ROUTES", route.id)
     const profileInfo = useSelector(state => state.profile.profileInfo);
     const userWatchlist = useSelector(state => state.user.userWatchlist)
     const trendingStocks = useSelector(state => state.stocks.watchlistData);
@@ -32,7 +31,6 @@ export const Watchers = ({navigation, route}) => {
             array.push(watchlistCrypto[cryptoWatchlist[i]]);
         }
         setCoinsArray(array);
-        console.log("WATCHLIST", array);
     }, []);
 
     const renderItem = ({ item }) => {

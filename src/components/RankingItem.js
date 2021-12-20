@@ -20,7 +20,6 @@ const RankingItem = () => {
   }, []);
 
   const renderItem = ({ item }) => {
-    console.log("ITEMSS", item.symbol)
     if(item.symbol){
       return (<Item item={item} />)
     }

@@ -17,7 +17,6 @@ export const GroupItem = ({ item, onPress, backgroundColor, textColor, isPartici
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('groupPage', item);
-        console.log("ITEM", item);
       }}
       style={{ height: 125 }}>
       <LinearGradient

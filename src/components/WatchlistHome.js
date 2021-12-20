@@ -29,7 +29,6 @@ function WatchlistHome({ }) {
             array.push(watchlistCrypto[cryptoWatchlist[i]]);
         }
         await setCoinsArray(array);
-        console.log("WATCHLIST", array);
     }, []);
 
     const [render, setRender] = useState(false);
@@ -42,7 +41,6 @@ function WatchlistHome({ }) {
     // }, [render]);
 
     async function refresh() {
-        console.log("WATCHLISTDATA", watchlistData?.data)
         setIsRefreshing(true)
         dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid))
         const cryptoWatchlist = data.filter(e => !e?.activeSeries)
@@ -56,11 +54,12 @@ function WatchlistHome({ }) {
     }
 
     return (
+        <View>
         <FlatList
             refreshing={isRefreshing}
             onRefresh={() => { refresh() }}
             numColumns={2}
-            data={watchlistData?.data.concat(coinsArray)}
+            data={watchlistData?.data?.concat(coinsArray).filter(item => item?.symbol)}
             keyExtractor={(item) => item?.symbol}
             renderItem={({ item }) => {
                 if (item?.meta?.companyName) {
@@ -76,7 +75,14 @@ function WatchlistHome({ }) {
                     )
                 }
             }}
+            ListFooterComponent={() => {
+                return(
+                    <View style={{height: 100}}>
+                        </View>
+                )
+            }}
         />
+        </View>
     )
 }
 export default WatchlistHome;

@@ -70,7 +70,6 @@ const renderTabBar = props => (
 );
 export default UserProfile = ({ navigation, route }) => {
 
-  console.log("OTHER USER", route.params.userId);
 
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
@@ -79,10 +78,8 @@ export default UserProfile = ({ navigation, route }) => {
   const [followers, setFollowers] = useState();
   const profileInfo = useSelector(state => state.profile.profileInfo);
   const isFollowing = profileInfo?.following?.find(element => element?.$oid == route.params.userId)
-  console.log("USER ALREADY FOLLOWING", profileInfo?.following?.find(element => element?.$oid == route.params.userId));
 
   useEffect(() => {
-    console.log("USER ALREADY FOLLOWING", isFollowing);
     loadUserDetails()
     dispatch(getProfileFollowersThunk(route.params.userId))
     dispatch(getProfileFollowingThunk(route.params.userId))
@@ -108,9 +105,7 @@ export default UserProfile = ({ navigation, route }) => {
       data.push(d);
     });
 
-    console.log("DATALENGTH", JSON.stringify(data));
     if (data.length != 0) {
-      console.log(data[0]);
       navigation.navigate('MessageRoom', { thread: data[0] })
     } else {
 
@@ -126,7 +121,6 @@ export default UserProfile = ({ navigation, route }) => {
         data2.push(d);
       });
 
-      console.log("DATALENGTH2", JSON.stringify(data2));
       if (data2.length == 0) {
         firestore()
           .collection('MESSAGE_THREADS')
@@ -142,7 +136,6 @@ export default UserProfile = ({ navigation, route }) => {
             otherUserUID: profile?._id?.$oid
           })
           .then(async (m) => {
-            console.log("CRETED MSG", m)
             const r = await firestore()
               .collection('MESSAGE_THREADS')
               .where('createdBy', '==', profileInfo?.username)
@@ -154,12 +147,10 @@ export default UserProfile = ({ navigation, route }) => {
             snapshot.forEach(doc => {
               let d = doc.data();
               d._id = doc.id
-              console.log(d)
               navigation.navigate('MessageRoom', { thread: d })
             });
           })
       } else {
-        console.log(data2[0]);
         navigation.navigate('MessageRoom', { thread: data2[0] })
       }
     }

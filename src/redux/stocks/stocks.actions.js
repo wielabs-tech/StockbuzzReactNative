@@ -40,7 +40,6 @@ export const getCryptoInfoThunk = (symbol) => async dispatch => {
 
 export const getCryptoWatchlisthunk = (symbol) => async dispatch => {
     const response = await stocksAPI.getCryptoInfo(symbol);
-    console.log("CRYPTOWATCHLIST", response.data.data)
     dispatch({
         type: GET_CRYPTO_WATCHLIST,
         payload: response.data.data,
@@ -66,7 +65,6 @@ export const getCryptoSearchThunk  = () => async dispatch => {
 
 export const getSuggestionsThunk = (startText) => async dispatch => {
     const response = await stocksAPI.getSuggestions(startText);
-    console.log("RESS", response)
     dispatch({
         type: GET_SUGGESTIONS,
         payload: response.data

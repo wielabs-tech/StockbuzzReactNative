@@ -11,7 +11,7 @@ function Avatar(props) {
             <Image
                 style={{ height: props.height, width: props.width, borderRadius: 50 }}
                 source={{
-                    uri:`${props.url}?random=${Math.random().toString(36).substring(7)}`
+                    uri:`${props.url}`
                 }}
             />
         </TouchableOpacity>

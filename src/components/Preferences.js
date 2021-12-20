@@ -83,12 +83,15 @@ function Preferences() {
                                 />
                             ) :
                                 profile?.photo ? (
+                                    <>
                                     <Image
                                         style={{ height: 100, width: 100, borderRadius: 50 }}
                                         source={{
                                             uri: API_URL + `/` + profile?.photo
                                         }}
                                     />
+                                    <>{console.log(API_URL + `/` + profile?.photo)}</>
+                                    </>
                                 ) :
                                     (
                                         <MaterialIcons name="account-circle" size={100} color="#e1e1e1" />

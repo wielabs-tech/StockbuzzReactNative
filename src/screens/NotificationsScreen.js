@@ -7,6 +7,7 @@ import {
   Image,
   FlatList
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
 import { getNotificationsThunk } from '../redux/profile/profile.actions';
@@ -74,13 +75,13 @@ export default Notifications = ({ navigation }) => {
         let mainContentStyle;
         if(Notification.attachment) {
           mainContentStyle = styles.mainContent;
-          attachment = <Image style={styles.attachment} source={{uri:Notification.attachment}}/>
+          attachment = <FastImage style={styles.attachment} source={{uri:Notification.attachment}}/>
         }
         return(
           <View style={styles.container}>
             {
               !!Notification?.user?.photo ? (
-                <Image source={{uri: API_URL + "/" + Notification.user.photo}} style={styles.avatar}/>
+                <FastImage source={{uri: API_URL + "/" + Notification.user.photo}} style={styles.avatar}/>
               ) : (
                 <MaterialIcons name={"account-circle"} size={54} color={'#aaa'} style={styles.avatar}/>
               )

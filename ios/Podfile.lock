@@ -846,7 +846,7 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNFastImage (8.5.8):
+  - RNFastImage (8.5.11):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
@@ -1236,7 +1236,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCClipboard: ddd4d291537f1667209c9c405aaa4307297e252e
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNFastImage: adef7f9c9a7aeca0141807ee5a8be8a3eb240dd8
+  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFBApp: 46a6918f6b1bbb0b332fafb07ef1362bd96ca857
   RNFBAuth: 9a1a0e6fb9b3ccba2159a5f52a2891df437f0ce4
   RNFBFirestore: c0622857f20df376d20495ce08a409a6dcfbdb0a
@@ -1260,4 +1260,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 90cb201e9fe81c410d05846b99433be626a117b5
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

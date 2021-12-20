@@ -32,7 +32,6 @@ export const loginAPI = {
     formdata.append('login_type', login_type);
     formdata.append('firebase_token', token);
     if (!!image) {
-      console.log("YEAH")
       formdata.append('photo', {
         uri: image.path || image.uri,
         name: "IMG.jpg",
@@ -45,7 +44,6 @@ export const loginAPI = {
 
   signupsocial(email, password, username, fullName, mobile, image, login_type, uid) {
     const formdata = new FormData();
-    console.log("LOGIN TYPE", login_type, " - ", uid)
     formdata.append('email', null);
     formdata.append('password', password);
     formdata.append('username', username);
@@ -54,7 +52,6 @@ export const loginAPI = {
     formdata.append('uid', uid);
     formdata.append('login_type', login_type);
     if (!!image) {
-      console.log("YEAH")
       formdata.append('photo', {
         uri: image.path || image.uri,
         name: "IMG.jpg",
@@ -106,7 +103,6 @@ export const stocksAPI = {
   },
 
   getWatchlistData(userid) {
-    console.log("USERID", userid);
     return API.get(`user/` + userid + `/watchlist/ranking`)
   },
 
@@ -122,11 +118,17 @@ export const stocksAPI = {
 
 export const profileAPI = {
 
-  updateWatchlist(userid, symbol) {
+  updateWatchlist(userid, symbol, is_add) {
     const formdata = new FormData();
     formdata.append('user_id', userid);
     formdata.append('ticker', symbol);
-    const res = API.put(`user/watchlist`, formdata)
+    if(is_add){
+      const res = API.put(`user/watchlist/add`, formdata)
+      return res;
+    } else {
+      const res = API.put(`user/watchlist/remove`, formdata)
+      return res;
+    }
     return res;
   },
 
@@ -143,7 +145,6 @@ export const profileAPI = {
     const formdata = new FormData();
     formdata.append('user_id', userid)
     formdata.append('post_id', postid);
-    console.log("ROOMLIKE");
     const res = API.put(`room/post/like`, formdata)
     return res;
   },
@@ -180,23 +181,20 @@ export const profileAPI = {
 
   followUser(id, otherid) {
     const formdata = new FormData();
-    console.log("ID", id, otherid)
     formdata.append('follower_id', id);
     formdata.append('followee_id', otherid);
     return API.put(`user/follower`, formdata)
   },
 
   updateUser(id, full_name, bio, image) {
-    console.log("IMAGE", image)
     const formdata = new FormData();
     formdata.append('user_id', id);
     formdata.append('full_name', full_name);
     formdata.append('bio', bio);
     if (!!image) {
-      console.log("YAY")
       formdata.append('photo', {
         uri: image.path || image.uri,
-        name: image.modificationDate + ".jpg",
+        name: "IMG.jpg",
         type: image.mime,
       });
     }
@@ -205,7 +203,6 @@ export const profileAPI = {
   },
 
   connectToTwitter(id, name, bio, is_twitter_linked, token, secret) {
-    console.log("VALUES", id, name, bio, is_twitter_linked, token, secret)
     const formdata = new FormData();
     formdata.append('user_id', id);
     formdata.append('full_name', name);
@@ -228,12 +225,10 @@ export const roomsAPI = {
   },
 
   getRoomPosts(roomid) {
-    console.log("URLLLL rooms/posts/" + roomid)
     return API.get(`rooms/posts/` + roomid)
   },
 
   roomPost(userid, body, image, is_bullish, is_bearish, roomid) {
-    console.log("USERID - ROOMID", userid + " - " + roomid)
     const formdata = new FormData();
     formdata.append('room_id', roomid)
     formdata.append('user_id', userid);
@@ -256,7 +251,6 @@ export const roomsAPI = {
 
   createRoom(userid, title, description, image) {
     const formdata = new FormData();
-    console.log("PHOTO", image)
     formdata.append('user_id', userid);
     formdata.append('title', title);
     formdata.append('description', description)
@@ -272,7 +266,6 @@ export const roomsAPI = {
   },
 
   joinGroup(roomid, userid) {
-    console.log("USERID", roomid + " " + userid)
     const formdata = new FormData();
     formdata.append('user_id', userid);
     formdata.append('room_id', roomid);
@@ -295,7 +288,6 @@ export const postsAPI = {
   },
 
   getComments(postid) {
-    console.log("POSTID", postid)
     const formdata = new FormData();
     formdata.append('post_id', postid);
 
@@ -306,7 +298,6 @@ export const postsAPI = {
 export const createRoom = async (userid, title, description, image) => {
 
   const formdata = new FormData();
-  console.log("PHOTO", image)
   formdata.append('user_id', userid);
   formdata.append('title', title);
   formdata.append('description', description)
@@ -332,7 +323,6 @@ export const createRoom = async (userid, title, description, image) => {
   if (responseJson.status == 1) {
     alert('Upload Successful'); 
   }
-  console.log(responseJson);
 }
 
 export const uploadPost = async (userid, body, image, is_bullish, is_bearish, isTwitter) => {
@@ -346,7 +336,6 @@ export const uploadPost = async (userid, body, image, is_bullish, is_bearish, is
   if (isTwitter) {
     const token = await AsyncStorage.getItem('@authTokenTwitter')
     const secret = await AsyncStorage.getItem('@authTokenSecretTwitter')
-    console.log("THESE ARE TOKEN", token, secret)
     formdata.append('auth_token', token)
     formdata.append('auth_token_secret', secret)
   }
@@ -374,5 +363,4 @@ export const uploadPost = async (userid, body, image, is_bullish, is_bearish, is
   // if (responseJson.status == 1) {
   //   alert('Upload Successful');
   // }
-  console.log("RESPONSE", res);
 }

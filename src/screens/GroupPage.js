@@ -28,6 +28,7 @@ import FollowersRoute from './FollowersRoute';
 import FillButton from '../components/fillButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { getRoomPostsThunk, joinGroupThunk } from '../redux/rooms/rooms.actions';
+import FastImage from 'react-native-fast-image';
 var dateFormat = require('dateformat');
 
 export default GroupPage = ({ navigation, route }) => {
@@ -84,7 +85,7 @@ export default GroupPage = ({ navigation, route }) => {
           <View style={{ flexDirection: 'row' }}>
             {
               groupInfo?.image ?
-                <Image
+                <FastImage
                   style={{ height: 64, width: 64, backgroundColor: '#aaa', borderRadius: 50 }}
                   source={{
                     uri: API_URL + `/` + groupInfo?.image
@@ -114,11 +115,11 @@ export default GroupPage = ({ navigation, route }) => {
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Image style={{ height: 16, width: 16 }} source={require('../assets/user.png')} />
-              <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
-              <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
-              <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
-              <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+              <FastImage style={{ height: 16, width: 16 }} source={require('../assets/user.png')} />
+              <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+              <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+              <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+              <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
             </View>
           </View>
         </View>

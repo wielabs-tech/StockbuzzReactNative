@@ -4,7 +4,6 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default CustomInput = ({ labelName, iconName, isPassword, value, setValue, errorMessage, isMobile, isEmail }) => {
-  console.log("ISMOBILE", isMobile)
   const [isToggle, setIsToggle] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);

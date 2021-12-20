@@ -35,8 +35,7 @@ export default StockScreen = ({ route, navigation }) => {
     const dispatch = useDispatch();
     useEffect(async () => {
         const res = await stocksAPI.getCryptoInfo(item?.symbol);
-        await setStockInfo(res?.data?.data[item?.symbol]);
-        console.log("STOCK", stockInfo)
+        setStockInfo(res?.data?.data[item?.symbol]);
     }, []);
 
     const isFocused = useIsFocused();
@@ -51,9 +50,9 @@ export default StockScreen = ({ route, navigation }) => {
         return Math.round(number * factor) / factor;
     }
 
-    async function updateWatchLIst() {
+    async function updateWatchLIst(is_add) {
         setWatchlistLoading(true);
-        await dispatch(updateWatchlistThunk(profileInfo?._id.$oid, item?.symbol));
+        await dispatch(updateWatchlistThunk(profileInfo?._id.$oid, item?.symbol, is_add));
         const response = await stocksAPI.getStockInfo(item?.symbol);
         setStockInfo(response.data)
         // await dispatch(getStockInfoThunk(item?.symbol))
@@ -147,14 +146,14 @@ export default StockScreen = ({ route, navigation }) => {
                                         {profileInfo?.watchlist.find(element => element == item?.symbol) ? (
                                             <TouchableOpacity
                                                 style={styles.watchButtonStyle}
-                                                onPress={() => updateWatchLIst()}
+                                                onPress={() => updateWatchLIst(false)}
                                                 underlayColor='#fff'>
                                                 <Text style={{ color: '#fff', padding: 5 }}>Unwatch</Text>
                                             </TouchableOpacity>
                                         ) : (
                                             <TouchableOpacity
                                                 style={styles.watchButtonStyleOutline}
-                                                onPress={() => updateWatchLIst()}>
+                                                onPress={() => updateWatchLIst(true)}>
                                                 <Text style={{ color: '#4955BB', padding: 5, textAlign: 'center' }}>Watch</Text>
                                             </TouchableOpacity>
                                         )}

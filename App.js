@@ -35,7 +35,6 @@
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
-        console.log("HELLO")
         // if (remoteMessage) {
         //   console.log(
         //     'Notification caused app to open from quit state:',

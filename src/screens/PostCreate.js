@@ -31,6 +31,8 @@ import { getRoomPostsThunk } from '../redux/rooms/rooms.actions';
 import AsyncStorage from '@react-native-community/async-storage';
 import TwitterButton from './TwitterButtonConnection';
 import { CRYPTO_SUGGESTIONS } from '../redux/stocks/stocks.types';
+import { getMyPostsThunk } from '../redux/profile/profile.actions';
+import FastImage from 'react-native-fast-image';
 
 export default PostCreate = ({ navigation, route }) => {
     const scrollRef = useRef();
@@ -66,7 +68,6 @@ export default PostCreate = ({ navigation, route }) => {
             await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
             await dispatch(getCryptoSuggestionsThunk(ms.substring(1, ms.length).toLowerCase(), cryptoSearch))
             let result = cryptoSuggestions.concat(suggestions?.symbols);
-            console.log("CRYPTO", result)
             onPressTouch();
         } else if (ms.length > 1 && ms[0] === '@') {
             await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
@@ -218,7 +219,7 @@ export default PostCreate = ({ navigation, route }) => {
                                             remove()
                                         }}
                                         style={{ position: 'absolute', zIndex: 1, right: -15, top: -5 }} name="highlight-off" size={24} color='grey' />
-                                    <Image
+                                    <FastImage
                                         style={{ height: 100, width: 100, margin: 5 }}
                                         source={{
                                             uri: image.path
@@ -334,6 +335,7 @@ export default PostCreate = ({ navigation, route }) => {
                                     if (route?.params?.prefill) {
                                         await dispatch(getStockFeedThunk(route.params?.prefill))
                                     }
+                                    await dispatch(getMyPostsThunk(userid))
                                     setIsPosting(false);
                                     navigation.goBack();
                                 } else {

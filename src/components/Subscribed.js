@@ -16,13 +16,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 const { width, height } = Dimensions.get("window");
 
 import Avatar from './Avatar';
+import FastImage from 'react-native-fast-image';
 
 var dateFormat = require('dateformat')
 
 const Item = ({ item }) => {
 
     const navigation = useNavigation();
-    console.log(item)
     const { height, width } = Dimensions.get('window')
     var date = new Date(item?.created_at?.$date).toDateString();
 
@@ -60,11 +60,11 @@ const Item = ({ item }) => {
                 </Text>
                 <View style={styles.bottom}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Image style={{ height: 16, width: 16 }} source={require('../assets/user.png')} />
-                        <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
-                        <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
-                        <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
-                        <Image style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+                        <FastImage style={{ height: 16, width: 16 }} source={require('../assets/user.png')} />
+                        <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+                        <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+                        <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
+                        <FastImage style={{ height: 16, width: 16, marginLeft: -8 }} source={require('../assets/user.png')} />
                     </View>
                     <View style={{ display: 'flex', flexDirection: "row", marginLeft: 5, alignContent: "center", }}>
                         <Text style={{ color: "#4955BB" }}>

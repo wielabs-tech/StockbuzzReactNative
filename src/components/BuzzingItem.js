@@ -19,7 +19,7 @@ export const BuzzingItem = ({ item }) => {
             onPress={() => {
                 navigation.push('stockScreen', {
                     item: item,
-                  })
+                })
             }}
         >
             <View style={styles.box}>

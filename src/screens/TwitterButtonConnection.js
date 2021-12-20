@@ -28,15 +28,13 @@ const Constants = {
 
 
 async function onTwitterButtonPress(id, display_name, bio) {
-    console.log("IDD", id, display_name, bio)
+
     // Perform the login request
     RNTwitterSignIn.init(Constants.TWITTER_COMSUMER_KEY, Constants.TWITTER_CONSUMER_SECRET)
     RNTwitterSignIn.logIn()
         .then(async loginData => {
-            console.log(loginData)
             const { authToken, authTokenSecret, name, email } = loginData
             const twitterCredential = auth.TwitterAuthProvider.credential(authToken, authTokenSecret);
-            console.log("LOGINDATA", loginData)
             AsyncStorage.setItem('@authTokenTwitter', authToken);
             AsyncStorage.setItem('@authTokenSecretTwitter', authTokenSecret);
             const res = await profileAPI.connectToTwitter(id, display_name, bio, true, authToken, authTokenSecret)
@@ -60,7 +58,6 @@ async function onTwitterButtonPress(id, display_name, bio) {
             // }
         })
         .catch(error => {
-            console.log("THIS ERROR", JSON.stringify(error))
             store.dispatch({ type: 'SET_AUTHORIZED', payload: false })
         }
         )
@@ -75,7 +72,6 @@ export default class TwitterButton extends Component {
         RNTwitterSignIn.init(Constants.TWITTER_COMSUMER_KEY, Constants.TWITTER_CONSUMER_SECRET)
         RNTwitterSignIn.logIn()
             .then(loginData => {
-                console.log(loginData)
                 const { authToken, authTokenSecret, name, email } = loginData
                 // if (authToken && authTokenSecret) {
                 //     this.setState({
@@ -97,7 +93,6 @@ export default class TwitterButton extends Component {
     }
 
     handleLogout = () => {
-        console.log("logout")
         RNTwitterSignIn.logOut()
         this.setState({
             isLoggedIn: false
@@ -108,7 +103,6 @@ export default class TwitterButton extends Component {
     render() {
         const { isLoggedIn } = this.state
         console.log("PROPS", this.props)
-        console.log(store);
         return (
             <View style={this.props.style}>
                 {isLoggedIn

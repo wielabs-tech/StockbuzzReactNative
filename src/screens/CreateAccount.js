@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import { signup, signUpThunk } from '../redux/auth/auth.actions';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FastImage from 'react-native-fast-image';
 
 export default CreateAccount = ({ navigation }) => {
 
@@ -73,7 +74,7 @@ export default CreateAccount = ({ navigation }) => {
             <View style={{ alignSelf: 'center' }}>
               {
                 image ? (
-                  <Image
+                  <FastImage
                     style={{ height: 100, width: 100, borderRadius: 50 }}
                     source={{
                       uri: image.path || image.uri

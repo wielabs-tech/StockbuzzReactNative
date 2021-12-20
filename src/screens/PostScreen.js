@@ -9,6 +9,7 @@ import { getCommentsThunk } from '../redux/posts/posts.actions';
 import { API_URL } from '../utils/config';
 import PostRoute from './PostRoute'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FastImage from 'react-native-fast-image';
 
 const PostScreen = ({ navigation, route }) => {
     console.log("PARAMS", route?.params?.item)
@@ -60,7 +61,7 @@ const PostScreen = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {
                         item?.user?.photo ? (
-                            <Image
+                            <FastImage
                                 style={{ height: 36, width: 36, borderRadius: 56 }}
                                 source={{
                                     uri: API_URL + `/` + item?.user?.photo

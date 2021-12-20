@@ -117,6 +117,8 @@ const PostRoute = props => {
     })
   }
 
+  console.log("photo", API_URL + `/` + item?.user?.photo)
+
   return (
     <ScrollView
       scrollEnabled={false}

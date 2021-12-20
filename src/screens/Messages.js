@@ -14,6 +14,7 @@ import Separator from "./Seperator";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useSelector } from "react-redux";
 import { API_URL } from "../utils/config";
+import FastImage from "react-native-fast-image";
 
 
 export default function ChatRoom({ navigation }) {
@@ -99,7 +100,7 @@ export default function ChatRoom({ navigation }) {
                         </TouchableOpacity>
                     </View> */}
                     {item?.createdBy != profile?.username ? (
-                        <Image style={{ height: 50, width: 50, borderRadius: 50, marginRight: 10, marginTop: 10, marginBottom: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#aaa' }}
+                        <FastImage style={{ height: 50, width: 50, borderRadius: 50, marginRight: 10, marginTop: 10, marginBottom: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#aaa' }}
                             source={{
                                 uri: API_URL + '/static/uploads/users/' + item?.createdByUID + '/IMG.jpg'
                             }}
@@ -108,7 +109,7 @@ export default function ChatRoom({ navigation }) {
                             }
                         />
                     ) : (
-                        <Image style={{ height: 50, width: 50, borderRadius: 50, marginRight: 10, marginTop: 10, marginBottom: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#aaa' }}
+                        <FastImage style={{ height: 50, width: 50, borderRadius: 50, marginRight: 10, marginTop: 10, marginBottom: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#aaa' }}
                             source={{
                                 uri: API_URL + '/static/uploads/users/' + item?.otherUserUID + '/IMG.jpg'
                             }}

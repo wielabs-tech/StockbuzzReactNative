@@ -10,7 +10,6 @@ const INITIAL_STATE = {
 const reducer = (state = INITIAL_STATE, action) => {
    switch (action.type) {
       case LOGIN:
-         console.log("ACTION", action)
          return {
             ...state,
             isLoggedin: true,

@@ -19,6 +19,7 @@ import { signup, signUpThunk, signUpThunkSocial } from '../redux/auth/auth.actio
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-community/async-storage';
 import { store } from '../redux/store';
+import FastImage from 'react-native-fast-image';
 
 export default FillYourDetails = ({ navigation }) => {
 
@@ -102,7 +103,7 @@ export default FillYourDetails = ({ navigation }) => {
             <View style={{ alignSelf: 'center' }}>
               {
                 image ? (
-                  <Image
+                  <FastImage
                     style={{ height: 100, width: 100, borderRadius: 50 }}
                     source={{
                       uri: image.path || image.uri
