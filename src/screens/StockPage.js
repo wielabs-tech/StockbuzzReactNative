@@ -30,6 +30,7 @@ import { useIsFocused } from "@react-navigation/core";
 
 export default StockScreen = ({ route, navigation }) => {
   const { item } = route.params;
+  console.log("PARAMS", item);
   const isCrypto = route.params.isCrypto;
   const { width, height } = Dimensions.get("window");
   const stockInfostate = useSelector((state) => state.stocks.stockInfo);
@@ -46,9 +47,10 @@ export default StockScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   useEffect(async () => {
     const response = await stocksAPI.getStockInfo(item?.symbol);
-    console.log("ITEM", stockInfo);
-    // setStockInfo(response.data);
+    console.log("ITEM", JSON.stringify(response.data));
+    setStockInfo(response.data);
     setIsLoadingProgress(false);
+
     const response1 = await stocksAPI.getStockPosts(item?.symbol);
     setStockFeed(response1.data);
   }, []);
@@ -177,7 +179,7 @@ export default StockScreen = ({ route, navigation }) => {
                   marginTop: 4,
                 }}
               >
-                {stockInfo?.lastPrice ? (
+                {stockInfo?.lastPrice || stockInfo?.priceInfo?.lastPrice ? (
                   <Text
                     style={{
                       color: "#4955BB",
@@ -186,12 +188,14 @@ export default StockScreen = ({ route, navigation }) => {
                       fontSize: 20,
                     }}
                   >
-                    ₹{stockInfo?.lastPrice}
+                    ₹{stockInfo?.lastPrice || stockInfo?.priceInfo?.lastPrice}
                   </Text>
                 ) : (
                   <></>
                 )}
-                {stockInfo?.change && stockInfo?.change > 0 ? (
+                {(stockInfo?.change && stockInfo?.change > 0) ||
+                (stockInfo?.priceInfo?.change &&
+                  stockInfo?.priceInfo?.change > 0) ? (
                   <Text
                     style={{
                       marginLeft: 8,
@@ -208,15 +212,27 @@ export default StockScreen = ({ route, navigation }) => {
                     <Text style={{ marginLeft: 8 }}></Text>
                   </>
                 )}
-                {stockInfo?.change ? (
+                {stockInfo?.change || stockInfo?.priceInfo?.change ? (
                   <Text
                     style={{
                       fontSize: 12,
-                      color: stockInfo?.change > 0 ? "green" : "red",
+                      color:
+                        stockInfo?.change > 0 ||
+                        stockInfo?.priceInfo?.change > 0
+                          ? "green"
+                          : "red",
                     }}
                   >
-                    {roundOff(stockInfo?.change, 2)}(
-                    {roundOff(stockInfo?.pChange, 2)}%)
+                    {roundOff(
+                      stockInfo?.change || stockInfo?.priceInfo?.change,
+                      2
+                    )}
+                    (
+                    {roundOff(
+                      stockInfo?.pChange || stockInfo?.priceInfo?.change,
+                      2
+                    )}
+                    %)
                   </Text>
                 ) : (
                   <></>
@@ -294,7 +310,9 @@ export default StockScreen = ({ route, navigation }) => {
               }}
             >
               <Text style={{ color: "#aaa", fontSize: 10 }}>Open</Text>
-              <Text style={{ marginTop: 4 }}>{stockInfo?.open}</Text>
+              <Text style={{ marginTop: 4 }}>
+                {stockInfo?.open || stockInfo?.priceInfo?.open}
+              </Text>
             </View>
             <View
               style={{
@@ -307,7 +325,10 @@ export default StockScreen = ({ route, navigation }) => {
               <Text style={{ color: "#aaa", fontSize: 10 }}>
                 Previous close
               </Text>
-              <Text style={{ marginTop: 4 }}>{stockInfo?.previousClose}</Text>
+              <Text style={{ marginTop: 4 }}>
+                {stockInfo?.previousClose ||
+                  stockInfo?.priceInfo?.previousClose}
+              </Text>
             </View>
             <View
               style={{
@@ -318,7 +339,9 @@ export default StockScreen = ({ route, navigation }) => {
               }}
             >
               <Text style={{ color: "#aaa", fontSize: 10 }}>Base price</Text>
-              <Text style={{ marginTop: 4 }}>{stockInfo?.previousClose}</Text>
+              <Text style={{ marginTop: 4 }}>
+                {stockInfo?.previousClose || stockInfo?.priceInfo?.basePrice}
+              </Text>
             </View>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -351,7 +374,9 @@ export default StockScreen = ({ route, navigation }) => {
                         marginTop: 5,
                       }}
                     >
-                      {stockInfo?.dayHigh}
+                      {stockInfo?.dayHigh ||
+                        stockInfo?.intraDayHighLow?.max ||
+                        stockInfo?.priceInfo?.intraDayHighLow?.max}
                     </Text>
                   </View>
                   <View style={{ justifyContent: "center" }}>
@@ -366,7 +391,9 @@ export default StockScreen = ({ route, navigation }) => {
                         marginTop: 5,
                       }}
                     >
-                      {stockInfo?.dayLow}
+                      {stockInfo?.dayLow ||
+                        stockInfo?.intraDayHighLow?.min ||
+                        stockInfo?.priceInfo?.intraDayHighLow?.min}
                     </Text>
                   </View>
                 </View>
@@ -401,7 +428,8 @@ export default StockScreen = ({ route, navigation }) => {
                         marginTop: 5,
                       }}
                     >
-                      {stockInfo?.yearHigh}
+                      {stockInfo?.yearHigh ||
+                        stockInfo?.priceInfo?.weekHighLow?.max}
                     </Text>
                   </View>
                   <View style={{ justifyContent: "center" }}>
@@ -416,7 +444,8 @@ export default StockScreen = ({ route, navigation }) => {
                         marginTop: 5,
                       }}
                     >
-                      {stockInfo?.yearLow}
+                      {stockInfo?.yearLow ||
+                        stockInfo?.priceInfo?.weekHighLow?.min}
                     </Text>
                   </View>
                 </View>

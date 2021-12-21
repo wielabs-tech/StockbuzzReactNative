@@ -31,7 +31,7 @@ const PostRoute = props => {
   const item = props.item;
   const isRoom = props.isRoom;
   const roomid = props.roomId;
-  x = new Date();
+  const x = new Date();
   var UTCseconds = x.getTime() + 330 * 60 * 1000;
   const { width, height } = Dimensions.get('window');
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const PostRoute = props => {
 
   const handleNamePress = async (stockSymbol, matchIndex) => {
     console.log("STOCKSYMBOL", stockSymbol)
-    const result = await cryptos.filter(e => e.symbol === stockSymbol.substring(1));
+    const result = await cryptos?.filter(e => e.symbol === stockSymbol.substring(1));
     if (result?.length > 0) {
       navigation.push('cryptoScreen', {
         item: {

@@ -27,6 +27,7 @@ import FollowersRoute from './MyFollowers';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyFollowersThunk, getMyFollowingThunk } from '../redux/profile/profile.actions';
 import ImageModal from 'react-native-image-modal';
+import { getUserDetailsById } from '../redux/user/user.actions';
 
 const WatchingRoute = () => (
   <View style={{ flex: 1, backgroundColor: '#fff' }} />
@@ -100,8 +101,8 @@ export default ProfileScreen = ({ navigation }) => {
   ]);
 
   useEffect(() => {
-    dispatch(getMyFollowersThunk(profile?._id?.$oid))
-    dispatch(getMyFollowingThunk(profile?._id?.$oid))
+    // dispatch(getMyFollowersThunk(profile?._id?.$oid))
+    // dispatch(getMyFollowingThunk(profile?._id?.$oid))
   });
 
   const modalRef = useRef();

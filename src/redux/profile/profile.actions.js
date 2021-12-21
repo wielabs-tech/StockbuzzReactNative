@@ -1,5 +1,6 @@
 import { profileAPI } from "../../api/ajax";
 import { getMyWatchlistDataThunk } from "../stocks/stocks.actions";
+import { getUserDetailsById } from "../user/user.actions";
 import { GET_USER } from "../user/user.types";
 import { GET_FOLLOWERS, GET_FOLLOWERS_MINE, GET_FOLLOWING, GET_FOLLOWING_MINE, GET_PROFILE_INFO, MY_POSTS, NOTIFICATION_DATA, WATCHLIST_LOADING } from "./profile.types";
 
@@ -9,7 +10,7 @@ export const updateWatchlistThunk = (id, symbol, is_add) => async dispatch => {
     console.log("ID", id, symbol)
     if(response?.status == 200){
         await dispatch(getProfileInfoThunk(id))
-        await dispatch(getMyWatchlistDataThunk(id))
+        dispatch(getMyWatchlistDataThunk(id))
     }
     dispatch({type: WATCHLIST_LOADING, payload: false})
 }
@@ -90,13 +91,14 @@ export const getProfileFollowingThunk = (id) => async dispatch => {
 
 export const getUserPostsThunk = (id) => async dispatch => {
     const response = await profileAPI.getMyPosts(id);
-
+    console.log("POSTS", response.data)
     return response;
 }
 
 export const followUserThunk = (id, otherId) => async dispatch => {
     const response = await profileAPI.followUser(id, otherId);
-    dispatch(getProfileInfoThunk(id)); 
+    dispatch(getProfileInfoThunk(id));
+    dispatch(getUserDetailsById(otherId));
     return response;
 }
 

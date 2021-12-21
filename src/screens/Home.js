@@ -43,7 +43,7 @@ export default HomeScreen = ({ params }) => {
 
   useEffect(async () => {
     await dispatch(getDiscoverRoomsThunk(profile?._id?.$oid))
-    // await dispatch(getCryptoSearchThunk());
+    await dispatch(getCryptoSearchThunk());
     // dispatch(getMyRoomsThunk(profile?._id?.$oid))
     // await dispatch(getCryptoThunk());
   }, [])

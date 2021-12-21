@@ -10,13 +10,20 @@ import { followUserThunk, getMyFollowersThunk, getMyFollowingThunk } from "../re
 import { API_URL } from "../utils/config";
 import { useNavigation } from "@react-navigation/core";
 import FastImage from "react-native-fast-image";
+import { getUserDetailsById } from "../redux/user/user.actions";
 
 const FollowersRoute = ({route}) => {
     const profile = useSelector(state => state.profile.profileInfo);
     const followers = useSelector(state => state.profile.userFollowers);
+    const user = useSelector(state => state.user.user);
     const dispatch = useDispatch();
     console.log("FOLLOW", profile?._id?.$oid)
     const navigation = useNavigation();
+
+    useEffect(() => {
+        console.log("IDD", user);
+        getUserDetailsById(route?.params?.id)
+    }, [])
 
     const renderItem = ({ item }) => {
         const isMe = profile?._id?.$oid === item?._id?.$oid;
@@ -75,7 +82,7 @@ const FollowersRoute = ({route}) => {
 
     return (
         <FlatList
-            data={followers}
+            data={user.followers_list}
             keyExtractor={item => item?.$oid}
             renderItem={renderItem}
         />

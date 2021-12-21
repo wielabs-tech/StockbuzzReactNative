@@ -75,7 +75,7 @@ export const getCryptoSuggestionsThunk = (startText, cryptos) => async dispatch 
 
     dispatch({
         type: CRYPTO_SUGGESTIONS,
-        payload: cryptos.filter((country) => country.slug.startsWith(startText)).map(e => {
+        payload: cryptos?.filter((country) => country.slug.startsWith(startText)).map(e => {
             const {symbol, slug, name} = e;
             return {symbol, slug, name};
           })

@@ -30,7 +30,7 @@ export default SearchScreen = ({ navigation }) => {
         if (text) {
             // Inserted text is not blank
             // Filter the masterDataSource and update FilteredDataSource
-            const newData = cryptos.filter(
+            const newData = cryptos?.filter(
                 function (item) {
                     // Applying filter for the inserted text in search bar
                     const itemData = item?.name

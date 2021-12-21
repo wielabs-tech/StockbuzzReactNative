@@ -16,22 +16,22 @@ export const Watchers = ({navigation, route}) => {
     const [coinsArray, setCoinsArray] = useState([]);
     const watchlistCrypto = useSelector(state => state.stocks.cryptoWatchlist);
 
-    const dispatch = useDispatch();
-    useEffect(async () => {
-        if(route.id){
-            await dispatch(getWatchlistDataThunk(route.id)) 
-        } else {
-            await dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid))
-        }
+    // const dispatch = useDispatch();
+    // useEffect(async () => {
+    //     if(route.id){
+    //         await dispatch(getWatchlistDataThunk(route.id)) 
+    //     } else {
+    //         await dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid))
+    //     }
 
-        const cryptoWatchlist = data.filter(e => !e?.activeSeries)
-        await dispatch(getCryptoWatchlisthunk(cryptoWatchlist.join(',')))
-        let array = []
-        for(var i = 0 ; i < cryptoWatchlist?.length ; i++){
-            array.push(watchlistCrypto[cryptoWatchlist[i]]);
-        }
-        setCoinsArray(array);
-    }, []);
+    //     const cryptoWatchlist = data.filter(e => !e?.activeSeries)
+    //     await dispatch(getCryptoWatchlisthunk(cryptoWatchlist.join(',')))
+    //     let array = []
+    //     for(var i = 0 ; i < cryptoWatchlist?.length ; i++){
+    //         array.push(watchlistCrypto[cryptoWatchlist[i]]);
+    //     }
+    //     setCoinsArray(array);
+    // }, []);
 
     const renderItem = ({ item }) => {
         if(item?.meta?.companyName){
@@ -44,7 +44,7 @@ export const Watchers = ({navigation, route}) => {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={route.id ? userWatchlist.concat(coinsArray) : data.concat(coinsArray)}
+                data={route.id ? userWatchlist?.concat(coinsArray) : data?.concat(coinsArray)}
                 renderItem={renderItem}
                 keyExtractor={item => item?.identifier}
             />

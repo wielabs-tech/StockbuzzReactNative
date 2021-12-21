@@ -11,11 +11,9 @@ export const UserPostsRoute = ({route}) => {
     const [response, setResponse] = useState("");
     const dispatch = useDispatch();
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const profileInfo = useSelector(state => state.profile.profileInfo)
-    const myPosts = useSelector(state => state.profile.myPosts)
 
-    useEffect(() => {
-        loadPosts();
+    useEffect(async () => {
+        await loadPosts();
     }, []);
 
     async function loadPosts() {

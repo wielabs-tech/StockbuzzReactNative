@@ -67,7 +67,7 @@ export default PostCreate = ({ navigation, route }) => {
         if (ms.length > 1 && ms[0] === '$') {
             await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
             await dispatch(getCryptoSuggestionsThunk(ms.substring(1, ms.length).toLowerCase(), cryptoSearch))
-            let result = cryptoSuggestions.concat(suggestions?.symbols);
+            let result = cryptoSuggestions?.concat(suggestions?.symbols);
             onPressTouch();
         } else if (ms.length > 1 && ms[0] === '@') {
             await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
@@ -263,7 +263,7 @@ export default PostCreate = ({ navigation, route }) => {
                     <FlatList
                         keyboardShouldPersistTaps="always"
                         style={{}}
-                        data={cryptoSuggestions.concat(suggestions?.symbols).concat(suggestions?.users)}
+                        data={cryptoSuggestions?.concat(suggestions?.symbols).concat(suggestions?.users)}
                         keyExtractor={item => item?.id}
                         renderItem={renderItem}
                     />
