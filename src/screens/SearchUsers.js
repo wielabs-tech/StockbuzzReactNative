@@ -47,7 +47,10 @@ const SearchUsers = () => {
   return (
     <ScrollView>
       <FlatList
+        keyboardShouldPersistTaps={"always"}
         data={suggestions?.users}
+        scrollEnabled={true}
+        style={{height: '100%'}}
         renderItem={renderItemUsers}
         keyExtractor={(item) => item?._id.$oid}
       />

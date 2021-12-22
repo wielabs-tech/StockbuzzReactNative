@@ -10,15 +10,14 @@ import { TouchableWithoutFeedback } from "react-native";
 import { TouchableNativeFeedback } from "react-native";
 import { stocksAPI } from "../api/ajax";
 
-export const BuzzingItemCrypto = ({ item }) => {
+export const BuzzingItem = ({ item }) => {
   const { width, height } = Dimensions.get("window");
   const navigation = useNavigation();
-  const [stockInfo, setStockInfo] = useState();
+  const [details, setDetails] = useState();
 
   useEffect(async () => {
-    const res = await stocksAPI.getCryptoInfo(item?.symbol);
-    console.log("RESPONSECRYPTO", res.data.data[item?.symbol])
-    setStockInfo(res?.data?.data[item?.symbol]);
+    const res = await stocksAPI.getStockInfo(item?.symbol);
+    setDetails(res.data);
   }, []);
 
   return (
@@ -26,8 +25,11 @@ export const BuzzingItemCrypto = ({ item }) => {
       <TouchableWithoutFeedback
         style={{ elevation: 2 }}
         onPress={() => {
-          navigation.push("cryptoScreen", {
-            item: item,
+          navigation.push("stockScreen", {
+            item: {
+                symbol: item?.symbol,
+                ...details
+            },
           });
         }}
       >
@@ -36,10 +38,10 @@ export const BuzzingItemCrypto = ({ item }) => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View>
-              <Text>{stockInfo?.symbol}</Text>
+              <Text>{item?.symbol}</Text>
               <Text style={{ fontSize: 8 }}></Text>
             </View>
-            {stockInfo?.quote?.USD?.percent_change_1h > 0 ? (
+            {details?.priceInfo?.change > 0 ? (
               <MaterialIcons name="north" color="green" size={20} />
             ) : (
               <MaterialIcons name="south" color="red" size={20} />
@@ -49,13 +51,13 @@ export const BuzzingItemCrypto = ({ item }) => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>$</Text>
+              <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>₹</Text>
               <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>
-                {roundOff(stockInfo?.quote?.USD?.price, 2)}
+                {roundOff(details?.priceInfo?.lastPrice, 2)}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              {stockInfo?.quote?.USD?.percent_change_1h > 0 ? (
+              {details?.priceInfo?.change > 0 ? (
                 <Text
                   style={{
                     fontSize: 10,
@@ -70,17 +72,12 @@ export const BuzzingItemCrypto = ({ item }) => {
               )}
               <Text
                 style={{
-                  color:
-                  stockInfo?.quote?.USD?.percent_change_1h > 0 ? "green" : "red",
+                  color: details?.priceInfo?.change > 0 ? "green" : "red",
                   fontSize: 10,
                   alignSelf: "flex-end",
                 }}
               >
-                {roundOff(
-                  stockInfo?.quote?.USD?.percent_change_1h * stockInfo?.quote?.USD?.price / 100,
-                  2
-                )}
-                ({roundOff(stockInfo?.quote?.USD?.percent_change_1h, 2)}%)
+                {roundOff(details?.priceInfo?.change, 2)}({roundOff(details?.priceInfo?.pChange, 2)}%)
               </Text>
             </View>
           </View>

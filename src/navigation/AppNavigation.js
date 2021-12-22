@@ -97,16 +97,6 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Ranking"
-        component={RankingNavigator}
-        options={{
-          tabBarLabel: 'Ranking',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="equalizer" color={color} size={24} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Messages"
         component={MessagesNavigator}
         options={{

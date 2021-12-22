@@ -51,11 +51,7 @@ export default StockScreen = ({ route, navigation }) => {
     }
 
     async function updateWatchLIst(is_add) {
-        setWatchlistLoading(true);
         await dispatch(updateWatchlistThunk(profileInfo?._id.$oid, item?.symbol, is_add));
-        const response = await stocksAPI.getStockInfo(item?.symbol);
-        setStockInfo(response.data)
-        // await dispatch(getStockInfoThunk(item?.symbol))
         setWatchlistLoading(false);
     }
 

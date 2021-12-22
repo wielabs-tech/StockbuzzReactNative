@@ -76,8 +76,8 @@ const PostRoute = props => {
   }
 
   const handleNamePress = async (stockSymbol, matchIndex) => {
-    console.log("STOCKSYMBOL", stockSymbol)
     const result = await cryptos?.filter(e => e.symbol === stockSymbol.substring(1));
+    console.log("RESULTS", result)
     if (result?.length > 0) {
       navigation.push('cryptoScreen', {
         item: {

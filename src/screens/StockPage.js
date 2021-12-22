@@ -40,10 +40,19 @@ export default StockScreen = ({ route, navigation }) => {
   const [watchlistLoading, setWatchlistLoading] = useState(false);
   // const [stockInfo, setStockInfo] = useState('');
   const profileInfo = useSelector((state) => state.profile.profileInfo);
+  const [watchCount, setWatchCount] = useState();
   const [dateValue, setDateValue] = useState("");
   const [isLoadingProgress, setIsLoadingProgress] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState("");
+  const [isWatchlist, setIsWatchlist] = useState(profileInfo?.watchlist.find(
+    (element) => element == item?.symbol
+  ))
+
+  useEffect(() => {
+    console.log("WATCHLIST", isWatchlist)
+  }, [])
+
   const dispatch = useDispatch();
   useEffect(async () => {
     const response = await stocksAPI.getStockInfo(item?.symbol);
@@ -68,7 +77,7 @@ export default StockScreen = ({ route, navigation }) => {
   };
 
   async function updateWatchLIst(is_add) {
-    setWatchlistLoading(true);
+    // setWatchlistLoading(true);
     await dispatch(
       updateWatchlistThunk(profileInfo?._id.$oid, item?.symbol, is_add)
     );
@@ -229,7 +238,7 @@ export default StockScreen = ({ route, navigation }) => {
                     )}
                     (
                     {roundOff(
-                      stockInfo?.pChange || stockInfo?.priceInfo?.change,
+                      stockInfo?.pChange || stockInfo?.priceInfo?.pChange,
                       2
                     )}
                     %)
@@ -247,12 +256,13 @@ export default StockScreen = ({ route, navigation }) => {
             </View>
             {!watchlistLoading ? (
               <View style={{}}>
-                {profileInfo?.watchlist.find(
-                  (element) => element == item?.symbol
-                ) ? (
+                {isWatchlist ? (
                   <TouchableOpacity
                     style={styles.watchButtonStyle}
-                    onPress={() => updateWatchLIst(false)}
+                    onPress={() => {
+                      setIsWatchlist(false);
+                      updateWatchLIst(false)
+                    }}
                     underlayColor="#fff"
                   >
                     <Text style={{ color: "#fff", padding: 5 }}>Unwatch</Text>
@@ -260,7 +270,10 @@ export default StockScreen = ({ route, navigation }) => {
                 ) : (
                   <TouchableOpacity
                     style={styles.watchButtonStyleOutline}
-                    onPress={() => updateWatchLIst(true)}
+                    onPress={() => {
+                      setIsWatchlist(true);
+                      updateWatchLIst(true)
+                    }}
                   >
                     <Text
                       style={{

@@ -46,7 +46,6 @@ function ItemHome({}) {
             data={s}
             keyExtractor={(item) => item?.identifier}
             renderItem={({item}) => {
-                console.log("BUZZINGITEM", item);
                 return (
                   <BuzzingItem
                     item={item} />

@@ -9,8 +9,8 @@ export const updateWatchlistThunk = (id, symbol, is_add) => async dispatch => {
     const response = await profileAPI.updateWatchlist(id, symbol, is_add);
     console.log("ID", id, symbol)
     if(response?.status == 200){
-        await dispatch(getProfileInfoThunk(id))
-        dispatch(getMyWatchlistDataThunk(id))
+        dispatch(getProfileInfoThunk(id))
+        // dispatch(getMyWatchlistDataThunk(id))
     }
     dispatch({type: WATCHLIST_LOADING, payload: false})
 }

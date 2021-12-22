@@ -30,7 +30,9 @@ const SearchStocks = () => {
 
     return (
         <FlatList
+            keyboardShouldPersistTaps={'always'}
             style={{height: '100%'}}
+            keyboardDismissMode="never"
             scrollEnabled={true}
             data={suggestions?.symbols}
             renderItem={renderItem}

@@ -91,5 +91,9 @@ export const setSuggestionEmptyThunk = (startText) => async dispatch => {
 }
 
 export const getCryptoThunk = () => async dispatch => {
-
+    const response = await stocksAPI.getCryptos();
+    dispatch({
+        type: GET_CRYPTO,
+        payload: response.data?.data
+    })
 }

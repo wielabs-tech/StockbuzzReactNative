@@ -45,7 +45,7 @@ export default HomeScreen = ({ params }) => {
     await dispatch(getDiscoverRoomsThunk(profile?._id?.$oid))
     await dispatch(getCryptoSearchThunk());
     // dispatch(getMyRoomsThunk(profile?._id?.$oid))
-    // await dispatch(getCryptoThunk());
+    await dispatch(getCryptoThunk());
   }, [])
 
   const renderItem = ({ item }) => {

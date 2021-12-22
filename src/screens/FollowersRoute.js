@@ -82,7 +82,7 @@ const FollowersRoute = ({route}) => {
 
     return (
         <FlatList
-            data={user.followers_list}
+            data={user?.followers_list}
             keyExtractor={item => item?.$oid}
             renderItem={renderItem}
         />
