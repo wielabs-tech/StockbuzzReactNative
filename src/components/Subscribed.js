@@ -99,7 +99,7 @@ function Subscribed() {
                 data={myRooms}
                 numColumns={2}
                 renderItem={renderItem}
-                keyExtractor={item => item?.id}
+                keyExtractor={item => item?._id?.$oid}
             />
         </View>
     )

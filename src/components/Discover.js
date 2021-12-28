@@ -120,7 +120,7 @@ function Discover() {
                 data={notJoined}
                 numColumns={2}
                 renderItem={renderItem}
-                keyExtractor={item => item?.id}
+                keyExtractor={item => item?._id?.$oid}
             />
         </View>
     )

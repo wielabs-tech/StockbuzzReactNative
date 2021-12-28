@@ -25,7 +25,7 @@ export const getProfileInfoThunk = (id) => async dispatch => {
 
 export const clearWatchlistThunk = (id) => async dispatch => {
     const response = await profileAPI.clearWatchlist(id);
-    dispatch(getMyWatchlistDataThunk(id));
+    dispatch(getProfileInfoThunk(id));
 }
 
 

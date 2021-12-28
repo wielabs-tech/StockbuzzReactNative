@@ -59,7 +59,7 @@ export const getCryptoSearchThunk  = () => async dispatch => {
     let responseJson = await stocksAPI.getCryptos();
     dispatch({
         type: CRYPTO_SEARCH,
-        payload: responseJson.data?.data
+        payload: responseJson?.data?.data
     })
 }
 

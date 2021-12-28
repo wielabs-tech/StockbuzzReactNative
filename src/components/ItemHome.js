@@ -23,28 +23,19 @@ function ItemHome({}) {
         dispatch(getTrendingStocksThunk())
     }, []);
 
-    const [render, setRender] = useState(false);
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setRender(!render);
-    //         dispatch(getTrendingStocksThunk())
-    //     }, 10000);
-    // }, [render]);
-
     async function refresh() {
         setIsRefreshing(true)
         await dispatch(getTrendingStocksThunk())
         setIsRefreshing(false)
     }
-
+    
     return (
         <FlatList
             refreshing={isRefreshing}
             onRefresh={() => { refresh() }}
             numColumns={2}
             data={s}
-            keyExtractor={(item) => item?.identifier}
+            keyExtractor={(item) => item.identifier}
             renderItem={({item}) => {
                 return (
                   <BuzzingItem

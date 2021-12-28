@@ -111,7 +111,7 @@ export const stocksAPI = {
   },
 
   getCryptos() {
-    return APIStock.get(`v1/cryptocurrency/map`);
+    // return APIStock.get(`v1/cryptocurrency/map`);
   }
 
 }

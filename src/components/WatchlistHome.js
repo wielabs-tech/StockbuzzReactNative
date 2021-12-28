@@ -27,20 +27,20 @@ function WatchlistHome({}) {
   const data = watchlistData?.data;
   const profileInfo = useSelector((state) => state.profile.profileInfo);
   const dispatch = useDispatch();
-  const cryptos = useSelector(state => state.stocks.cryptos);
+  const cryptos = useSelector((state) => state.stocks.cryptos);
   const [coinsArray, setCoinsArray] = useState([]);
   const watchlistCrypto = useSelector((state) => state.stocks.cryptoWatchlist);
 
-  useEffect(async () => {
-    dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid));
-    const cryptoWatchlist = data.filter((e) => !e?.activeSeries);
-    await dispatch(getCryptoWatchlisthunk(cryptoWatchlist.join(",")));
-    let array = [];
-    for (var i = 0; i < cryptoWatchlist?.length; i++) {
-      array.push(watchlistCrypto[cryptoWatchlist[i]]);
-    }
-    await setCoinsArray(array);
-  }, []);
+  // useEffect(async () => {
+  //   dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid));
+  //   const cryptoWatchlist = data.filter((e) => !e?.activeSeries);
+  //   await dispatch(getCryptoWatchlisthunk(cryptoWatchlist.join(",")));
+  //   let array = [];
+  //   for (var i = 0; i < cryptoWatchlist?.length; i++) {
+  //     array.push(watchlistCrypto[cryptoWatchlist[i]]);
+  //   }
+  //   await setCoinsArray(array);
+  // }, []);
 
   const [render, setRender] = useState(false);
 
@@ -51,17 +51,16 @@ function WatchlistHome({}) {
   //     }, 10000);
   // }, [render]);
 
-
   async function refresh() {
     setIsRefreshing(true);
-    dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid));
-    const cryptoWatchlist = data.filter((e) => !e?.activeSeries);
-    await dispatch(getCryptoWatchlisthunk(cryptoWatchlist.join(",")));
-    let array = [];
-    for (var i = 0; i < cryptoWatchlist?.length; i++) {
-      array.push(watchlistCrypto[cryptoWatchlist[i]]);
-    }
-    await setCoinsArray(array);
+    // dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid));
+    // const cryptoWatchlist = data.filter((e) => !e?.activeSeries);
+    // await dispatch(getCryptoWatchlisthunk(cryptoWatchlist.join(",")));
+    // let array = [];
+    // for (var i = 0; i < cryptoWatchlist?.length; i++) {
+    //   array.push(watchlistCrypto[cryptoWatchlist[i]]);
+    // }
+    // await setCoinsArray(array);
     setIsRefreshing(false);
   }
 
@@ -74,19 +73,17 @@ function WatchlistHome({}) {
         }}
         numColumns={2}
         data={profileInfo?.watchlist}
-        keyExtractor={(item) => item?.symbol}
+        keyExtractor={(item) => item}
         renderItem={({ item }) => {
-          console.log("REE", item);
-          const result = cryptos?.filter(e => e.symbol === item);
-          console.log("RESULT", result)
-          if(result?.length > 0){
-              return(
-                  <BuzzingItemCrypto
-                    item={{
-                        symbol: item
-                    }}
-                  />
-              )
+          const result = cryptos?.filter((e) => e.symbol === item);
+          if (result?.length > 0) {
+            return (
+              <BuzzingItemCrypto
+                item={{
+                  symbol: item,
+                }}
+              />
+            );
           }
           return (
             <BuzzingItem

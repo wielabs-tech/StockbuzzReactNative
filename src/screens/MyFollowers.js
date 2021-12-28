@@ -117,7 +117,7 @@ const FollowersRoute = ({ route }) => {
   return (
     <FlatList
       data={profile?.followers_list}
-      keyExtractor={(item) => item?.$oid}
+      keyExtractor={(item) => item?._id?.$oid}
       renderItem={renderItem}
     />
   );

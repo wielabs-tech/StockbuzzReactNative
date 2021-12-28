@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { stocksAPI } from "../api/ajax";
 
 export const Item = ({ item }) => {
   const ran_colors = [
@@ -18,6 +19,13 @@ export const Item = ({ item }) => {
   ];
   const navigation = useNavigation();
 
+  const [details, setDetails] = useState();
+
+  useEffect(async () => {
+    const res = await stocksAPI.getStockInfo(item);
+    await setDetails(res.data);
+  }, []);
+
   const roundOff = (number, decimalPlaces) => {
     const factor = Math.pow(10, decimalPlaces);
     return Math.round(number * factor) / factor;
@@ -28,7 +36,10 @@ export const Item = ({ item }) => {
       style={styles.item}
       onPress={() =>
         navigation.push("stockScreen", {
-          item: item,
+          item: {
+            symbol: item,
+            ...details,
+          },
         })
       }
     >
@@ -52,14 +63,12 @@ export const Item = ({ item }) => {
               width: 40,
               height: 40,
               borderRadius: 50,
-              backgroundColor: ran_colors[item?.symbol?.length],
+              backgroundColor: ran_colors[item.length],
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 24, color: "#fff" }}>
-              {item?.symbol[0]}
-            </Text>
+            <Text style={{ fontSize: 24, color: "#fff" }}>{item[0]}</Text>
           </View>
           <View style={{ marginLeft: 5 }}>
             <Text
@@ -70,12 +79,12 @@ export const Item = ({ item }) => {
                 marginBottom: 2,
               }}
             >
-              ${item?.symbol}
+              ${item}
             </Text>
             <Text style={{ fontSize: 12, fontFamily: "inter" }}>
-              {(item?.meta.companyName).length > 40
-                ? (item?.meta.companyName).substring(0, 40 - 3) + "..."
-                : item?.meta.companyName}
+              {(details?.info?.companyName)?.length > 40
+                ? (details?.info.companyName)?.substring(0, 40 - 3) + "..."
+                : details?.info.companyName}
             </Text>
           </View>
         </View>
@@ -89,16 +98,17 @@ export const Item = ({ item }) => {
               alignSelf: "flex-end",
             }}
           >
-            ₹{item?.lastPrice}
+            ₹{roundOff(details?.priceInfo?.lastPrice, 2)}
           </Text>
           <Text
             style={{
               fontSize: 12,
               fontFamily: "inter",
-              color: item?.change > 0 ? "green" : "red",
+              color: details?.priceInfo?.change > 0 ? "green" : "red",
             }}
           >
-            {roundOff(item?.change, 2)}({roundOff(item?.pChange, 2)}%)
+            {roundOff(details?.priceInfo?.change, 2)}(
+            {roundOff(details?.priceInfo?.pChange, 2)}%)
           </Text>
         </View>
       </View>

@@ -7,7 +7,8 @@ import { updateWatchlistThunk } from "../redux/profile/profile.actions";
 import { getMyWatchlistDataThunk } from "../redux/stocks/stocks.actions";
 import { ActivityIndicator } from "react-native-paper";
 
-export const Item = ({ item, isInWatchlist }) => {
+export const Item2 = ({ item, isInWatchlist }) => {
+    const [isInWatchlist1, setIsInWatchlist] = useState(isInWatchlist)
     const ran_colors = ["#abfd16", "#19dd82", "#8baf59", "#c6dcff", "#d3b1a7", "#13a3d3", "#a7cddd", "#cae4b1", "#2578cb", "#308deb", "#1cf8aa"]
     const navigation = useNavigation();
     const profile = useSelector(state => state.profile.profileInfo);
@@ -52,8 +53,9 @@ export const Item = ({ item, isInWatchlist }) => {
                                         style={{ justifyContent: 'center', alignItems: 'center' }}
                                         onPress={async () => {
                                             setWatchlistLoading(true);
-                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol))
+                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol, false))
                                             setWatchlistLoading(false);
+                                            setIsInWatchlist(!isInWatchlist1)
                                         }}
                                     >
                                         <MaterialIcons name="delete" size={24} color="#FF6347" />
@@ -64,8 +66,9 @@ export const Item = ({ item, isInWatchlist }) => {
                                         style={{ justifyContent: 'center', alignItems: 'center' }}
                                         onPress={async () => {
                                             setWatchlistLoading(true);
-                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol))
+                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol, true))
                                             setWatchlistLoading(false);
+                                            setIsInWatchlist(!isInWatchlist1)
                                         }}
                                     >
                                         <MaterialIcons name="add" size={24} color="green" />

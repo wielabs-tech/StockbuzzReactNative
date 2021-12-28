@@ -1,12 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react'
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity } from 'react-native';
-import { cos } from 'react-native-reanimated';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {  useState } from 'react'
+import { SafeAreaView, View, FlatList, StyleSheet,} from 'react-native';
+import { useSelector } from 'react-redux';
 import { ItemCryptoWatchlist } from '../components/ItemCryptoWatchlist';
-import { Item } from '../components/ItemRanking';
-import { getCryptoInfoThunk, getCryptoWatchlisthunk, getMyWatchlistDataThunk } from '../redux/stocks/stocks.actions';
-import { getWatchlistDataThunk } from '../redux/user/user.actions';
+import { Item } from '../components/ItemRanking2';
 
 export const Watchers = ({navigation, route}) => {
     const profileInfo = useSelector(state => state.profile.profileInfo);
@@ -34,19 +30,22 @@ export const Watchers = ({navigation, route}) => {
     // }, []);
 
     const renderItem = ({ item }) => {
-        if(item?.meta?.companyName){
-            return <Item item={item} />
-        } else if(item?.symbol){
-            return <ItemCryptoWatchlist item={item} />
-        }
+        return(
+            <Item item={item} />
+        )
+        // if(item?.meta?.companyName){
+        //     return <Item item={item} />
+        // } else if(item?.symbol){
+        //     return <ItemCryptoWatchlist item={item} />
+        // }
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={route.id ? userWatchlist?.concat(coinsArray) : data?.concat(coinsArray)}
+                data={route.id ? userWatchlist?.concat(coinsArray) : profileInfo?.watchlist}
                 renderItem={renderItem}
-                keyExtractor={item => item?.identifier}
+                keyExtractor={item => item}
             />
         </SafeAreaView>
     );
