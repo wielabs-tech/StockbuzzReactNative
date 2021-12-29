@@ -281,33 +281,35 @@ export default UserProfile = ({ navigation, route }) => {
 
   // {"_id": "VhAakW5DtTHwmCcvAm2H", "createdBy": "rohanp2223232323", "latestMessage": {"createdAt": 1631883678094, "text": "Ok bro"}, "name": "rohanp2223232323-Rohan22", "otherUser": "Rohan22"}
   // {"_id": "VhAakW5DtTHwmCcvAm2H", "createdBy": "rohanp2223232323", "latestMessage": {"createdAt": 1631883678094, "text": "Ok bro"}, "name": "rohanp2223232323-Rohan22", "otherUser": "Rohan22"}, {"_id": "621u7YngUpHuVVk16QxA", "createdBy": "Rohan22", "latestMessage": {"createdAt": 1631883639606, "text": "Ndj"}, "name": "Rohan22-rohan3", "otherUser": "rohan3"}]
-  navigation.setOptions({
-    headerLeft: () => (
-      <MaterialIcons
-        name={"arrow-back"}
-        size={24}
-        style={{ marginLeft: 10 }}
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-    ),
-    headerTitle: () => <Text style={styles.title}>Profile</Text>,
-    headerRight: () => (
-      <View style={styles.setting}>
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
         <MaterialIcons
-          color="#737373"
-          fontWeight={100}
-          name="more-vert"
+          name={"arrow-back"}
           size={24}
-          style={{ paddingRight: 20 }}
-          // onPress={() => {
-          //   navigation.navigate("");
-          // }}
+          style={{ marginLeft: 10 }}
+          onPress={() => {
+            navigation.goBack();
+          }}
         />
-      </View>
-    ),
-  });
+      ),
+      headerTitle: () => <Text style={styles.title}>Profile</Text>,
+      headerRight: () => (
+        <View style={styles.setting}>
+          <MaterialIcons
+            color="#737373"
+            fontWeight={100}
+            name="more-vert"
+            size={24}
+            style={{ paddingRight: 20 }}
+            // onPress={() => {
+            //   navigation.navigate("");
+            // }}
+          />
+        </View>
+      ),
+    });
+  }, []);
   const MyProfile = useSelector((state) => state.auth.profileInfo);
 
   const [index, setIndex] = React.useState(0);
@@ -425,9 +427,8 @@ export default UserProfile = ({ navigation, route }) => {
           </View>
         </View>
         <View style={styles.des}>
-          {/* <Text style={{ color: '#00000080' }}>
-            Digital Goodies Team - Web & Mobile UI/UX ,  Graphics;Illustrations
-          </Text> */}
+          <Text style={{color: '#000', fontSize: 16, fontWeight: '400'}}>Bio</Text>
+          <Text style={{ color: "#00000080" }}>{(profile?.bio).trim()} </Text>
         </View>
         {/* user posts following followers watchlist */}
 
@@ -457,7 +458,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
-    margin: 18,
+    marginTop: 18,
+    marginHorizontal: 18,
   },
   profile_name: {
     backgroundColor: "#fff",
@@ -477,12 +479,6 @@ const styles = StyleSheet.create({
   },
   des: {
     marginHorizontal: 18,
-    fontSize: 14,
-    fontWeight: "400",
-    lineHeight: 21,
-    fontFamily: "Inter",
-    fontStyle: "normal",
-    color: "#00000080",
   },
   header: {
     alignItems: "center",

@@ -9,7 +9,6 @@ import { ActivityIndicator } from "react-native-paper";
 import { stocksAPI } from "../api/ajax";
 
 export const Item = ({ item, isInWatchlist }) => {
-  console.log("ITEM", item);
   const ran_colors = [
     "#abfd16",
     "#19dd82",
@@ -45,7 +44,10 @@ export const Item = ({ item, isInWatchlist }) => {
       style={styles.item}
       onPress={() =>
         navigation.push("stockScreen", {
-          item: item,
+          item: {
+            symbol: item,
+            ...details,
+          },
         })
       }
     >

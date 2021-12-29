@@ -67,6 +67,7 @@ function WatchlistHome({}) {
   return (
     <View>
       <FlatList
+        // nestedScrollEnabled={true}
         refreshing={isRefreshing}
         onRefresh={() => {
           refresh();

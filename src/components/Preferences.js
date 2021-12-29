@@ -33,11 +33,13 @@ function Preferences() {
     const profile = useSelector(state => state.profile.profileInfo);
     console.log(profile)
 
-    navigation.setOptions({
-        headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
-            navigation.goBack();
-        }} />,
-    })
+    useEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
+                navigation.goBack();
+            }} />,
+        })
+    }, [])
 
     const [full_name, setFullName] = useState(profile?.full_name);
     const [image, setImage] = useState();

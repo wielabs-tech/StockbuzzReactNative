@@ -87,7 +87,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Groups"
-        component={Rooms}
+        component={GroupsNavigator}
         options={{
           tabBarLabel: "Groups",
           tabBarIcon: ({ color, size }) => (
@@ -97,7 +97,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Messages"
-        component={Messages}
+        component={MessagesNavigator}
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: ({ color, size }) => (
@@ -111,7 +111,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileNavigator}
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (

@@ -24,28 +24,30 @@ export default EditWatchList = ({ navigation }) => {
     else dispatch(setSuggestionEmptyThunk());
   }, [val]);
 
-  navigation.setOptions({
-    headerLeft: () => (
-      <MaterialIcons
-        name="arrow-back"
-        style={{ marginLeft: 10 }}
-        size={24}
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
-    ),
-    headerTitle: () => <Text>Edit Watchlist</Text>,
-    headerRight: () => (
-      <TouchableOpacity
-        onPress={() => {
-          dispatch(clearWatchlistThunk(profileInfo?._id?.$oid));
-        }}
-      >
-        <Text style={{ marginRight: 10, fontSize: 10 }}>Clear watchlist</Text>
-      </TouchableOpacity>
-    ),
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <MaterialIcons
+          name="arrow-back"
+          style={{ marginLeft: 10 }}
+          size={24}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+      ),
+      headerTitle: () => <Text>Edit Watchlist</Text>,
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(clearWatchlistThunk(profileInfo?._id?.$oid));
+          }}
+        >
+          <Text style={{ marginRight: 10, fontSize: 10 }}>Clear watchlist</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   const backAction = () => {
     console.log("HELLO");
@@ -81,7 +83,11 @@ export default EditWatchList = ({ navigation }) => {
     //     return true;
     //   }
     // }
-    console.log("II", item?.symbol, profileInfo.watchlist.includes(item?.symbol))
+    console.log(
+      "II",
+      item?.symbol,
+      profileInfo.watchlist.includes(item?.symbol)
+    );
     return profileInfo.watchlist.includes(item?.symbol);
   }
 

@@ -45,13 +45,13 @@ export default StockScreen = ({ route, navigation }) => {
   const [isLoadingProgress, setIsLoadingProgress] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState("");
-  const [isWatchlist, setIsWatchlist] = useState(profileInfo?.watchlist.find(
-    (element) => element == item?.symbol
-  ))
+  const [isWatchlist, setIsWatchlist] = useState(
+    profileInfo?.watchlist.find((element) => element == item?.symbol)
+  );
 
   useEffect(() => {
-    console.log("WATCHLIST", isWatchlist)
-  }, [])
+    console.log("WATCHLIST", isWatchlist);
+  }, []);
 
   const dispatch = useDispatch();
   useEffect(async () => {
@@ -87,35 +87,37 @@ export default StockScreen = ({ route, navigation }) => {
     setWatchlistLoading(false);
   }
 
-  navigation.setOptions({
-    headerTitle: () => <Text style={styles.title}>{item?.symbol}</Text>,
-    headerLeft: () => (
-      <Icon
-        onPress={() => {
-          navigation.goBack();
-          store.dispatch({ type: GET_STOCK_INFO, payload: null });
-        }}
-        style={{ marginLeft: 14 }}
-        color="#737373"
-        fontWeight={100}
-        backgroundColor="#fff"
-        name="arrow-back"
-        size={24}
-      />
-    ),
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => <Text style={styles.title}>{item?.symbol}</Text>,
+      headerLeft: () => (
+        <Icon
+          onPress={() => {
+            navigation.goBack();
+            store.dispatch({ type: GET_STOCK_INFO, payload: null });
+          }}
+          style={{ marginLeft: 14 }}
+          color="#737373"
+          fontWeight={100}
+          backgroundColor="#fff"
+          name="arrow-back"
+          size={24}
+        />
+      ),
 
-    headerRight: () => (
-      <Icon
-        color="#737373"
-        fontWeight={100}
-        name="help-circle-outline"
-        size={20}
-        style={{ paddingRight: 20 }}
-        // onPress={() => {
-        //   navigation.navigate("");
-        // }}
-      />
-    ),
+      headerRight: () => (
+        <Icon
+          color="#737373"
+          fontWeight={100}
+          name="help-circle-outline"
+          size={20}
+          style={{ paddingRight: 20 }}
+          // onPress={() => {
+          //   navigation.navigate("");
+          // }}
+        />
+      ),
+    });
   });
 
   const renderItem = ({ item }) => {
@@ -249,7 +251,7 @@ export default StockScreen = ({ route, navigation }) => {
               </View>
               <Text style={{ color: "#aaa", fontSize: 12 }}>
                 Last Updated -{" "}
-                {moment(stockInfo?.lastUpdateTime).format(
+                {moment(stockInfo.lastUpdateTime).format(
                   "DD MMM, YYYY h:mm a"
                 )}
               </Text>
@@ -261,7 +263,7 @@ export default StockScreen = ({ route, navigation }) => {
                     style={styles.watchButtonStyle}
                     onPress={() => {
                       setIsWatchlist(false);
-                      updateWatchLIst(false)
+                      updateWatchLIst(false);
                     }}
                     underlayColor="#fff"
                   >
@@ -272,7 +274,7 @@ export default StockScreen = ({ route, navigation }) => {
                     style={styles.watchButtonStyleOutline}
                     onPress={() => {
                       setIsWatchlist(true);
-                      updateWatchLIst(true)
+                      updateWatchLIst(true);
                     }}
                   >
                     <Text

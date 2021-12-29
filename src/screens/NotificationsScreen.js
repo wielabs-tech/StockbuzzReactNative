@@ -16,11 +16,13 @@ import { API_URL } from '../utils/config';
 
 export default Notifications = ({ navigation }) => {
 
-  navigation.setOptions({
-    headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
-      navigation.goBack();
-    }} />,
-  })
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <MaterialIcons name='arrow-back' style={{ marginLeft: 10 }} size={24} onPress={() => {
+        navigation.goBack();
+      }} />,
+    })
+  }, [])
 
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.profileInfo);

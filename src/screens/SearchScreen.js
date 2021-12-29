@@ -154,6 +154,9 @@ export default SearchScreen = ({ navigation }) => {
         onPress={() => {
           navigation.navigate("UserProfile", {
             userId: item?._source?.user_id?.$oid,
+            full_name: item?._source?.full_name,
+            username: item?._source?.username,
+            photo: item?._source?.photo,
           });
         }}
       >
@@ -173,8 +176,8 @@ export default SearchScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => InputRef.current.focus(), 10)
-  }, [])
+    setTimeout(() => InputRef.current.focus(), 10);
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff", height: "100%" }}>

@@ -15,7 +15,6 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LinearGradient from "react-native-linear-gradient";
 import { GroupItem } from "../components/GroupItem";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import PostRoute from "./PostRoute";
 import ItemHome from "../components/ItemHome";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,28 +25,12 @@ import {
   getDiscoverRoomsThunk,
   getMyRoomsThunk,
 } from "../redux/rooms/rooms.actions";
-import {
-  getCryptoSearchThunk,
-  getCryptoThunk,
-} from "../redux/stocks/stocks.actions";
 const { width, height } = Dimensions.get("window");
+import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view";
+import { getTrendingStocksThunk } from "../redux/stocks/stocks.actions";
+import { BuzzingItem } from "../components/BuzzingItem";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
-
-export default HomeScreen = ({ params }) => {
+export default HomeScreen2 = ({ params }) => {
   console.log("THEPARAMS", params);
   const [selectedId, setSelectedId] = useState(null);
   const navigation = useNavigation();
@@ -63,6 +46,27 @@ export default HomeScreen = ({ params }) => {
     // await dispatch(getCryptoSearchThunk());
     // await dispatch(getCryptoThunk());
   }, []);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const trendingStocks = useSelector((state) => state.stocks.topTrendingStocks);
+
+  let gainers = trendingStocks?.data?.gainers;
+  let losers = trendingStocks?.data?.losers;
+  const s = gainers ? gainers.concat(losers) : null;
+
+  useEffect(() => {
+    dispatch(getTrendingStocksThunk());
+  }, []);
+
+  async function refresh() {
+    setIsRefreshing(true);
+    await dispatch(getTrendingStocksThunk());
+    setIsRefreshing(false);
+  }
+
+  const renderItemBuzzingItem = ({ item }) => {
+    return <BuzzingItem item={item} />;
+  };
 
   const renderItem = ({ item }) => {
     const isParticipant = myRooms?.find(
@@ -88,44 +92,9 @@ export default HomeScreen = ({ params }) => {
     watchlist: WatchlistHome,
   });
 
-  const renderTabBar = (props) => (
-    <TabBar
-      tabStyle={{
-        width: width / 4,
-      }}
-      pressColor={"transparent"}
-      {...props}
-      style={{
-        elevation: 0,
-        backgroundColor: "white",
-        paddingTop: 4,
-      }}
-      labelStyle={{
-        fontSize: 14,
-        fontWeight: "500",
-        textTransform: "capitalize",
-        fontFamily: "inter",
-      }}
-      indicatorStyle={{
-        height: 4,
-        borderRadius: 4,
-        backgroundColor: "#4955BB",
-      }}
-      activeColor={"#4955BB"}
-      inactiveColor={"#00000080"}
-    />
-  );
-
-  const layout = useWindowDimensions();
-
-  return (
-    <SafeAreaView style={{ backgroundColor: "#fff", height: "100%" }}>
-      <StatusBar
-        animated={true}
-        barStyle="dark-content"
-        backgroundColor="#fff"
-      />
-      <View style={{ marginTop: 10, height: "100%" }}>
+  const renderHeader = () => {
+    return (
+      <ScrollView>
         <View
           style={{
             flexDirection: "row",
@@ -169,20 +138,19 @@ export default HomeScreen = ({ params }) => {
             style={{ marginRight: 10 }}
           />
         </View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={{ marginLeft: 10, marginTop: 10 }}>
-            <Text
-              style={{
-                marginBottom: 5,
-                fontSize: 16,
-                color: "#4955BB",
-                marginLeft: 5,
-                fontWeight: "600",
-              }}
-            >
-              Groups
-            </Text>
-            <FlatList
+        <View style={{ marginLeft: 10, marginTop: 10 }}>
+          <Text
+            style={{
+              marginBottom: 5,
+              fontSize: 16,
+              color: "#4955BB",
+              marginLeft: 5,
+              fontWeight: "600",
+            }}
+          >
+            Groups
+          </Text>
+          <FlatList
               style={{ backgroundColor: "#fff" }}
               showsHorizontalScrollIndicator={false}
               horizontal={true}
@@ -191,57 +159,115 @@ export default HomeScreen = ({ params }) => {
               keyExtractor={(item) => item._id.$oid}
               extraData={selectedId}
             />
-          </View>
-          <View style={{ marginLeft: 10, marginTop: 10 }}>
-            <Text
-              style={{
-                marginBottom: 5,
-                fontSize: 16,
-                color: "#4955BB",
-                marginLeft: 5,
-                fontWeight: "600",
-              }}
-            >
-              My Groups
-            </Text>
-            <FlatList
-              style={{ backgroundColor: "#fff" }}
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              data={myRooms}
-              renderItem={renderItemMyRooms}
-              keyExtractor={(item) => item._id.$oid}
-              extraData={selectedId}
-            />
-          </View>
-          <View style={{ flexDirection: "row", flex: 1, paddingBottom: 10 }}>
-            <TabView
-              renderTabBar={renderTabBar}
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={{ width: layout.width }}
-              indicatorStyle={{ backgroundColor: "#fff" }}
-            />
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                top: 30,
-                right: 10,
-                fontSize: 10,
-                color: "#aaa",
-              }}
-              onPress={() => {
-                navigation.navigate("editWatchlist");
-              }}
-            >
-              <Text style={{ color: "#aaa", fontSize: 10 }}>
-                Edit watchlist
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+        </View>
+        <View style={{ marginLeft: 10, marginTop: 10 }}>
+          <Text
+            style={{
+              marginBottom: 5,
+              fontSize: 16,
+              color: "#4955BB",
+              marginLeft: 5,
+              fontWeight: "600",
+            }}
+          >
+            My Groups
+          </Text>
+          <FlatList
+            style={{ backgroundColor: "#fff" }}
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            data={myRooms}
+            renderItem={renderItemMyRooms}
+            keyExtractor={(item) => item._id.$oid}
+            extraData={selectedId}
+          />
+        </View>
+      </ScrollView>
+    );
+  };
+
+  const renderTabBar = (props) => (
+    <MaterialTabBar
+      tabStyle={{
+        width: width / 4,
+      }}
+      pressColor={"transparent"}
+      {...props}
+      style={{
+        elevation: 0,
+        backgroundColor: "white",
+        paddingTop: 4,
+      }}
+      labelStyle={{
+        fontSize: 14,
+        fontWeight: "500",
+        textTransform: "capitalize",
+        fontFamily: "inter",
+      }}
+      indicatorStyle={{
+        height: 4,
+        borderRadius: 4,
+        backgroundColor: "#4955BB",
+      }}
+      activeColor={"#4955BB"}
+      inactiveColor={"#00000080"}
+    />
+  );
+
+  const layout = useWindowDimensions();
+
+  const DATA = [
+    {
+      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+      title: "First Item",
+    },
+    {
+      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+      title: "Second Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-145571e29d72",
+      title: "Third Item",
+    },
+  ];
+
+  return (
+    <SafeAreaView style={{ backgroundColor: "#fff", height: "100%" }}>
+      <StatusBar
+        animated={true}
+        barStyle="dark-content"
+        backgroundColor="#fff"
+      />
+      <Tabs.Container
+        renderTabBar={renderTabBar}
+        // navigationState={{ index, routes }}
+        // renderScene={renderScene}
+        // onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        indicatorStyle={{ backgroundColor: "#fff" }}
+        renderHeader={renderHeader}
+      >
+        <Tabs.Tab name="Buzzing Item">
+          <Tabs.FlatList
+            nestedScrollEnabled={true}
+            refreshing={isRefreshing}
+            onRefresh={() => {
+              refresh();
+            }}
+            numColumns={2}
+            data={s}
+            keyExtractor={(item) => item.identifier}
+            renderItem={renderItemBuzzingItem}
+          />
+        </Tabs.Tab>
+        <Tabs.Tab name="Watchlist">
+          <Tabs.ScrollView>
+            <View style={[styles.box, styles.boxA]} />
+            <View style={[styles.box, styles.boxB]} />
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+      </Tabs.Container>
+      {/* <View style={{ marginTop: 10, height: "100%" }}></View>
       <TouchableOpacity
         style={{
           shadowColor: "#000",
@@ -278,7 +304,7 @@ export default HomeScreen = ({ params }) => {
             />
           </View>
         </LinearGradient>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };
