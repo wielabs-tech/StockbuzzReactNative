@@ -14,6 +14,7 @@ import { Input } from "react-native-elements";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LinearGradient from "react-native-linear-gradient";
 import { GroupItem } from "../components/GroupItem";
+import { NseIndia } from "stock-nse-india";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import PostRoute from "./PostRoute";
 import ItemHome from "../components/ItemHome";
@@ -29,6 +30,8 @@ import {
 import {
   getCryptoSearchThunk,
   getCryptoThunk,
+  getMyWatchlistDataThunk,
+  getWatchlistDataUsingAPI,
 } from "../redux/stocks/stocks.actions";
 const { width, height } = Dimensions.get("window");
 
@@ -63,6 +66,16 @@ export default HomeScreen = ({ params }) => {
     // await dispatch(getCryptoSearchThunk());
     // await dispatch(getCryptoThunk());
   }, []);
+
+  const nifty = useSelector((state) => state.stocks.nifty500);
+
+  // useEffect(async () => {
+  //   await dispatch(getWatchlistDataUsingAPI(profile?.watchlist));
+  // }, []);
+
+  useEffect(() => {
+    console.log("NIFTY", nifty);
+  }, [nifty]);
 
   const renderItem = ({ item }) => {
     const isParticipant = myRooms?.find(

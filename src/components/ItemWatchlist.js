@@ -52,10 +52,10 @@ export const Item2 = ({ item, isInWatchlist }) => {
                                     <TouchableOpacity
                                         style={{ justifyContent: 'center', alignItems: 'center' }}
                                         onPress={async () => {
-                                            setWatchlistLoading(true);
-                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol, false))
-                                            setWatchlistLoading(false);
                                             setIsInWatchlist(!isInWatchlist1)
+                                            // setWatchlistLoading(true);
+                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol, false))
+                                            // setWatchlistLoading(false);
                                         }}
                                     >
                                         <MaterialIcons name="delete" size={24} color="#FF6347" />
@@ -65,10 +65,10 @@ export const Item2 = ({ item, isInWatchlist }) => {
                                     <TouchableOpacity
                                         style={{ justifyContent: 'center', alignItems: 'center' }}
                                         onPress={async () => {
-                                            setWatchlistLoading(true);
-                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol, true))
-                                            setWatchlistLoading(false);
                                             setIsInWatchlist(!isInWatchlist1)
+                                            // setWatchlistLoading(true);
+                                            await dispatch(updateWatchlistThunk(profile._id.$oid, item?.symbol, true))
+                                            // setWatchlistLoading(false);
                                         }}
                                     >
                                         <MaterialIcons name="add" size={24} color="green" />

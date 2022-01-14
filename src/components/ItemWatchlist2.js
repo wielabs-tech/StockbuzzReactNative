@@ -89,7 +89,7 @@ export const Item = ({ item, isInWatchlist }) => {
             >
               ${item}
             </Text>
-            {details?.info?.companyName ? (
+            {/* {details?.info?.companyName ? (
               <Text style={{ fontSize: 12, fontFamily: "inter" }}>
                 {(details?.info?.companyName).length > 40
                   ? (details?.info?.companyName).substring(0, 40 - 3) + "..."
@@ -101,7 +101,7 @@ export const Item = ({ item, isInWatchlist }) => {
                   ? (item?.symbol_info).substring(0, 40 - 3) + "..."
                   : item?.symbol_info}
               </Text>
-            )}
+            )} */}
           </View>
         </View>
         {!watchlistLoading ? (

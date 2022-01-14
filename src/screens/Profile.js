@@ -108,6 +108,7 @@ export default ProfileScreen = ({ navigation }) => {
     // dispatch(getMyFollowersThunk(profile?._id?.$oid))
     // dispatch(getMyFollowingThunk(profile?._id?.$oid))
     dispatch(getProfileInfoThunk(profile?._id?.$oid));
+    dispatch(getMyFollowingThunk(profile?._id?.$oid))
   }, []);
 
   const modalRef = useRef();

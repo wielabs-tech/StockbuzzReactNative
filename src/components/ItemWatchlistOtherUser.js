@@ -20,13 +20,6 @@ export const Item = ({ item }) => {
   ];
   const navigation = useNavigation();
 
-  const [details, setDetails] = useState();
-
-  useEffect(async () => {
-    const res = await stocksAPI.getStockInfo(item);
-    await setDetails(res.data);
-  }, []);
-
   const roundOff = (number, decimalPlaces) => {
     const factor = Math.pow(10, decimalPlaces);
     return Math.round(number * factor) / factor;
@@ -39,7 +32,6 @@ export const Item = ({ item }) => {
         navigation.push("stockScreen", {
           item: {
             symbol: item,
-            ...details,
           },
         })
       }
@@ -82,40 +74,8 @@ export const Item = ({ item }) => {
             >
               ${item}
             </Text>
-            <Text style={{ fontSize: 12, fontFamily: "inter" }}>
-              {details?.info?.companyName?.length > 40
-                ? details?.info?.companyName?.substring(0, 40 - 3) + "..."
-                : details?.info?.companyName}
-            </Text>
           </View>
         </View>
-        {details?.priceInfo?.lastPrice ? (
-          <View>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "inter",
-                lineHeight: 17,
-                marginBottom: 2,
-                alignSelf: "flex-end",
-              }}
-            >
-              ₹{roundOff(details?.priceInfo?.lastPrice, 2)}
-            </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                fontFamily: "inter",
-                color: details?.priceInfo?.change > 0 ? "green" : "red",
-              }}
-            >
-              {roundOff(details?.priceInfo?.change, 2)}(
-              {roundOff(details?.priceInfo?.pChange, 2)}%)
-            </Text>
-          </View>
-        ) : (
-          <ActivityIndicator />
-        )}
       </View>
     </TouchableOpacity>
   );

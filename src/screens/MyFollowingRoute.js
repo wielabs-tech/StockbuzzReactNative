@@ -13,11 +13,12 @@ import {
 import { API_URL } from "../utils/config";
 import { useNavigation } from "@react-navigation/core";
 import FastImage from "react-native-fast-image";
+import { UserFollowItem } from "../components/UserFollowItem";
 
 const FollowingRoute = ({ route }) => {
   console.log("ID", route);
   const profile = useSelector((state) => state.profile.profileInfo);
-  const followers = useSelector((state) => state.profile.following);
+  const followings = useSelector((state) => state.profile.following);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -82,7 +83,6 @@ const FollowingRoute = ({ route }) => {
             <TouchableOpacity
               onPress={() => {
                 dispatch(followUserThunk(profile?._id?.$oid, item?._id?.$oid));
-                dispatch(getMyFollowingThunk(profile?._id?.$oid));
               }}
               style={{
                 backgroundColor: "#5B72FF",
@@ -96,7 +96,6 @@ const FollowingRoute = ({ route }) => {
             <TouchableOpacity
               onPress={() => {
                 dispatch(followUserThunk(profile?._id?.$oid, item?._id?.$oid));
-                dispatch(getMyFollowingThunk(profile?._id?.$oid));
               }}
               style={{
                 backgroundColor: "#fff",
@@ -117,9 +116,9 @@ const FollowingRoute = ({ route }) => {
 
   return (
     <FlatList
-      data={profile?.following_list}
+      data={followings}
       keyExtractor={(item) => item?._id?.$oid}
-      renderItem={renderItem}
+      renderItem={({ item }) => <UserFollowItem item={item} />}
     />
   );
 };

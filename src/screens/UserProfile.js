@@ -10,39 +10,21 @@ import {
   Button,
   TouchableOpacity,
   useWindowDimensions,
+  FlatList,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Icon from "react-native-vector-icons/Ionicons";
-import Avatar from "../components/Avatar";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import PostRoute from "./PostRoute";
 import firestore from "@react-native-firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/auth/auth.actions";
-import { MyPostsRoute } from "./MyPostsRoute";
-import Watchers from "./Watchers";
+import Feather from "react-native-vector-icons/Feather";
 import { API_URL } from "../utils/config";
 import { UserPostsRoute } from "./UserPostsRoute";
-import {
-  followUserThunk,
-  getMyFollowersThunk,
-  getMyFollowingThunk,
-  getProfileFollowersThunk,
-  getProfileFollowingThunk,
-} from "../redux/profile/profile.actions";
-import FollowersRoute from "./FollowersRoute";
-import FollowingRoute from "./FollowingRoute";
-import { getUserDetailsById } from "../redux/user/user.actions";
-import { GET_FOLLOWERS, GET_FOLLOWING } from "../redux/profile/profile.types";
+import { followUserThunk } from "../redux/profile/profile.actions";
+// import FollowingRoute from "./FollowingRoute";
 import ImageModal from "react-native-image-modal";
-
-// function isFollowing(likes) {
-//   return likes.$oid === profileInfo?._id?.$oid;
-// }
-
-// const findLike = item?.likes.find(isLiked);
-// const [liked, setLiked] = useState(findLike?.$oid === profileInfo?._id?.$oid);
-// const [localLiked, setLocalLiked] = useState(item?.likes.length);
+import { Item } from "../components/ItemWatchlistOtherUser";
+import { UserFollowItem } from "../components/UserFollowItem";
+import { profileAPI } from "../api/ajax";
 
 const renderTabBar = (props) => (
   <TabBar
@@ -82,26 +64,19 @@ export default UserProfile = ({ navigation, route }) => {
   const [response, setResponse] = useState("");
   const profile = useSelector((state) => state.user.user);
   const [followers, setFollowers] = useState();
+  const [userInfo, setUserInfo] = useState();
   const profileInfo = useSelector((state) => state.profile.profileInfo);
-  const [isFollowing, setIsFollowing] = useState();
+  const followingList = useSelector((state) => state.profile.following);
+  const [isFollowing, setIsFollowing] = useState(
+    followingList?.find((element) => element?._id?.$oid == route.params.userId)
+  );
 
-  useEffect(() => {
-    setIsFollowing(
-      profileInfo?.following?.find(
-        (element) => element?.$oid == route.params.userId
-      )
-    );
-  }, [profile]);
-
-  useEffect(() => {
-    loadUserDetails();
-    // dispatch(getProfileFollowersThunk(route.params.userId))
-    // dispatch(getProfileFollowingThunk(route.params.userId))
+  useEffect(async () => {
+    const userData = await profileAPI.getProfileInfo(route.params.userId);
+    setUserInfo(userData.data);
+    // dispatch(getUserDetailsById(route.params.userId));
   }, []);
 
-  const loadUserDetails = async () => {
-    dispatch(getUserDetailsById(route.params.userId));
-  };
   const [threads, setThreads] = useState();
 
   async function handleButtonPress(roomName) {
@@ -166,121 +141,7 @@ export default UserProfile = ({ navigation, route }) => {
         navigation.navigate("MessageRoom", { thread: data2[0] });
       }
     }
-
-    // const r2 = await firestore()
-    //   .collection('MESSAGE_THREADS')
-    //   .where('createdBy', '==', profile?.username)
-    //   .where('otherUser', '==', profileInfo?.username)
-
-    // let data2 = []
-    // const snapshot2 = await r2.get();
-    // snapshot2.forEach(doc => {
-    //   let d = doc.data();
-    //   d._id = doc.id
-    //   data2.push(d);
-    // });
-
-    // console.log("DATALENGTH2", JSON.stringify(data2));
-    // if (data2.length == 0) {
-    //   firestore()
-    //     .collection('MESSAGE_THREADS')
-    //     .add({
-    //       name: roomName,
-    //       latestMessage: {
-    //         text: ``,
-    //         createdAt: new Date().getTime(),
-    //       },
-    //       createdBy: profileInfo?.username,
-    //       otherUser: profile?.username,
-    //       createdByUID: profileInfo?._id?.$oid,
-    //       otherUserUID: profile?._id?.$oid
-    //     })
-    //     .then(async (m) => {
-    //       console.log("CRETED MSG", m)
-    //       const r = await firestore()
-    //         .collection('MESSAGE_THREADS')
-    //         .where('createdBy', '==', profileInfo?.username)
-    //         .where('otherUser', '==', profile?.username)
-
-    //       let data = []
-    //       const snapshot = await r.get();
-
-    //       snapshot.forEach(doc => {
-    //         let d = doc.data();
-    //         d._id = doc.id
-    //         console.log(d)
-    //         navigation.navigate('MessageRoom', { thread: d })
-    //       });
-    //     })
-    // } else {
-    //   console.log(data2[0]);
-    //   navigation.navigate('MessageRoom', { thread: data2[0] })
-    // }
-
-    // if (roomName.length > 0) {
-    //   await firestore()
-    //     .collection('MESSAGE_THREADS')
-    //     .orderBy('latestMessage.createdAt', 'desc')
-    //     .get(querySnapshot => {
-    //       const threads = querySnapshot.docs.map(e => {
-    //         // if(documentSnapshot._data.createdBy === profile?.username || documentSnapshot._data.otherUser === profile?.username){
-    //         return {
-    //           _id: e.id,
-    //           name: '',
-    //           latestMessage: { text: '' },
-    //           createdBy: '',
-    //           otherUser: '',
-    //           ...e.data()
-    //         }
-    //       })
-    //       let filtered = threads
-    //         ?.filter(e => {
-    //           return (e?.createdBy === profile?.username || e?.otherUser === profile?.username)
-    //         })//filter to only keep elements from the same state
-    //         .map(e => {
-    //           const {
-    //             _id,
-    //             name,
-    //             latestMessage,
-    //             createdBy,
-    //             otherUser,
-    //           } = e;
-    //           return {
-    //             _id,
-    //             name,
-    //             latestMessage,
-    //             createdBy,
-    //             otherUser,
-    //           };
-    //         });
-    //         console.log("FILTERED", filtered)
-    //       if (filtered.length < 1) {
-    //         firestore()
-    //           .collection('MESSAGE_THREADS')
-    //           .add({
-    //             name: roomName,
-    //             latestMessage: {
-    //               text: ``,
-    //               createdAt: new Date().getTime(),
-    //             },
-    //             createdBy: profileInfo?.username,
-    //             otherUser: profile?.username
-    //           })
-    //           .then((m) => {
-    //             console.log("CRETED MSG", m)
-    //             // navigation.navigate('MessageRoom')
-    //           })
-    //           filtered = [];
-    //       } else {
-    //         const fil = filtered.filter(e => (e.createdBy === profileInfo?.username && e.otherUser === profile?.username) || (e.createdBy === profile?.username && e.otherUser === profileInfo?.username))
-    //         navigation.navigate("MessageRoom", { thread: fil[0] })
-    //       }
-    //     })
-    // }
   }
-
-  // {"_id": "VhAakW5DtTHwmCcvAm2H", "createdBy": "rohanp2223232323", "latestMessage": {"createdAt": 1631883678094, "text": "Ok bro"}, "name": "rohanp2223232323-Rohan22", "otherUser": "Rohan22"}
-  // {"_id": "VhAakW5DtTHwmCcvAm2H", "createdBy": "rohanp2223232323", "latestMessage": {"createdAt": 1631883678094, "text": "Ok bro"}, "name": "rohanp2223232323-Rohan22", "otherUser": "Rohan22"}, {"_id": "621u7YngUpHuVVk16QxA", "createdBy": "Rohan22", "latestMessage": {"createdAt": 1631883639606, "text": "Ndj"}, "name": "Rohan22-rohan3", "otherUser": "rohan3"}]
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -311,7 +172,7 @@ export default UserProfile = ({ navigation, route }) => {
     });
   }, []);
   const MyProfile = useSelector((state) => state.auth.profileInfo);
-
+  console.log("ROUTE", route.params);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "post", title: "Post", profile: route.params.userId },
@@ -320,10 +181,46 @@ export default UserProfile = ({ navigation, route }) => {
     { key: "following", title: "Following", user: profile },
   ]);
 
+  const Followers = () => {
+    return (
+      <FlatList
+        data={userInfo?.followers_list}
+        keyExtractor={(item) => item?._id?.$oid}
+        renderItem={({ item }) => <UserFollowItem item={item} />}
+      />
+    );
+  };
+
+  const FollowingRoute = () => {
+    return (
+      <FlatList
+        data={userInfo?.following_list}
+        keyExtractor={(item) => item?._id?.$oid}
+        renderItem={({ item }) => <UserFollowItem item={item} />}
+      />
+    );
+  };
+
+  const Watchers = ({ navigation, route }) => {
+    const renderItem = ({ item }) => {
+      return <Item item={item} />;
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={userInfo?.watchlist}
+          renderItem={renderItem}
+          keyExtractor={(item) => item}
+        />
+      </SafeAreaView>
+    );
+  };
+
   const renderScene = SceneMap({
     post: UserPostsRoute,
     watchlist: Watchers,
-    followers: FollowersRoute,
+    followers: Followers,
     following: FollowingRoute,
   });
   return (
@@ -348,47 +245,50 @@ export default UserProfile = ({ navigation, route }) => {
               <Text style={styles.name}>{full_name}</Text>
               <Text style={styles.sub_name}>@{username}</Text>
             </View>
-            {!isFollowing ? (
-              <TouchableOpacity style={{ marginRight: 60 }}>
-                <Text
+            <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+              {!isFollowing ? (
+                <TouchableOpacity
                   onPress={async () => {
+                    console.log("CLICKED");
                     await dispatch(
                       followUserThunk(MyProfile?._id?.$oid, profile?._id?.$oid)
                     );
+                    setIsFollowing(!isFollowing);
                   }}
-                  style={{
-                    paddingVertical: 5,
-                    borderRadius: 5,
-                    paddingHorizontal: 10,
-                    color: "#4955BB",
-                    fontFamily: "inter",
-                    fontWeight: "500",
-                    borderRadius: 5,
-                    borderWidth: 1,
-                    borderColor: "#4955BB",
-                  }}
+                  style={{ marginRight: 60, alignSelf: "flex-end" }}
                 >
-                  Follow
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <View>
-                <View
+                  <Text
+                    style={{
+                      paddingVertical: 5,
+                      borderRadius: 5,
+                      paddingHorizontal: 10,
+                      color: "#4955BB",
+                      fontFamily: "inter",
+                      fontWeight: "500",
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: "#4955BB",
+                    }}
+                  >
+                    Follow
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={async () => {
+                    console.log("USER");
+                    await dispatch(
+                      followUserThunk(MyProfile?._id?.$oid, route.params.userId)
+                    );
+                    setIsFollowing(!isFollowing);
+                  }}
                   style={{
-                    marginRight: 60,
                     backgroundColor: "#4955BB",
                     borderRadius: 5,
+                    marginTop: 10,
                   }}
                 >
                   <Text
-                    onPress={async () => {
-                      await dispatch(
-                        followUserThunk(
-                          MyProfile?._id?.$oid,
-                          profile?._id?.$oid
-                        )
-                      );
-                    }}
                     style={{
                       paddingVertical: 5,
                       paddingHorizontal: 10,
@@ -400,35 +300,35 @@ export default UserProfile = ({ navigation, route }) => {
                   >
                     Following
                   </Text>
-                </View>
-                <TouchableOpacity style={{ marginRight: 60, marginTop: 10 }}>
-                  <Text
-                    onPress={() => {
-                      handleButtonPress(
-                        MyProfile?.username + "-" + profile?.username
-                      );
-                    }}
-                    style={{
-                      paddingVertical: 5,
-                      borderRadius: 5,
-                      paddingHorizontal: 10,
-                      borderColor: "#4955BB",
-                      color: "#4955bb",
-                      borderWidth: 1,
-                      fontFamily: "inter",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Message
-                  </Text>
                 </TouchableOpacity>
-              </View>
-            )}
+              )}
+              {isFollowing ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    handleButtonPress(
+                      MyProfile?.username + "-" + profile?.username
+                    );
+                  }}
+                  style={{
+                    marginRight: 60,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Feather name="message-circle" size={24} color="#4955BB" />
+                </TouchableOpacity>
+              ) : (
+                <></>
+              )}
+            </View>
           </View>
         </View>
         <View style={styles.des}>
-          <Text style={{color: '#000', fontSize: 16, fontWeight: '400'}}>Bio</Text>
-          <Text style={{ color: "#00000080" }}>{(profile?.bio).trim()} </Text>
+          <Text style={{ color: "#000", fontSize: 16, fontWeight: "400" }}>
+            Bio
+          </Text>
+          <Text style={{ color: "#00000080" }}>{profile?.bio?.trim()} </Text>
         </View>
         {/* user posts following followers watchlist */}
 

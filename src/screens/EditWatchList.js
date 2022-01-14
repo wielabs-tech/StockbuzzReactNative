@@ -20,7 +20,9 @@ export default EditWatchList = ({ navigation }) => {
   const [val, setVal] = useState("");
 
   useEffect(() => {
-    if (val.length > 0) dispatch(getSuggestionsThunk(val.toLowerCase()));
+    if (val.length > 0) {
+      dispatch(getSuggestionsThunk(val.toLowerCase()));
+    }
     else dispatch(setSuggestionEmptyThunk());
   }, [val]);
 
@@ -60,7 +62,7 @@ export default EditWatchList = ({ navigation }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid));
+    // dispatch(getMyWatchlistDataThunk(profileInfo?._id?.$oid));
   }, []);
 
   console.log("USER", userWatchlist);

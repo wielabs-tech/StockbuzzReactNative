@@ -72,7 +72,7 @@ export default Notifications = ({ navigation }) => {
       renderItem={(item) => {
         const Notification = item?.item;
         let attachment = <View/>;
-        console.log("ITEM", API_URL + Notification.user.photo)
+        console.log("ITEM", API_URL + Notification?.user?.photo)
 
         let mainContentStyle;
         if(Notification.attachment) {
@@ -83,7 +83,7 @@ export default Notifications = ({ navigation }) => {
           <View style={styles.container}>
             {
               !!Notification?.user?.photo ? (
-                <FastImage source={{uri: API_URL + "/" + Notification.user.photo}} style={styles.avatar}/>
+                <FastImage source={{uri: API_URL + "/" + Notification?.user?.photo}} style={styles.avatar}/>
               ) : (
                 <MaterialIcons name={"account-circle"} size={54} color={'#aaa'} style={styles.avatar}/>
               )
@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
     width: 50
   },
   separator: {
-    height: 1,
-    backgroundColor: "#CCCCCC"
+    height: 0.5,
+    backgroundColor: "#fff"
   },
   timeAgo: {
     fontSize: 10,

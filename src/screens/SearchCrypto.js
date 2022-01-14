@@ -33,7 +33,7 @@ const SearchCrypto = () => {
 
   return (
     <FlatList
-      keyboardDismissMode="never"
+      keyboardDismissMode="none"
       keyboardShouldPersistTaps={"always"}
       data={cryptos}
       renderItem={renderItemUsers}
