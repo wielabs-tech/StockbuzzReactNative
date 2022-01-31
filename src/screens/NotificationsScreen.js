@@ -72,7 +72,7 @@ export default Notifications = ({ navigation }) => {
       renderItem={(item) => {
         const Notification = item?.item;
         let attachment = <View/>;
-        console.log("ITEM", API_URL + Notification?.user?.photo)
+        console.log("ITEM", JSON.stringify(Notification))
 
         let mainContentStyle;
         if(Notification.attachment) {
@@ -95,7 +95,7 @@ export default Notifications = ({ navigation }) => {
                   <Text>{Notification.body}</Text>
                 </View>
                 <Text style={styles.timeAgo}>
-                  2 hours ago
+                  {msToTime(Date.now() - Notification?.created_at?.$date)}
                 </Text>
               </View>
               {attachment}

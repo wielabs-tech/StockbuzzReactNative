@@ -21,16 +21,14 @@ export const UserFollowItem = ({ item }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isMe, setIsMe] = useState(profile?._id?.$oid === item?._id?.$oid);
-  const [isFollowing, setIsFollowing] = useState(followingList?.find(
-    (element) => element?._id?.$oid == item?._id?.$oid
-  ));
+  const [isFollowing, setIsFollowing] = useState();
 
-  // useEffect(() => {
-  //   const isFollowing = followingList?.find(
-  //     (element) => element?._id?.$oid == item?._id?.$oid
-  //   );
-  //   setIsFollowing(isFollowing);
-  // }, [profile, followingList]);
+  useEffect(() => {
+    const isFollowing = followingList?.find(
+      (element) => element?._id?.$oid == item?._id?.$oid
+    );
+    setIsFollowing(isFollowing);
+  }, [profile, followingList]);
 
   return (
     <TouchableOpacity

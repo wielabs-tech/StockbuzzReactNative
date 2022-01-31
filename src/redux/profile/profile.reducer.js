@@ -66,7 +66,7 @@ const reducer = (state = INITIAL_STATE, action) => {
             console.log("ACTION", action)
             return{
                 ...state,
-                notificationData: action.payload
+                notificationData: action.payload.reverse()
             }
 
         default:

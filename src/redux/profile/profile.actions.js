@@ -103,6 +103,7 @@ export const getUserPostsThunk = (id) => async (dispatch) => {
 };
 
 export const followUserThunk = (id, otherId) => async (dispatch) => {
+  console.log("ID", id, otherId);
   const response = await profileAPI.followUser(id, otherId);
   await dispatch(getMyFollowingThunk(id));
   return response;

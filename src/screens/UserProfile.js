@@ -62,6 +62,7 @@ export default UserProfile = ({ navigation, route }) => {
   const layout = useWindowDimensions();
   const dispatch = useDispatch();
   const [response, setResponse] = useState("");
+  const userId = route?.params?.userId;
   const profile = useSelector((state) => state.user.user);
   const [followers, setFollowers] = useState();
   const [userInfo, setUserInfo] = useState();
@@ -251,7 +252,7 @@ export default UserProfile = ({ navigation, route }) => {
                   onPress={async () => {
                     console.log("CLICKED");
                     await dispatch(
-                      followUserThunk(MyProfile?._id?.$oid, profile?._id?.$oid)
+                      followUserThunk(MyProfile?._id?.$oid, userId)
                     );
                     setIsFollowing(!isFollowing);
                   }}

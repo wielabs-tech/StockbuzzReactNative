@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -32,15 +32,18 @@ import {
   joinGroupThunk,
 } from "../redux/rooms/rooms.actions";
 import FastImage from "react-native-fast-image";
+import { ActivityIndicator } from "react-native-paper";
 var dateFormat = require("dateformat");
 
 export default GroupPage = ({ navigation, route }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const myRooms = useSelector((state) => state.rooms.myRooms);
   console.log("MYROOMS", myRooms);
 
-  const isParticipant = myRooms?.find(
-    (element) => element?._id?.$oid == route.params._id?.$oid
+  const [isParticipant, setIsParticipant] = useState(
+    myRooms?.find((element) => element?._id?.$oid == route.params._id?.$oid)
   );
+
   console.log("ISPARTICIPANT", isParticipant);
 
   const groupInfo = route?.params;
@@ -147,9 +150,10 @@ export default GroupPage = ({ navigation, route }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 marginBottom: 4,
+                marginRight: 10,
               }}
             >
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", paddingRight: 20 }}>
                 <Text style={{ color: "#000", fontSize: 10 }}>
                   {groupInfo.participants.length}
                 </Text>
@@ -164,12 +168,6 @@ export default GroupPage = ({ navigation, route }) => {
                   People
                 </Text>
               </View>
-              <Text
-                adjustsFontSizeToFit
-                style={{ fontSize: 8, alignSelf: "flex-end", color: "#fff" }}
-              >
-                Join group
-              </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <FastImage
@@ -201,10 +199,13 @@ export default GroupPage = ({ navigation, route }) => {
         {!isParticipant ? (
           <View style={{ marginTop: 10 }}>
             <TouchableOpacity
-              onPress={() => {
-                dispatch(
+              onPress={async () => {
+                setIsLoading(true);
+                await dispatch(
                   joinGroupThunk(groupInfo?._id?.$oid, profile?._id?.$oid)
                 );
+                setIsParticipant(!isParticipant);
+                setIsLoading(false);
               }}
               style={{
                 marginHorizontal: 20,
@@ -213,61 +214,48 @@ export default GroupPage = ({ navigation, route }) => {
                 height: 50,
                 backgroundColor: "#5B72FF",
                 borderRadius: 10,
-                borderWidth: 5,
+                borderWidth: 2,
                 borderColor: "#fff",
-                ...Platform.select({
-                  ios: {
-                    shadowColor: Platform.OS === "ios" ? "#5B72FF" : "#",
-                    shadowOffset: { width: 6, height: 8 },
-                    shadowOpacity: 0.4,
-                    shadowRadius: 4,
-                  },
-                  android: {
-                    elevation: 10,
-                    backgroundColor: "#5b72ff",
-                  },
-                }),
               }}
             >
-              <Text style={{ color: "#fff", alignSelf: "center" }}>
-                Join group
-              </Text>
+              {isLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={{ color: "#fff", alignSelf: "center" }}>
+                  Join group
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         ) : (
           <View style={{ marginTop: 10 }}>
             <TouchableOpacity
-              onPress={() => {
-                dispatch(
+              onPress={async () => {
+                setIsLoading(true);
+                await dispatch(
                   joinGroupThunk(groupInfo?._id?.$oid, profile?._id?.$oid)
                 );
+                setIsParticipant(!isParticipant);
+                setIsLoading(false);
               }}
               style={{
                 marginHorizontal: 20,
                 alignContent: "center",
                 justifyContent: "center",
                 height: 50,
-                backgroundColor: "#5B72FF",
+                backgroundColor: "#fff",
                 borderRadius: 10,
-                borderWidth: 5,
-                borderColor: "#fff",
-                ...Platform.select({
-                  ios: {
-                    shadowColor: Platform.OS === "ios" ? "#5B72FF" : "#",
-                    shadowOffset: { width: 6, height: 8 },
-                    shadowOpacity: 0.4,
-                    shadowRadius: 4,
-                  },
-                  android: {
-                    elevation: 10,
-                    backgroundColor: "#5b72ff",
-                  },
-                }),
+                borderWidth: 1,
+                borderColor: "#5B72FF",
               }}
             >
-              <Text style={{ color: "#fff", alignSelf: "center" }}>
-                Exit group
-              </Text>
+              {isLoading ? (
+                <ActivityIndicator color="#5B72FF" />
+              ) : (
+                <Text style={{ color: "#5B72FF", alignSelf: "center" }}>
+                  Exit group
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         )}
