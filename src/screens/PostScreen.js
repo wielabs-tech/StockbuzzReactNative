@@ -42,7 +42,9 @@ const PostScreen = ({ navigation, route }) => {
   }, []);
 
   const renderItem = ({ item }) => {
-    var UTCseconds = x.getTime() + 330 * 60 * 1000;
+    const d = new Date();
+    let secondsUTC = d.getUTCSeconds();
+    // var UTCseconds = x.getTime() + 330 * 60 * 1000;
 
     function msToTime(duration) {
       var milliseconds = parseInt((duration % 1000) / 100),
@@ -87,7 +89,7 @@ const PostScreen = ({ navigation, route }) => {
             right: 10,
           }}
         >
-          {msToTime(UTCseconds - item?.created_at?.$date)}
+          {msToTime(secondsUTC * 1000 - item?.created_at?.$date)}
         </Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {item?.user?.photo ? (
