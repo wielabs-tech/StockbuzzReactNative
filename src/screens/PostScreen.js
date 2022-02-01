@@ -47,12 +47,13 @@ const PostScreen = ({ navigation, route }) => {
     // var UTCseconds = x.getTime() + 330 * 60 * 1000;
 
     function msToTime(duration) {
+      console.log("DURATION", duration);
       var milliseconds = parseInt((duration % 1000) / 100),
         seconds = Math.floor((duration / 1000) % 60),
         minutes = Math.floor((duration / (1000 * 60)) % 60),
         hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
       var days = Math.floor(duration / (1000 * 60 * 60) / 24);
-
+      console.log("SECONDS", seconds, minutes, hours);
       if (days > 0) {
         if (days === 1) return "1 day ago";
         else return days + " days ago";
@@ -89,7 +90,7 @@ const PostScreen = ({ navigation, route }) => {
             right: 10,
           }}
         >
-          {msToTime(secondsUTC * 1000 - item?.created_at?.$date)}
+          {msToTime(Date.now() + 19800000 - item?.created_at?.$date)}
         </Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {item?.user?.photo ? (

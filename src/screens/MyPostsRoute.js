@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text } from "react-native";
+import { View } from "react-native";
 import { FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { profileAPI } from "../api/ajax";
 import { getMyPostsThunk } from "../redux/profile/profile.actions";
 import PostRoute from "./PostRoute";
+import * as Animatable from "react-native-animatable";
 
 export const MyPostsRoute = () => {
   const [response, setResponse] = useState("");
@@ -37,8 +38,15 @@ export const MyPostsRoute = () => {
       }}
       nestedScrollEnabled
       data={myPosts}
-      renderItem={({ item }) => {
-        return <PostRoute item={item} />;
+      renderItem={({ item, index }) => {
+        return (
+          // <Animatable.View
+          //   animation={'fadeInUp'}
+          //   useNativeDriver
+          // >
+          <PostRoute item={item} />
+          /* </Animatable.View> */
+        );
       }}
       keyExtractor={(item) => item?._id?.$oid}
     />

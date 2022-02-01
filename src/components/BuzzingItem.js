@@ -25,7 +25,7 @@ export const BuzzingItem = ({ item }) => {
             <View style={styles.box}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                        <Text>{item?.symbol}</Text>
+                        <Text>${item?.symbol}</Text>
                         <Text style={{ fontSize: 8 }}></Text>
                     </View>
                     {
@@ -64,7 +64,6 @@ const roundOff = (number, decimalPlaces) => {
 
 const styles = StyleSheet.create({
     box: {
-        height: 125,
         borderRadius: 10,
         backgroundColor: '#fff',
         padding: 12,

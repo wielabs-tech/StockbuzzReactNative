@@ -94,7 +94,6 @@ const roundOff = (number, decimalPlaces) => {
 
 const styles = StyleSheet.create({
   box: {
-    height: 125,
     borderRadius: 10,
     backgroundColor: "#fff",
     padding: 12,

@@ -44,9 +44,8 @@ export default GroupPage = ({ navigation, route }) => {
     myRooms?.find((element) => element?._id?.$oid == route.params._id?.$oid)
   );
 
-  console.log("ISPARTICIPANT", isParticipant);
-
   const groupInfo = route?.params;
+  console.log("GROUPINFO", groupInfo);
 
   useEffect(() => {
     navigation.setOptions(
@@ -272,47 +271,51 @@ export default GroupPage = ({ navigation, route }) => {
           keyExtractor={(item) => item?._id?.$oid}
         />
       </View>
-      <TouchableOpacity
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.5,
-          shadowRadius: 2,
-          elevation: 10,
-          position: "absolute",
-          bottom: 50,
-          right: 20,
-          height: 65,
-          width: 65,
-          backgroundColor: "#fff",
-          borderRadius: 100,
-          justifyContent: "center",
-        }}
-        onPress={() => {
-          console.log("PRESSED");
-          navigation.push("createPost", {
-            groupPost: true,
-            groupId: groupInfo?._id?.$oid,
-          });
-        }}
-      >
-        <LinearGradient
-          colors={["#0063F5", "#4955BB"]}
-          start={{ x: 1, y: 0 }}
-          style={styles.fab}
-          end={{ x: 0, y: 0 }}
-          angle={267.35}
+      {isParticipant ? (
+        <TouchableOpacity
+          style={{
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            elevation: 10,
+            position: "absolute",
+            bottom: 50,
+            right: 20,
+            height: 65,
+            width: 65,
+            backgroundColor: "#fff",
+            borderRadius: 100,
+            justifyContent: "center",
+          }}
+          onPress={() => {
+            console.log("PRESSED");
+            navigation.push("createPost", {
+              groupPost: true,
+              groupId: groupInfo?._id?.$oid,
+            });
+          }}
         >
-          <View style={styles.fab}>
-            <MaterialIcons
-              style={{ alignSelf: "center" }}
-              name="edit"
-              size={24}
-              color="#fff"
-            />
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
+          <LinearGradient
+            colors={["#0063F5", "#4955BB"]}
+            start={{ x: 1, y: 0 }}
+            style={styles.fab}
+            end={{ x: 0, y: 0 }}
+            angle={267.35}
+          >
+            <View style={styles.fab}>
+              <MaterialIcons
+                style={{ alignSelf: "center" }}
+                name="edit"
+                size={24}
+                color="#fff"
+              />
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
     </SafeAreaView>
   );
 };
