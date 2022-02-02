@@ -33,22 +33,7 @@ import {
   getMyWatchlistDataThunk,
   getWatchlistDataUsingAPI,
 } from "../redux/stocks/stocks.actions";
-const { width, height } = Dimensions.get("window");
-
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
+const width = Dimensions.get("window").width;
 
 export default HomeScreen = ({ params }) => {
   console.log("THEPARAMS", params);
@@ -60,9 +45,12 @@ export default HomeScreen = ({ params }) => {
   const discoverRooms = useSelector((state) => state.rooms.discoverRooms);
   const cryptos = useSelector((state) => state.stocks.stockSearch);
 
+  // market could be from CCXT or genearted by the user
+
   useEffect(() => {
     dispatch(getMyRoomsThunk(profile?._id?.$oid));
     dispatch(getDiscoverRoomsThunk(profile?._id?.$oid));
+    dispatch(getCryptoSearchThunk('bit'))
     // await dispatch(getCryptoSearchThunk());
     // await dispatch(getCryptoThunk());
   }, []);

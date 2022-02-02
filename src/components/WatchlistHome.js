@@ -19,6 +19,7 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { BuzzingItem } from "./BuzzingItemWatchlist";
 import { BuzzingItemCrypto } from "./BuzzingItemCrypto";
+import { stocksAPI } from "../api/ajax";
 
 function WatchlistHome({}) {
   const navigation = useNavigation();
@@ -76,16 +77,6 @@ function WatchlistHome({}) {
         data={profileInfo?.watchlist}
         keyExtractor={(item) => item}
         renderItem={({ item }) => {
-          const result = cryptos?.filter((e) => e.symbol === item);
-          if (result?.length > 0) {
-            return (
-              <BuzzingItemCrypto
-                item={{
-                  symbol: item,
-                }}
-              />
-            );
-          }
           return (
             <BuzzingItem
               item={{

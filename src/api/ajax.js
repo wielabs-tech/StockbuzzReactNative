@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { API_URL } from "../utils/config";
 import API from "./api";
-import APIStock from "./apiStocks";
+import APIStock from "./apicrypto";
 
 export const loginAPI = {
   login(email, password, token) {
@@ -97,11 +97,13 @@ export const loginAPI = {
 
 export const stocksAPI = {
   trendingStocks() {
-    const res = API.get(`stocks/NIFTY 50/top/5`);
+    const res = API.get(`stocks/trending`);
     return res;
   },
 
-  getCryptoSearch(search) {},
+  getCryptoSearch(search) {
+    return res = APIStock.get('/search?query=' + search)
+  },
 
   getStockPosts(symbol) {
     return API.get(`stocks/` + symbol + `/posts`);
@@ -129,7 +131,7 @@ export const stocksAPI = {
 
   getCryptoInfo(symbol) {
     const res = APIStock.get(
-      `/v1/cryptocurrency/quotes/latest?symbol=` + symbol
+      `coins/markets?vs_currency=USD&ids=`+ symbol +`&order=market_cap_desc&per_page=100&page=1&sparkline=false`
     );
     return res;
   },

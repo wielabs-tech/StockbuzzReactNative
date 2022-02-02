@@ -30,6 +30,7 @@ import { useIsFocused } from "@react-navigation/core";
 
 export default StockScreen = ({ route, navigation }) => {
   const { item } = route.params;
+  console.log("ITEM", item);
   const { width, height } = Dimensions.get("window");
 
   const [stockInfo, setStockInfo] = useState("");
@@ -41,8 +42,9 @@ export default StockScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch();
   useEffect(async () => {
-    const res = await stocksAPI.getCryptoInfo(item?.symbol);
-    setStockInfo(res?.data?.data[item?.symbol]);
+    const res = await stocksAPI.getCryptoInfo(item?.id);
+    console.log("RESS", res.data[0]);
+    setStockInfo(res?.data[0]);
   }, []);
 
   const isFocused = useIsFocused();
@@ -157,7 +159,7 @@ export default StockScreen = ({ route, navigation }) => {
                   marginTop: 4,
                 }}
               >
-                {stockInfo?.quote?.USD?.price && (
+                {stockInfo?.current_price && (
                   <Text
                     style={{
                       color: "#4955BB",
@@ -166,11 +168,11 @@ export default StockScreen = ({ route, navigation }) => {
                       fontSize: 20,
                     }}
                   >
-                    ${roundOff(stockInfo?.quote?.USD?.price, 4)}
+                    ${roundOff(stockInfo?.current_price, 4)}
                   </Text>
                 )}
-                {stockInfo?.quote?.USD?.percent_change_1h &&
-                stockInfo?.quote?.USD?.percent_change_1h > 0 ? (
+                {stockInfo?.price_change_24h &&
+                stockInfo?.price_change_24h > 0 ? (
                   <Text
                     style={{
                       marginLeft: 8,
@@ -187,23 +189,15 @@ export default StockScreen = ({ route, navigation }) => {
                     <Text style={{ marginLeft: 8 }}></Text>
                   </>
                 )}
-                {stockInfo?.quote?.USD?.percent_change_1h && (
+                {stockInfo?.price_change_24h && (
                   <Text
                     style={{
                       fontSize: 12,
-                      color:
-                        stockInfo?.quote?.USD?.percent_change_1h > 0
-                          ? "green"
-                          : "red",
+                      color: stockInfo?.price_change_24h > 0 ? "green" : "red",
                     }}
                   >
-                    {roundOff(
-                      (stockInfo?.quote?.USD?.percent_change_1h *
-                        stockInfo?.quote?.USD?.price) /
-                        100,
-                      4
-                    )}
-                    ({roundOff(stockInfo?.quote?.USD?.percent_change_1h, 2)}%)
+                    {roundOff(stockInfo?.price_change_24h, 4)}(
+                    {roundOff(stockInfo?.price_change_percentage_24h, 2)}%)
                   </Text>
                 )}
               </View>

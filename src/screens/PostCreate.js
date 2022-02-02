@@ -76,12 +76,12 @@ export default PostCreate = ({ navigation, route }) => {
     let ms = n[n.length - 1];
     if (ms.length > 1 && ms[0] === "$") {
       await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
-      await dispatch(
-        getCryptoSuggestionsThunk(
-          ms.substring(1, ms.length).toLowerCase(),
-          cryptoSearch
-        )
-      );
+      // await dispatch(
+      //   getCryptoSuggestionsThunk(
+      //     ms.substring(1, ms.length).toLowerCase(),
+      //     cryptoSearch
+      //   )
+      // );
       let result = cryptoSuggestions?.concat(suggestions?.symbols);
       onPressTouch();
     } else if (ms.length > 1 && ms[0] === "@") {

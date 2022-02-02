@@ -66,7 +66,7 @@ export default SearchScreen = ({ navigation }) => {
   useEffect(() => {
     if (val.length > 0) {
       dispatch(getSuggestionsThunk(val.toLowerCase()));
-      dispatch(getCryptoSuggestionsThunk(val.toLowerCase(), cryptoSearch));
+      dispatch(getCryptoSearchThunk(val.toLowerCase()));
     } else {
       dispatch({ type: CRYPTO_SUGGESTIONS, payload: [] });
       dispatch(setSuggestionEmptyThunk());

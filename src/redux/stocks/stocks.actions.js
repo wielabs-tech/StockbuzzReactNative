@@ -17,7 +17,7 @@ export const getTrendingStocksThunk = () => async (dispatch) => {
   const response = await stocksAPI.trendingStocks();
   dispatch({
     type: GET_TOP_TRENDING_STOCKS,
-    payload: response,
+    payload: response.data,
   });
 };
 
@@ -76,11 +76,11 @@ export const getStockFeedThunk = (symbol) => async (dispatch) => {
   });
 };
 
-export const getCryptoSearchThunk = () => async (dispatch) => {
-  let responseJson = await stocksAPI.getCryptos();
+export const getCryptoSearchThunk = (search) => async (dispatch) => {
+  let responseJson = await stocksAPI.getCryptoSearch(search);
   dispatch({
     type: CRYPTO_SEARCH,
-    payload: responseJson?.data?.data,
+    payload: responseJson?.data?.coins,
   });
 };
 

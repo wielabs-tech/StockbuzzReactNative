@@ -45,6 +45,6 @@ export const getRoomPostsThunk = (roomid) => async dispatch => {
 export const joinGroupThunk = (roomid, userid) => async dispatch => {
     console.log("ROOMID", roomid)
     const response = await roomsAPI.joinGroup(roomid, userid);
-    dispatch(getMyRoomsThunk(userid));
-    dispatch(getDiscoverRoomsThunk());
+    await dispatch(getMyRoomsThunk(userid));
+    await dispatch(getDiscoverRoomsThunk());
 }

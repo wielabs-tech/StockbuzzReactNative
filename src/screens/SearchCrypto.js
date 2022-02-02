@@ -6,9 +6,10 @@ import { useSelector } from "react-redux";
 
 const SearchCrypto = () => {
   const navigation = useNavigation();
-  const cryptos = useSelector((state) => state.stocks.cryptoSuggestions);
+  const cryptos = useSelector((state) => state.stocks.stockSearch);
 
   const renderItemUsers = ({ item }) => {
+    console.log("ITEM", item)
     return (
       <TouchableOpacity
         style={{ marginLeft: 10, marginRight: 10 }}

@@ -36,6 +36,16 @@ function ItemHome({}) {
     setIsRefreshing(false);
   }
 
+  function compare( a, b ) {
+    if ( a.ranking < b.ranking ){
+      return 1;
+    }
+    if ( a.ranking > b.ranking ){
+      return -1;
+    }
+    return 0;
+  }
+
   return (
     <FlatList
       nestedScrollEnabled={true}
@@ -44,7 +54,7 @@ function ItemHome({}) {
         refresh();
       }}
       numColumns={2}
-      data={s}
+      data={trendingStocks.stocks?.filter(element => element?.activeSeries).sort(compare)}
       keyExtractor={(item) => item.identifier}
       renderItem={({ item }) => {
         return <BuzzingItem item={item} />;
