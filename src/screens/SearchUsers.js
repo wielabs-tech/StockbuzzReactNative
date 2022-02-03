@@ -10,10 +10,8 @@ const SearchUsers = () => {
   const suggestions = useSelector((state) => state.stocks.suggestions);
   const profile = useSelector((state) => state.profile.profileInfo);
 
-  console.log("SUGESTIONS", suggestions?.users);
 
   const renderItemUsers = ({ item }) => {
-    console.log("ITEM", item);
     if (profile?._id?.$oid != item?._id?.$oid)
       return (
         <TouchableOpacity

@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   watchlistData: null,
   suggestions: null,
   stockFeed: null,
-  stockSearch: null,
+  stockSearch: [],
   cryptos: null,
   cryptoSuggestions: [],
   cryptoWatchlist: [],

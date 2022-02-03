@@ -26,7 +26,11 @@ import {
 import SearchStocks from "./SearchStocks";
 import SearchUsers from "./SearchUsers";
 import SearchCrypto from "./SearchCrypto";
-import { CRYPTO_SUGGESTIONS } from "../redux/stocks/stocks.types";
+import {
+  CRYPTO_SEARCH,
+  CRYPTO_SUGGESTIONS,
+} from "../redux/stocks/stocks.types";
+import a from "../utils/coins";
 const { width, height } = Dimensions.get("window");
 
 export default SearchScreen = ({ navigation }) => {
@@ -34,7 +38,7 @@ export default SearchScreen = ({ navigation }) => {
   const suggestions = useSelector((state) => state.stocks.suggestions);
   const [val, setVal] = useState("");
   const dispatch = useDispatch();
-  const cryptos = useSelector((state) => state.stocks.cryptos);
+  const cryptos = useSelector((state) => state.stocks.stockSearch);
   const [filterDataSource, setFilteredDataSource] = useState("");
   const [search, setSearch] = useState("");
   const cryptoSearch = useSelector((state) => state.stocks.stockSearch);
@@ -63,13 +67,30 @@ export default SearchScreen = ({ navigation }) => {
     }
   };
 
+  // useEffect(() => {
+  //   const el = a.filter(el => el.name.includes(val))
+  //   dispatch({type: CRYPTO_SEARCH, payload: el})
+  // }, [val])
+
   useEffect(() => {
-    if (val.length > 0) {
+    if (val.length > 2) {
       dispatch(getSuggestionsThunk(val.toLowerCase()));
-      dispatch(getCryptoSearchThunk(val.toLowerCase()));
+      // dispatch(getCryptoSearchThunk(val.toLowerCase()));
+      const el = a.filter((el) => el.name.includes(val));
+      console.log("EE", el)
+      dispatch({ type: CRYPTO_SEARCH, payload: el });
     } else {
       dispatch({ type: CRYPTO_SUGGESTIONS, payload: [] });
+      dispatch({ type: CRYPTO_SEARCH, payload: [] });
+      console.log("CRYPTS", cryptos)
       dispatch(setSuggestionEmptyThunk());
+    }
+  }, [val]);
+
+  useEffect(() => {
+    if (val.length < 2) {
+      dispatch({ type: CRYPTO_SEARCH, payload: [] });
+      console.log("LESSTHAN2")
     }
   }, [val]);
 
@@ -110,13 +131,11 @@ export default SearchScreen = ({ navigation }) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "stocks", title: "Stocks " },
-    { key: "crypto", title: "Crypto" },
     { key: "users", title: "Users" },
   ]);
 
   const renderScene = SceneMap({
     stocks: SearchStocks,
-    crypto: SearchCrypto,
     users: SearchUsers,
   });
 

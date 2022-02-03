@@ -42,15 +42,19 @@ export default StockScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch();
   useEffect(async () => {
-    const res = await stocksAPI.getCryptoInfo(item?.id);
-    console.log("RESS", res.data[0]);
-    setStockInfo(res?.data[0]);
+    if (item?.id) {
+      const res = await stocksAPI.getCryptoInfo(item?.id);
+      setStockInfo(res?.data[0]);
+    } else {
+      const res = await stocksAPI.getCryptoInfo(item?.slug);
+      setStockInfo(res?.data[0]);
+    }
   }, []);
 
   const isFocused = useIsFocused();
 
   useEffect(async () => {
-    const response1 = await stocksAPI.getStockPosts(item?.symbol);
+    const response1 = await stocksAPI.getStockPosts(item?.symbol.toUpperCase());
     setStockFeed(response1.data);
   }, [isFocused]);
 
@@ -61,14 +65,20 @@ export default StockScreen = ({ route, navigation }) => {
 
   async function updateWatchLIst(is_add) {
     await dispatch(
-      updateWatchlistThunk(profileInfo?._id.$oid, item?.symbol, is_add)
+      updateWatchlistThunk(
+        profileInfo?._id.$oid,
+        item?.symbol.toUpperCase(),
+        is_add
+      )
     );
     setWatchlistLoading(false);
   }
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: () => <Text style={styles.title}>{item?.symbol}</Text>,
+      headerTitle: () => (
+        <Text style={styles.title}>{item?.symbol.toUpperCase()}</Text>
+      ),
       headerLeft: () => (
         <Icon
           onPress={() => {
@@ -108,9 +118,9 @@ export default StockScreen = ({ route, navigation }) => {
   const onRefresh = async () => {
     setRefreshing(true);
     dispatch(getProfileInfoThunk(profileInfo?._id.$oid));
-    const response = await stocksAPI.getCryptoInfo(item?.symbol);
-    await setStockInfo(response?.data?.data[item?.symbol]);
-    const response1 = await stocksAPI.getStockPosts(item?.symbol);
+    const response = await stocksAPI.getCryptoInfo(item?.symbol.toUpperCase());
+    await setStockInfo(response?.data?.data[item?.symbol.toUpperCase()]);
+    const response1 = await stocksAPI.getStockPosts(item?.symbol.toUpperCase());
     setStockFeed(response1.data);
     setRefreshing(false);
   };
@@ -150,7 +160,7 @@ export default StockScreen = ({ route, navigation }) => {
                   fontWeight: "400",
                 }}
               >
-                {item?.symbol}
+                {item?.symbol.toUpperCase()}
               </Text>
               <View
                 style={{
@@ -211,7 +221,7 @@ export default StockScreen = ({ route, navigation }) => {
             {!watchlistLoading ? (
               <View style={{}}>
                 {profileInfo?.watchlist.find(
-                  (element) => element == item?.symbol
+                  (element) => element == item?.symbol.toUpperCase()
                 ) ? (
                   <TouchableOpacity
                     style={styles.watchButtonStyle}
@@ -294,7 +304,7 @@ export default StockScreen = ({ route, navigation }) => {
           console.log("PRESSED", stockInfo?.symbol);
           navigation.push("createPost", {
             groupPost: false,
-            prefill: item?.symbol,
+            prefill: item?.symbol.toUpperCase(),
           });
         }}
       >

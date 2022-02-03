@@ -15,15 +15,12 @@ import { getTrendingStocksThunk } from "../redux/stocks/stocks.actions";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { BuzzingItem } from "./BuzzingItem";
+import { findBySymbol } from "../utils/coins";
 
 function ItemHome({}) {
   const navigation = useNavigation();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const trendingStocks = useSelector((state) => state.stocks.topTrendingStocks);
-
-  let gainers = trendingStocks?.data?.gainers;
-  let losers = trendingStocks?.data?.losers;
-  const s = gainers ? gainers.concat(losers) : null;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,11 +33,11 @@ function ItemHome({}) {
     setIsRefreshing(false);
   }
 
-  function compare( a, b ) {
-    if ( a.ranking < b.ranking ){
+  function compare(a, b) {
+    if (a.ranking < b.ranking) {
       return 1;
     }
-    if ( a.ranking > b.ranking ){
+    if (a.ranking > b.ranking) {
       return -1;
     }
     return 0;
@@ -54,7 +51,10 @@ function ItemHome({}) {
         refresh();
       }}
       numColumns={2}
-      data={trendingStocks.stocks?.filter(element => element?.activeSeries).sort(compare)}
+      // data={trendingStocks?.stocks?.filter(element => element?.activeSeries).sort(compare)}
+      data={trendingStocks?.stocks?.filter(
+        (element) => element?.activeSeries || findBySymbol(element)
+      )}
       keyExtractor={(item) => item.identifier}
       renderItem={({ item }) => {
         return <BuzzingItem item={item} />;
