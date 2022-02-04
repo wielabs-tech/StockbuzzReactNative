@@ -84,13 +84,13 @@ const PostRoute = (props) => {
     const result = findBySymbol(stockSymbol.substring(1))
     console.log("RESULTS", result);
     if (result?.length > 0) {
-      navigation.push("cryptoScreen", {
+      navigation.replace("cryptoScreen", {
         item: {
           symbol: stockSymbol.substring(1),
         },
       });
     } else {
-      navigation.push("stockScreen", {
+      navigation.replace("stockScreen", {
         item: {
           symbol: stockSymbol.substring(1),
         },

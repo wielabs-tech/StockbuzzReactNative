@@ -20,12 +20,16 @@ import { findBySymbol } from "../utils/coins";
 function ItemHome({}) {
   const navigation = useNavigation();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const trendingStocks = useSelector((state) => state.stocks.topTrendingStocks);
+  const trendingStocks = useSelector((state) => state.stocks.topTrendingStocks)
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTrendingStocksThunk());
   }, []);
+
+  useEffect(() => {
+    console.log("SOTK", trendingStocks)
+  }, [trendingStocks])
 
   async function refresh() {
     setIsRefreshing(true);

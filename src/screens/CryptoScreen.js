@@ -27,10 +27,11 @@ import { RefreshControl } from "react-native";
 import { store } from "../redux/store";
 import { GET_STOCK_INFO } from "../redux/stocks/stocks.types";
 import { useIsFocused } from "@react-navigation/core";
+import { findBySymbol } from "../utils/coins";
 
 export default StockScreen = ({ route, navigation }) => {
   const { item } = route.params;
-  console.log("ITEM", item?.posts);
+  console.log("ITEM", item?.symbol);
   const { width, height } = Dimensions.get("window");
 
   const [stockInfo, setStockInfo] = useState(item?.posts);
@@ -43,10 +44,10 @@ export default StockScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   useEffect(async () => {
     if (item?.id) {
-      const res = await stocksAPI.getCryptoInfo(item?.id);
+      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol));
       setStockInfo(res?.data[0]);
     } else {
-      const res = await stocksAPI.getCryptoInfo(item?.slug);
+      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol));
       setStockInfo(res?.data[0]);
     }
   }, []);
