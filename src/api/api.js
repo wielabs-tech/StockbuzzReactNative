@@ -6,6 +6,7 @@ axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['Cache-Control'] = 'max-age=31536000, immutable';
 
 const ajax = axios.create({
   baseURL: API_URL,

@@ -74602,6 +74602,7 @@ const a = [
 ];
 
 export function findBySymbol(symbol) {
+    console.log("GIVE SYMBOL", symbol)
     const e = a.find(el => el.symbol === symbol);
     return e && e.slug;
   }

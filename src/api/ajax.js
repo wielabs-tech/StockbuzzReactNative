@@ -102,7 +102,7 @@ export const stocksAPI = {
   },
 
   getCryptoSearch(search) {
-    return res = APIStock.get('/search?query=' + search)
+    return (res = APIStock.get("/search?query=" + search));
   },
 
   getStockPosts(symbol) {
@@ -116,22 +116,29 @@ export const stocksAPI = {
 
   getStockInfo2(symbol) {
     const res = fetch(
-      "https://www.nseindia.com/api/quote-equity?symbol=" + symbol
+      "https://www.nseindia.com/api/quote-equity?symbol=" + symbol,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
     )
-    .then((response) => response.json())
-    .then((json) => {
-      console.log("RESS", json)
-      return json;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-    console.log("RESS");
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("RESS", JSON.stringify(json));
+        // return json;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
 
   getCryptoInfo(symbol) {
     const res = APIStock.get(
-      `coins/markets?vs_currency=USD&ids=`+ symbol +`&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+      `coins/markets?vs_currency=USD&ids=` +
+        symbol +
+        `&order=market_cap_desc&per_page=100&page=1&sparkline=false`
     );
     return res;
   },

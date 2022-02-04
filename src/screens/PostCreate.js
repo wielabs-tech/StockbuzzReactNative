@@ -31,9 +31,10 @@ import { Icon } from "react-native-elements";
 import { getRoomPostsThunk } from "../redux/rooms/rooms.actions";
 import AsyncStorage from "@react-native-community/async-storage";
 import TwitterButton from "./TwitterButtonConnection";
-import { CRYPTO_SUGGESTIONS } from "../redux/stocks/stocks.types";
+import { CRYPTO_SEARCH, CRYPTO_SUGGESTIONS } from "../redux/stocks/stocks.types";
 import { getMyPostsThunk } from "../redux/profile/profile.actions";
 import FastImage from "react-native-fast-image";
+import a from "../utils/coins";
 
 export default PostCreate = ({ navigation, route }) => {
   const scrollRef = useRef();
@@ -76,19 +77,26 @@ export default PostCreate = ({ navigation, route }) => {
     let ms = n[n.length - 1];
     if (ms.length > 1 && ms[0] === "$") {
       await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
+      console.log(ms.substring(1, ms.length))
+      const el = a.filter((el) => {
+        return el.slug.includes(ms.substring(1, ms.length).toLowerCase())
+      });
+      console.log("EE", el)
+      dispatch({ type: CRYPTO_SEARCH, payload: el });
       // await dispatch(
       //   getCryptoSuggestionsThunk(
       //     ms.substring(1, ms.length).toLowerCase(),
       //     cryptoSearch
       //   )
       // );
-      let result = cryptoSuggestions?.concat(suggestions?.symbols);
+      // let result = cryptoSuggestions?.concat(suggestions?.symbols);
       onPressTouch();
     } else if (ms.length > 1 && ms[0] === "@") {
       await dispatch(getSuggestionsThunk(ms.substring(1, ms.length)));
       onPressTouch();
     } else {
       dispatch(setSuggestionEmptyThunk());
+      dispatch({type: CRYPTO_SEARCH, payload: []})
       dispatch({ type: CRYPTO_SUGGESTIONS, payload: [] });
     }
   }, [message]);
@@ -303,7 +311,7 @@ export default PostCreate = ({ navigation, route }) => {
           <FlatList
             keyboardShouldPersistTaps="always"
             style={{}}
-            data={cryptoSuggestions
+            data={cryptoSearch
               ?.concat(suggestions?.symbols)
               .concat(suggestions?.users)}
             keyExtractor={(item) => item?.id}

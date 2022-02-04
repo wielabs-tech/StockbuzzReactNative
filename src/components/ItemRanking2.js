@@ -26,7 +26,7 @@ export const Item = ({ item }) => {
   useEffect(async () => {
     if(!findBySymbol(item)){
       const res = await stocksAPI.getStockInfo(item);
-      await setDetails(res.data);
+      setDetails(res.data);
     } else {
       const res2 = await stocksAPI.getCryptoInfo(findBySymbol(item));
       await setDetails(res2.data[0]);

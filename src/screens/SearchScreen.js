@@ -77,7 +77,6 @@ export default SearchScreen = ({ navigation }) => {
       dispatch(getSuggestionsThunk(val.toLowerCase()));
       // dispatch(getCryptoSearchThunk(val.toLowerCase()));
       const el = a.filter((el) => el.name.includes(val));
-      console.log("EE", el)
       dispatch({ type: CRYPTO_SEARCH, payload: el });
     } else {
       dispatch({ type: CRYPTO_SUGGESTIONS, payload: [] });

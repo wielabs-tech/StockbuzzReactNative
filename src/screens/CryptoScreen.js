@@ -30,11 +30,11 @@ import { useIsFocused } from "@react-navigation/core";
 
 export default StockScreen = ({ route, navigation }) => {
   const { item } = route.params;
-  console.log("ITEM", item);
+  console.log("ITEM", item?.posts);
   const { width, height } = Dimensions.get("window");
 
-  const [stockInfo, setStockInfo] = useState("");
-  const [stockFeed, setStockFeed] = useState("");
+  const [stockInfo, setStockInfo] = useState(item?.posts);
+  const [stockFeed, setStockFeed] = useState(item?.posts);
   const [watchlistLoading, setWatchlistLoading] = useState(false);
   const profileInfo = useSelector((state) => state.profile.profileInfo);
   const [isLoadingProgress, setIsLoadingProgress] = useState(true);

@@ -17,15 +17,15 @@ export const BuzzingItem = ({ item }) => {
   const [cryptoInfo, setCryptoInfo] = useState("");
 
   useState(async () => {
-    if (findBySymbol(item)) {
-      console.log("FOUND ITEM", item);
-      const res = await stocksAPI.getCryptoInfo(findBySymbol(item));
+    if (findBySymbol(item?.symbol)) {
+      console.log("FOUND ITEM", item?.symbol);
+      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol));
       setCryptoInfo(res.data[0]);
       console.log("RES", res.data[0]);
     }
   }, []);
 
-  if (findBySymbol(item)) {
+  if (findBySymbol(item?.symbol)) {
     return (
       <View style={{ width: width / 2, padding: 5 }}>
         <TouchableWithoutFeedback
@@ -33,8 +33,9 @@ export const BuzzingItem = ({ item }) => {
           onPress={() => {
             navigation.push("cryptoScreen", {
               item: {
-                symbol: item,
+                symbol: item?.symbol,
                 ...cryptoInfo,
+                ...item
               },
             });
           }}
@@ -44,10 +45,10 @@ export const BuzzingItem = ({ item }) => {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <View>
-                <Text>${item}</Text>
+                <Text>${item?.symbol}</Text>
                 <Text style={{ fontSize: 8 }}></Text>
               </View>
-              {item?.change > 0 ? (
+              {cryptoInfo?.price_change_24h > 0 ? (
                 <MaterialIcons name="north" color="green" size={20} />
               ) : (
                 <MaterialIcons name="south" color="red" size={20} />

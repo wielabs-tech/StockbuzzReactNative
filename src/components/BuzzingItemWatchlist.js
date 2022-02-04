@@ -20,7 +20,30 @@ export const BuzzingItem = ({ item }) => {
     if (!findIdByEmail(item?.symbol)) {
       const res = await stocksAPI.getStockInfo(item?.symbol);
       setDetails(res.data);
-    } else {
+      // const res = await fetch(
+      //   "https://www.nseindia.com/api/quote-equity?symbol=" + item?.symbol,
+      //   {
+      //     headers: {
+      //       'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+      //       "Content-Type": "application/text",
+      //     },
+      //     cache: "reload",
+      //   }
+      // ).then(response => {
+      //   console.log("RESPONSE", response)
+      //   return response.json()
+      // })
+      // .then((json) => {
+      //   console.log(item?.symbol + "RESPONSE12", json)
+      //   setDetails(json)
+      // }).catch(e => {
+      //   console.log("ERROR", e)
+      // })
+    }
+  }, []);
+
+  useEffect(async () => {
+    if (findIdByEmail(item?.symbol)) {
       const res2 = await stocksAPI.getCryptoInfo(findIdByEmail(item?.symbol));
       setDetails(res2.data[0]);
     }
@@ -37,10 +60,10 @@ export const BuzzingItem = ({ item }) => {
         <TouchableWithoutFeedback
           style={{ elevation: 2 }}
           onPress={() => {
-            console.log("ITEM", item?.symbol)
+            console.log("ITEM", item?.symbol);
             navigation.push("cryptoScreen", {
               item: {
-                symbol: (item?.symbol),
+                symbol: item?.symbol,
                 ...details,
               },
             });
@@ -54,47 +77,54 @@ export const BuzzingItem = ({ item }) => {
                 <Text>{item?.symbol}</Text>
                 <Text style={{ fontSize: 8 }}></Text>
               </View>
-              {details?.priceInfo?.change > 0 ? (
+              {details?.price_change_24h > 0 ? (
                 <MaterialIcons name="north" color="green" size={20} />
               ) : (
                 <MaterialIcons name="south" color="red" size={20} />
               )}
             </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>$</Text>
-                <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>
-                  {roundOff(details?.current_price, 2)}
-                </Text>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                {details?.price_change_24h > 0 ? (
+            {!isNaN(details?.current_price) ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>$</Text>
+                  <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>
+                    {roundOff(details?.current_price, 2)}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  {details?.price_change_24h > 0 ? (
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        alignSelf: "flex-end",
+                        color: "green",
+                      }}
+                    >
+                      +
+                    </Text>
+                  ) : (
+                    <></>
+                  )}
                   <Text
                     style={{
+                      color: details?.price_change_24h > 0 ? "green" : "red",
                       fontSize: 10,
                       alignSelf: "flex-end",
-                      color: "green",
                     }}
                   >
-                    +
+                    {roundOff(details?.price_change_24h, 2)}(
+                    {roundOff(details?.price_change_percentage_24h, 2)}%)
                   </Text>
-                ) : (
-                  <></>
-                )}
-                <Text
-                  style={{
-                    color: details?.price_change_24h > 0 ? "green" : "red",
-                    fontSize: 10,
-                    alignSelf: "flex-end",
-                  }}
-                >
-                  {roundOff(details?.price_change_24h, 2)}(
-                  {roundOff(details?.price_change_percentage_24h, 2)}%)
-                </Text>
+                </View>
               </View>
-            </View>
+            ) : (
+              <></>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -123,45 +153,54 @@ export const BuzzingItem = ({ item }) => {
               </View>
               {details?.priceInfo?.change > 0 ? (
                 <MaterialIcons name="north" color="green" size={20} />
-              ) : (
+              ) : details?.priceInfo?.change ? (
                 <MaterialIcons name="south" color="red" size={20} />
+              ) : (
+                <></>
               )}
             </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <View style={{ flexDirection: "row" }}>
-                <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>₹</Text>
-                <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>
-                  {roundOff(details?.priceInfo?.lastPrice, 2)}
-                </Text>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                {details?.priceInfo?.change > 0 ? (
+            {!isNaN(details?.priceInfo?.lastPrice) ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>₹</Text>
+                  <Text style={{ fontSize: 12, alignSelf: "flex-end" }}>
+                    {roundOff(details?.priceInfo?.lastPrice, 2)}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  {details?.priceInfo?.change > 0 ? (
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        alignSelf: "flex-end",
+                        color: "green",
+                      }}
+                    >
+                      +
+                    </Text>
+                  ) : (
+                    <></>
+                  )}
                   <Text
                     style={{
+                      color: details?.priceInfo?.change > 0 ? "green" : "red",
                       fontSize: 10,
                       alignSelf: "flex-end",
-                      color: "green",
                     }}
                   >
-                    +
+                    {roundOff(details?.priceInfo?.change, 2)}(
+                    {roundOff(details?.priceInfo?.pChange, 2)}%)
                   </Text>
-                ) : (
-                  <></>
-                )}
-                <Text
-                  style={{
-                    color: details?.priceInfo?.change > 0 ? "green" : "red",
-                    fontSize: 10,
-                    alignSelf: "flex-end",
-                  }}
-                >
-                  {roundOff(details?.priceInfo?.change, 2)}(
-                  {roundOff(details?.priceInfo?.pChange, 2)}%)
-                </Text>
+                </View>
               </View>
-            </View>
+            ) : (
+              <></>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>

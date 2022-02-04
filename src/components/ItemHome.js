@@ -53,7 +53,7 @@ function ItemHome({}) {
       numColumns={2}
       // data={trendingStocks?.stocks?.filter(element => element?.activeSeries).sort(compare)}
       data={trendingStocks?.stocks?.filter(
-        (element) => element?.activeSeries || findBySymbol(element)
+        (element) => element?.activeSeries || findBySymbol(element.symbol)
       )}
       keyExtractor={(item) => item.identifier}
       renderItem={({ item }) => {

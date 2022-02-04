@@ -30,6 +30,7 @@ import {
 } from "../redux/profile/profile.actions";
 import { useNavigation } from "@react-navigation/native";
 import { getRoomPostsThunk } from "../redux/rooms/rooms.actions";
+import a, { findBySymbol } from "../utils/coins";
 
 const PostRoute = (props) => {
   const item = props.item;
@@ -80,9 +81,7 @@ const PostRoute = (props) => {
   }
 
   const handleNamePress = async (stockSymbol, matchIndex) => {
-    const result = await cryptos?.filter(
-      (e) => e.symbol === stockSymbol.substring(1)
-    );
+    const result = findBySymbol(stockSymbol.substring(1))
     console.log("RESULTS", result);
     if (result?.length > 0) {
       navigation.push("cryptoScreen", {
