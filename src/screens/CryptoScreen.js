@@ -43,11 +43,12 @@ export default StockScreen = ({ route, navigation }) => {
 
   const dispatch = useDispatch();
   useEffect(async () => {
+    console.log("IDD", findBySymbol(item?.symbol.toUpperCase()))
     if (item?.id) {
-      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol));
+      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol.toUpperCase()));
       setStockInfo(res?.data[0]);
     } else {
-      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol));
+      const res = await stocksAPI.getCryptoInfo(findBySymbol(item?.symbol.toUpperCase()));
       setStockInfo(res?.data[0]);
     }
   }, []);
@@ -179,7 +180,7 @@ export default StockScreen = ({ route, navigation }) => {
                       fontSize: 20,
                     }}
                   >
-                    ${roundOff(stockInfo?.current_price, 4)}
+                    ${roundOff(stockInfo?.current_price, 6)}
                   </Text>
                 )}
                 {stockInfo?.price_change_24h &&
@@ -207,7 +208,7 @@ export default StockScreen = ({ route, navigation }) => {
                       color: stockInfo?.price_change_24h > 0 ? "green" : "red",
                     }}
                   >
-                    {roundOff(stockInfo?.price_change_24h, 4)}(
+                    {roundOff(stockInfo?.price_change_24h, 6)}(
                     {roundOff(stockInfo?.price_change_percentage_24h, 2)}%)
                   </Text>
                 )}

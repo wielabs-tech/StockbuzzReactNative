@@ -9,7 +9,6 @@ export const loginAPI = {
     formdata.append("email", email);
     formdata.append("password", password);
     formdata.append("firebase_token", token);
-
     return API.post(`user/login`, formdata);
   },
 

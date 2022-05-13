@@ -108,7 +108,7 @@ export default ProfileScreen = ({ navigation }) => {
     // dispatch(getMyFollowersThunk(profile?._id?.$oid))
     // dispatch(getMyFollowingThunk(profile?._id?.$oid))
     dispatch(getProfileInfoThunk(profile?._id?.$oid));
-    dispatch(getMyFollowingThunk(profile?._id?.$oid))
+    dispatch(getMyFollowingThunk(profile?._id?.$oid));
   }, []);
 
   const modalRef = useRef();
@@ -175,6 +175,8 @@ export default ProfileScreen = ({ navigation }) => {
         </View>
 
         <TabView
+          animationEnabled={false}
+          swipeEnabled={false}
           renderTabBar={renderTabBar}
           navigationState={{ index, routes }}
           renderScene={renderScene}

@@ -50,7 +50,7 @@ export default HomeScreen = ({ params }) => {
   useEffect(() => {
     dispatch(getMyRoomsThunk(profile?._id?.$oid));
     dispatch(getDiscoverRoomsThunk(profile?._id?.$oid));
-    dispatch(getCryptoSearchThunk('bit'))
+    dispatch(getCryptoSearchThunk("bit"));
     // await dispatch(getCryptoSearchThunk());
     // await dispatch(getCryptoThunk());
   }, []);
@@ -92,7 +92,7 @@ export default HomeScreen = ({ params }) => {
   const renderTabBar = (props) => (
     <TabBar
       tabStyle={{
-        width: width / 4,
+        width: "auto",
       }}
       pressColor={"transparent"}
       {...props}
@@ -217,10 +217,13 @@ export default HomeScreen = ({ params }) => {
           </View>
           <View style={{ flexDirection: "row", flex: 1, paddingBottom: 10 }}>
             <TabView
+              animationEnabled={false}
+              swipeEnabled={false}
               renderTabBar={renderTabBar}
               navigationState={{ index, routes }}
               renderScene={renderScene}
               onIndexChange={setIndex}
+              scrollEnabled={false}
               initialLayout={{ width: layout.width }}
               indicatorStyle={{ backgroundColor: "#fff" }}
             />

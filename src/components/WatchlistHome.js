@@ -67,40 +67,44 @@ function WatchlistHome({}) {
 
   return (
     <View>
-      <FlatList
-        // nestedScrollEnabled={true}
-        refreshing={isRefreshing}
-        onRefresh={() => {
-          refresh();
-        }}
-        numColumns={2}
-        data={profileInfo?.watchlist}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => {
-          return (
-            <BuzzingItem
-              item={{
-                symbol: item,
-              }}
-            />
-          );
-          // if (item?.meta?.companyName) {
-          //     return (
-          //         <BuzzingItem
-          //             item={item} />
-          //     );
-          // }
-          // else if (item?.symbol) {
-          //     return (
-          //         <BuzzingItemCrypto
-          //             item={item} />
-          //     )
-          // }
-        }}
-        ListFooterComponent={() => {
-          return <View style={{ height: 100 }}></View>;
-        }}
-      />
+      {profileInfo?.watchlist?.length < 1 ? (
+        <Text style={{marginTop: 40, width: '100%', textAlign: 'center', color: "#999"}}>Your watchlist is empty</Text>
+      ) : (
+        <FlatList
+          // nestedScrollEnabled={true}
+          refreshing={isRefreshing}
+          onRefresh={() => {
+            refresh();
+          }}
+          numColumns={2}
+          data={profileInfo?.watchlist}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => {
+            return (
+              <BuzzingItem
+                item={{
+                  symbol: item,
+                }}
+              />
+            );
+            // if (item?.meta?.companyName) {
+            //     return (
+            //         <BuzzingItem
+            //             item={item} />
+            //     );
+            // }
+            // else if (item?.symbol) {
+            //     return (
+            //         <BuzzingItemCrypto
+            //             item={item} />
+            //     )
+            // }
+          }}
+          ListFooterComponent={() => {
+            return <View style={{ height: 100 }}></View>;
+          }}
+        />
+      )}
     </View>
   );
 }

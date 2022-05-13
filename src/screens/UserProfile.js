@@ -334,6 +334,8 @@ export default UserProfile = ({ navigation, route }) => {
         {/* user posts following followers watchlist */}
 
         <TabView
+          animationEnabled={false}
+          swipeEnabled={false}
           renderTabBar={renderTabBar}
           navigationState={{ index, routes }}
           renderScene={renderScene}

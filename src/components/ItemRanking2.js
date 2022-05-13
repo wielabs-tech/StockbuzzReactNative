@@ -110,7 +110,7 @@ export const Item = ({ item }) => {
                   alignSelf: "flex-end",
                 }}
               >
-                ₹{roundOff(details?.current_price, 2)}
+                ${roundOff(details?.current_price, 6)}
               </Text>
               <Text
                 style={{
